@@ -1,0 +1,39 @@
+{
+ "axes": [
+  "islamophobia"
+ ],
+ "min_n": 3,
+ "rows": [
+  {
+   "name": "claude",
+   "per_axis": {
+    "islamophobia": null
+   }
+  },
+  {
+   "name": "gemini",
+   "per_axis": {
+    "islamophobia": null
+   }
+  },
+  {
+   "name": "gpt",
+   "per_axis": {
+    "islamophobia": null
+   }
+  },
+  {
+   "name": "grok",
+   "per_axis": {
+    "islamophobia": null
+   }
+  },
+  {
+   "name": "llama",
+   "per_axis": {
+    "islamophobia": null
+   }
+  }
+ ],
+ "trope_count": 0
+}

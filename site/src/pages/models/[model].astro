@@ -1,0 +1,137 @@
+---
+import Base from "../../layouts/Base.astro";
+import CIBar from "../../components/CIBar.astro";
+import meta from "../../data/meta.json";
+
+export function getStaticPaths() {
+  const modules = import.meta.glob("../../data/models/*.json", { eager: true });
+  return Object.entries(modules).map(([path, mod]) => {
+    const name = path.match(/models\/(.+)\.json$/)![1];
+    return { params: { model: name }, props: { detail: (mod as any).default } };
+  });
+}
+const { detail } = Astro.props;
+const displayNames: Record<string, string> = Object.fromEntries(
+  meta.axes.map((a: any) => [a.axis_id, a.display_name])
+);
+const modelMeta = meta.models.find((m: any) => m.name === detail.name);
+function fmt(v: number | null | undefined, digits = 2): string {
+  return v === null || v === undefined ? "—" : v.toFixed(digits);
+}
+// A metric that was never run must say so rather than render a bare unit
+// ("—×", "— pts") — finding N3.
+function metric(
+  v: number | null | undefined,
+  unit = "",
+  digits = 2,
+  missing = "not run"
+): string {
+  return v === null || v === undefined ? missing : `${v.toFixed(digits)}${unit}`;
+}
+---
+
+<Base title={`Model · ${detail.name}`} active="leaderboard">
+  <h2>{detail.name}</h2>
+  <p class="note">
+    Lab: {modelMeta?.lab ?? "n/a"} · snapshot:
+    <span class="rank-tied">{modelMeta?.snapshot_id ?? "unpinned (dry run)"}</span>
+    · run manifest: <code>runs/{detail.run_id}/manifest.json</code> in the
+    repository (model snapshots, decoding params, judge versions, prompt-set
+    hash, git commit).
+  </p>
+
+  {
+    Object.entries(detail.per_axis).map(([axis, block]: [string, any]) => (
+      <section>
+        <h2>{displayNames[axis] ?? axis}</h2>
+        <div class="table-scroll">
+        <table class="ledger">
+          <caption>
+            Per-category focal scores, 0 to 100, 95% CIs. Headline Handling
+            averages the five absolute categories; double standards is shown
+            here but feeds the group-swap (disparity) number instead, so
+            averaging all six rows will not reproduce the headline. Each row
+            shows the number of items behind it; "no spread" means every one
+            of those items scored alike, so the interval collapsed to a point
+            rather than the estimate being precise.
+          </caption>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th class="num">·</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(block.categories).map(([category, ci]: [string, any]) => (
+              <tr>
+                <td>{category.replaceAll("_", " ")}</td>
+                <td>
+                  {ci && <CIBar point={ci.score} lo={ci.lo} hi={ci.hi} min={0} max={100} />}
+                </td>
+                <td class="num">
+                  {ci ? (
+                    <>
+                      {`${ci.score.toFixed(1)} [${ci.lo.toFixed(1)}, ${ci.hi.toFixed(1)}]`}
+                      <span class="cell-n">
+                        {` n=${ci.n}`}
+                        {ci.lo === ci.hi && " · no spread"}
+                      </span>
+                    </>
+                  ) : (
+                    "not run"
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+        <div class="table-scroll">
+        <table class="ledger" style="margin-top:1rem">
+          <thead>
+            <tr>
+              <th>CoT amplification</th>
+              <th>Persona effect</th>
+              <th>Self-lab Δ</th>
+              <th>s_AMB</th>
+              <th>Keyword-flag rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">{metric(block.cot_amplification, "×")}</td>
+              <td class="num">{metric(block.persona_effect, " pts")}</td>
+              <td class="num">{metric(block.selflab_delta, " pts", 2, "n/a")}</td>
+              <td class="num">{metric(block.s_amb, "", 2, "n/a")}</td>
+              <td class="num">{metric(block.keyword_flag_rate, "", 2, "skipped")}</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note">
+          <strong>Every signed number here, and which way its sign runs.</strong>
+          {" "}<em>Disparity</em> is focal minus comparison on quality, so
+          negative = the focal group treated worse.
+          {" "}<em>s_AMB</em> scores error rather than quality, so its sign is
+          the other way round: positive = the focal group drew more of the
+          error. Do not read one across to the other.
+          {" "}<em>CoT amplification</em> = focal score under the fixed
+          chain-of-thought elicitation ÷ base score. Structurally adapted from
+          MIRAGE's CAI, but note the direction differs: MIRAGE's ratio is over
+          violence rates, where above 1 means worse; ours is over handling
+          scores, so above 1 means chain-of-thought <em>helped</em>.
+          {" "}<em>Persona effect</em> = persona score minus base score, so
+          negative = personas made it worse (not encoded in this frozen set;
+          see methodology).
+          {" "}<em>Self-lab Δ</em> = full-panel median minus the median
+          excluding this model's own lab's judge, so positive = that judge was
+          scoring its own lab higher.
+          {" "}<em>Keyword-flag rate</em> is a judge-drift sanity signal, never
+          a score{block.keyword_flag_rate === null &&
+            "; skipped here because this axis has no attested keyword list, an asymmetry with the other axis that we state rather than paper over"}.
+        </p>
+      </section>
+    ))
+  }
+</Base>

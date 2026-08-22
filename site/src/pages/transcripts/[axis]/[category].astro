@@ -1,0 +1,133 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Gate from "../../../components/Gate.astro";
+import findings from "../../../data/findings.json";
+
+const defectIds = new Set(
+  (findings as any).unanimous_failures?.map((u: any) => u.item_id) ?? []
+);
+
+export function getStaticPaths() {
+  const modules = import.meta.glob("../../../data/transcripts/*/*.json", {
+    eager: true,
+  });
+  return Object.entries(modules).map(([path, mod]) => {
+    const m = path.match(/transcripts\/([^/]+)\/([^/]+)\.json$/)!;
+    return {
+      params: { axis: m[1], category: m[2] },
+      props: { payload: (mod as any).default },
+    };
+  });
+}
+const { payload } = Astro.props;
+const { axis, category } = Astro.params;
+function severity(score4: number): string {
+  return score4 < 1.5 ? "sev-critical" : score4 < 2.5 ? "sev-warn" : "sev-good";
+}
+// One article per model meant comparing models was a scrolling exercise. Group
+// by prompt instead, and let the reader tab between the models that answered
+// it — the comparison is the whole point of a counterfactual audit.
+type Entry = { item_id: string; model_name: string; min_median: number | null };
+const byItem = new Map<string, any[]>();
+for (const entry of payload.entries as Entry[]) {
+  const list = byItem.get(entry.item_id) ?? [];
+  list.push(entry);
+  byItem.set(entry.item_id, list);
+}
+const items = [...byItem.entries()].map(([itemId, entries]) => {
+  const scored = entries.filter((e: any) => e.min_median !== null);
+  return {
+    itemId,
+    entries: [...entries].sort((a: any, b: any) =>
+      (a.min_median ?? 9) - (b.min_median ?? 9) || a.model_name.localeCompare(b.model_name)
+    ),
+    worst: scored.length ? Math.min(...scored.map((e: any) => e.min_median)) : null,
+  };
+});
+items.sort((a, b) => (a.worst ?? 9) - (b.worst ?? 9) || a.itemId.localeCompare(b.itemId));
+const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
+---
+
+<Base title={`Transcripts · ${axis} · ${category}`} active="transcripts" noindex={true}>
+  <Gate>
+    <h2>
+      {axis} / {String(category).replaceAll("_", " ")}
+    </h2>
+    <p class="note">
+      {items.length} prompts, {payload.entries.length} scored answers. Pick a
+      model to see how it answered. Responses are collapsed until you open them.
+    </p>
+    {
+      items.map((item: any) => (
+        <article class="entry">
+          <div class="entry-head">
+            {defectIds.has(item.itemId) && (
+              <span class="role-chip role-artifact" title="Every model floors on this item and every judge agrees; a universal failure is far more likely a broken item than a universal model defect. Kept and disclosed rather than deleted; see the methodology page's published flaws.">
+                known instrument defect: read the methodology note before reading these scores
+              </span>
+            )}
+            {item.worst !== null && (
+              <span class={`score-chip ${severity(item.worst)}`}>
+                worst {item.worst.toFixed(1)}/4
+              </span>
+            )}
+            <span>item {item.itemId}</span>
+            <span>{item.entries.length} models answered</span>
+          </div>
+          <div class="model-tabs">
+            {item.entries.map((entry: any, index: number) => (
+              <input
+                type="radio"
+                name={`t-${slug(item.itemId)}`}
+                id={`t-${slug(item.itemId)}-${slug(entry.model_name)}`}
+                checked={index === 0}
+              />
+            ))}
+            <div class="model-tab-row">
+              {item.entries.map((entry: any) => (
+                <label for={`t-${slug(item.itemId)}-${slug(entry.model_name)}`}>
+                  {entry.model_name}
+                  {entry.min_median !== null && (
+                    <span class={`tab-dot ${severity(entry.min_median)}`} aria-hidden="true"></span>
+                  )}
+                </label>
+              ))}
+            </div>
+            <div class="model-tab-panels">
+              {item.entries.map((entry: any) => (
+                <div class="model-tab-panel">
+          <div class="variants">
+            {entry.variants.map((variant: any) => (
+              <div class="variant">
+                {variant.group && <span class="group-chip">{variant.group}</span>}
+                <p class="prompt">{variant.prompt}</p>
+                <details class="harm">
+                  <summary>
+                    show response (may contain harmful content) · median{" "}
+                    {variant.median_score ?? "n/a"}
+                  </summary>
+                  <pre>{variant.response ?? "(no response recorded)"}</pre>
+                  <ul class="verdicts">
+                    {variant.verdicts.map((v: any) => (
+                      <li>
+                        <span class="vlabel">
+                          {v.judge} · {v.label} · {v.score} · {v.criterion}
+                        </span>
+                        <br />
+                        {v.rationale}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+            ))}
+          </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </Gate>
+</Base>

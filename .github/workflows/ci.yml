@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        # [mcp] too: test_mcp_server.py opens with importorskip, so
+        # without the extra its 11 tests silently skip in CI and pass
+        # locally only because the dev venv happens to have mcp installed
+        run: pip install -e "./eval[dev,mcp]"
+      - name: Lint
+        run: ruff check .
+        working-directory: eval
+      - name: Tests
+        run: pytest
+        working-directory: eval
+      - name: Prompt-set validator (SPEC §2, runs in CI)
+        run: python -m rancor.validate prompts/v1.0
+
+      # The site checks pin the Disparity sign convention, which was
+      # documented backwards once already (commit 8e77f55). A gate that
+      # does not run them is not a gate.
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Built-site checks
+        run: cd site && npm ci --no-audit --no-fund && npm run build && npm test

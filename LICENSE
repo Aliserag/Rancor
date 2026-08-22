@@ -1,0 +1,80 @@
+Rancor is released under two licences: one for code, one for data.
+
+================================================================
+CODE — MIT License
+Applies to: eval/, site/, scripts/, Makefile, configuration.
+================================================================
+
+Copyright (c) 2026 The Rancor authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================
+DATA — Creative Commons Attribution 4.0 International (CC BY 4.0)
+Applies to: prompts/, runs/, site/src/data/.
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+================================================================
+
+The prompt set contains items adapted from upstream corpora that carry their
+own licences. Those licences continue to apply to the adapted items, and each
+item records its upstream ID and attribution in its own record:
+
+  XSTest           CC-BY-4.0             Röttger et al., NAACL 2024
+  DiscrimEval      CC-BY-4.0             Tamkin et al., arXiv:2312.03689
+  BBQ (Religion)   CC-BY-4.0             Parrish et al., ACL Findings 2022
+  HateCheck        CC-BY-4.0             Röttger et al., ACL 2021
+  SocialStigmaQA   CDLA-Permissive-2.0   Nagireddy et al., arXiv:2312.07492
+  CLEAR-Bias       Apache-2.0            Cantini et al., arXiv:2504.07887
+
+To reuse the prompt set, attribute Rancor and preserve the per-item upstream
+attributions. See DISCLOSURES.md and docs/SAFETY.md.
+
+================================================================
+UPSTREAM LICENCE TEXTS — LICENSES/
+================================================================
+
+Verbatim copies of every upstream licence are included in LICENSES/:
+
+  LICENSES/CC-BY-4.0.txt              https://creativecommons.org/licenses/by/4.0/legalcode.txt
+  LICENSES/CDLA-Permissive-2.0.txt    https://cdla.dev/permissive-2-0/
+  LICENSES/Apache-2.0.txt             https://www.apache.org/licenses/LICENSE-2.0.txt
+
+These are shipped because two upstream licences require it as an affirmative
+condition of redistribution, not as a courtesy:
+
+  * CDLA-Permissive-2.0 section 2.1 — "A Data Recipient may share Data, with
+    or without modifications, so long as the Data Recipient makes available
+    the text of this agreement with the shared Data." (SocialStigmaQA)
+  * Apache-2.0 section 4(a) — "You must give any other recipients of the Work
+    or Derivative Works a copy of this License." (CLEAR-Bias)
+
+================================================================
+RAW UPSTREAM INPUTS — repo root
+================================================================
+
+These files are verbatim upstream data, redistributed unmodified so the
+extraction step is reproducible. They are NOT Rancor's work and are NOT
+covered by the MIT or CC BY 4.0 grants above. Each remains under its
+upstream licence:
+
+  discrimeval_explicit.jsonl   CC-BY-4.0             DiscrimEval (Tamkin et al.)
+  de_templates.jsonl           CC-BY-4.0             DiscrimEval (Tamkin et al.)
+  ssqa_patterns.csv            CDLA-Permissive-2.0   SocialStigmaQA (Nagireddy et al.)
+  ssqa_stigmas.csv             CDLA-Permissive-2.0   SocialStigmaQA (Nagireddy et al.)
+  clear_bias.parquet           Apache-2.0            CLEAR-Bias (Cantini et al.)

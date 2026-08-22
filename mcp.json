@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "rancor": {
+      "command": "./.venv/bin/python",
+      "args": [
+        "-m",
+        "rancor.mcp_server"
+      ],
+      "env": {
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+      }
+    }
+  }
+}

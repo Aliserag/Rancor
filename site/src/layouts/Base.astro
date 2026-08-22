@@ -1,0 +1,98 @@
+---
+import "../styles/global.css";
+import meta from "../data/meta.json";
+
+interface Props {
+  title: string;
+  active?: string;
+  noindex?: boolean;
+  description?: string;
+  heading?: string;
+}
+const {
+  title,
+  active = "",
+  noindex = false,
+  description = "Rancor grades five frontier AI models on how they handle Islamophobia: 337 prompts from six research corpora, every transcript and score published.",
+  heading = "",
+} = Astro.props;
+const isHome = active === "leaderboard";
+const favicon =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#f6f2ea"/><text x="16" y="23" font-family="Georgia,serif" font-weight="700" font-size="20" text-anchor="middle" fill="#1a1611">R</text><rect x="6" y="26" width="20" height="2" fill="#8f2a1e"/></svg>`
+  );
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <title>{title} · Rancor</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={`${title} · Rancor`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={favicon} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {
+      meta.fixture && (
+        <div class="fixture-banner">
+          FIXTURE DATA: dry-run demonstration; deterministic synthetic
+          responses, not real model output
+        </div>
+      )
+    }
+    <header class="wrap masthead reveal reveal-1">
+      {isHome ? <h1>Rancor</h1> : <p class="brand">Rancor</p>}
+      {heading && <h1 class="visually-hidden">{heading}</h1>}
+      <p class="tagline">
+        Which AI models handle Islamophobia worst. Measured, not guessed.
+      </p>
+    </header>
+    <nav class="wrap primary reveal reveal-2" aria-label="Primary">
+      <a href="/" class={active === "leaderboard" ? "active" : ""} aria-current={active === "leaderboard" ? "page" : undefined}>Leaderboard</a>
+      <a href="/explore/" class={active === "explore" ? "active" : ""} aria-current={active === "explore" ? "page" : undefined}>Explore &amp; run live</a>
+      <a href="/provenance/" class={active === "provenance" ? "active" : ""} aria-current={active === "provenance" ? "page" : undefined}>Sources</a>
+      <a href="/sustain/" class={active === "sustain" ? "active" : ""} aria-current={active === "sustain" ? "page" : undefined}>Who keeps this running</a>
+      <a href="/mcp/" class={active === "mcp" ? "active" : ""} aria-current={active === "mcp" ? "page" : undefined}>For builders</a>
+      <a href="/methodology/" class={active === "methodology" ? "active" : ""} aria-current={active === "methodology" ? "page" : undefined}>Methodology</a>
+      <a href="/transcripts/" class={active === "transcripts" ? "active" : ""} aria-current={active === "transcripts" ? "page" : undefined}>Transcripts</a>
+    </nav>
+    <main class="wrap reveal reveal-3" id="main">
+      <slot />
+    </main>
+    <footer class="wrap colophon">
+      <p>
+        Rancor scores handling and disparity per hate axis; the two numbers are
+        never merged, and axes are never averaged together. Seeded from BBQ,
+        HateCheck, XSTest, CLEAR-Bias, DiscrimEval, and SocialStigmaQA (all
+        openly licensed) with per-item attribution.
+      </p>
+      <p class="mono">
+        run {meta.run_id} · git
+        {meta.git_commit ?? "n/a"} · prompt-set {meta.run_prompt_set_sha256}
+      </p>
+      <p>
+        <a href="https://github.com/Aliserag/Rancor">Source and data</a> ·
+        <a href="https://github.com/Aliserag/Rancor/blob/main/runs/preview/manifest.json">
+          run manifest
+        </a> ·
+        <a href="https://github.com/Aliserag/Rancor/tree/main/prompts/v1.0">
+          frozen prompt set
+        </a> · <a href="/provenance/">provenance &amp; disclosures</a> ·
+        <a href="/video-transcript/">video transcript</a>
+      </p>
+    </footer>
+  </body>
+</html>

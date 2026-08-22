@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+
+const REPO = "https://github.com/Aliserag/Rancor";
+---
+
+<Base
+  title="For builders"
+  active="mcp"
+  description="Run Rancor's instrument against your own model as an MCP server: list cited anti-Muslim narrative themes, score responses with the same three-judge panel, and gate a release on the result."
+  heading="Test your model before it ships">
+  <h2>Test your model before it ships</h2>
+  <p>
+    The leaderboard tells you how models that already shipped handle
+    anti-Muslim bias. The same instrument plugs into your editor or agent as
+    an MCP server, so a team building a model can test it before release, not
+    after. MCP, the Model Context Protocol, is an open standard that lets AI
+    tools call other tools.
+  </p>
+
+  <h3>Quickstart</h3>
+  <p>From a clone of the repository:</p>
+  <pre><code>python -m rancor.mcp_server</code></pre>
+  <p>
+    Or point any MCP client at the config shipped at the repository root
+    (<code>mcp.json</code>):
+  </p>
+  <pre
+    is:raw><code>{
+  "mcpServers": {
+    "rancor": {
+      "command": "./.venv/bin/python",
+      "args": [
+        "-m",
+        "rancor.mcp_server"
+      ],
+      "env": {
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+      }
+    }
+  }
+}</code></pre>
+  <p class="note">
+    <code>describe_instrument</code>, <code>list_prompts</code> and
+    <code>list_themes</code> work offline. Only the tools that call models
+    need an <code>OPENROUTER_API_KEY</code>. Measured against production,
+    scoring one prompt end to end costs about 0.039 OpenRouter credits.
+  </p>
+
+  <h3>The six tools</h3>
+  <div class="table-scroll">
+    <table class="ledger">
+      <thead>
+        <tr><th scope="col">Tool</th><th scope="col">What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><code>describe_instrument</code></th>
+          <td>What Rancor measures: axes, categories, prompt-set hash, judge panel.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>list_prompts</code></th>
+          <td>Browse the frozen prompt set, filtered by axis, category or a text query.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>list_themes</code></th>
+          <td>Cited reference of documented hate-narrative themes for an axis, for writing your own test prompts.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>probe_models</code></th>
+          <td>Run one prompt across the pinned model panel, or against any single OpenRouter model.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>score_response</code></th>
+          <td>Score one response with the fixed three-judge panel against the published rubric for that axis and category.</td>
+        </tr>
+        <tr>
+          <th scope="row"><code>evaluate_model</code></th>
+          <td>Pre-ship gate: run a candidate model against curated items, score every answer, return per-item scores and the mean.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The loop for builders</h3>
+  <p>
+    <code>list_themes</code> gives you a cited map of documented anti-Muslim
+    narrative themes: the Runnymede Trust's eight closed views of Islam, the
+    OSCE's six recurring stereotypes, the ISPU's five-trope index, and 32
+    contemporary narratives distilled from GNCI research documents, each
+    cited to document and page though those documents are not yet
+    independently resolvable. Write your own test prompts against each theme
+    that matters for your product. <code>score_response</code> grades every
+    answer with the same fixed three-judge panel and published rubric the
+    leaderboard uses. <code>evaluate_model</code> then works as a pre-ship
+    gate: a build can fail on a regression.
+  </p>
+
+  <h3>What these scores are</h3>
+  <p>
+    Scores from these tools are diagnostics. Published leaderboard figures
+    come only from graded runs with a manifest, and
+    <code>describe_instrument</code> says exactly that in its own output.
+  </p>
+
+  <p class="note">
+    Read the source:
+    <a href={`${REPO}/blob/main/eval/rancor/mcp_server.py`}>eval/rancor/mcp_server.py</a> ·
+    <a href={`${REPO}/blob/main/themes/islamophobia.yaml`}>themes/islamophobia.yaml</a>
+  </p>
+</Base>

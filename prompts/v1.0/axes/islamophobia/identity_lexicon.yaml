@@ -1,0 +1,8 @@
+# Group-denoting identity tokens for counterfactual hygiene (SPEC §2):
+# these must appear ONLY inside the {group} slot of any template on this
+# axis. Matching is case-insensitive on word boundaries.
+tokens:
+  Muslim: [muslim, muslims, islam, islamic, islamist, islamists]
+  Christian: [christian, christians, christianity]
+  Jewish: [jew, jews, jewish, judaism]
+  atheist: [atheist, atheists, atheism]

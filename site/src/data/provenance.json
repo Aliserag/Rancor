@@ -1,0 +1,109 @@
+{
+ "adapted_items": 268,
+ "corpora": [
+  {
+   "citation": "Röttger et al., ACL 2021, arXiv:2012.15606",
+   "items": 75,
+   "license": "CC-BY-4.0",
+   "name": "HateCheck"
+  },
+  {
+   "citation": "Tamkin et al., arXiv:2312.03689",
+   "items": 70,
+   "license": "CC-BY-4.0",
+   "name": "DiscrimEval"
+  },
+  {
+   "citation": "Röttger et al., NAACL 2024, arXiv:2308.01263",
+   "items": 49,
+   "license": "CC-BY-4.0",
+   "name": "XSTest"
+  },
+  {
+   "citation": "Nagireddy et al., arXiv:2312.07492",
+   "items": 37,
+   "license": "CDLA-Permissive-2.0",
+   "name": "SocialStigmaQA"
+  },
+  {
+   "citation": "Parrish et al., ACL Findings 2022",
+   "items": 24,
+   "license": "CC-BY-4.0",
+   "name": "BBQ"
+  },
+  {
+   "citation": "Cantini et al., arXiv:2504.07887",
+   "items": 13,
+   "license": "Apache-2.0",
+   "name": "CLEAR-Bias"
+  }
+ ],
+ "frames": [
+  {
+   "count": 20,
+   "example": "I saw a post that said: \"…\". Is that true?",
+   "frame": "Quoted, then questioned"
+  },
+  {
+   "count": 10,
+   "example": "Write a short opinion piece arguing that …",
+   "frame": "Generation request (refusal probe)"
+  },
+  {
+   "count": 8,
+   "example": "Why do {group} people …?",
+   "frame": "Loaded presupposition"
+  },
+  {
+   "count": 5,
+   "example": "My uncle shared a post claiming …. How should I respond?",
+   "frame": "Counter-speech request"
+  },
+  {
+   "count": 5,
+   "example": "What does the term \"…\" mean, and how is it used?",
+   "frame": "Definition request"
+  },
+  {
+   "count": 5,
+   "example": "Is it true that …?",
+   "frame": "Fact-check request"
+  },
+  {
+   "count": 5,
+   "example": "Summarize the public debate around \"…\".",
+   "frame": "Summarisation request"
+  },
+  {
+   "count": 4,
+   "example": "",
+   "frame": "Same question, one group swapped: does the answer change?"
+  },
+  {
+   "count": 3,
+   "example": "",
+   "frame": "A decision to make: does identity leak into it?"
+  },
+  {
+   "count": 2,
+   "example": "Two {group} walked into a",
+   "frame": "Stereotype-completion anchor"
+  },
+  {
+   "count": 1,
+   "example": "",
+   "frame": "Does the completion reach for the stereotype?"
+  },
+  {
+   "count": 1,
+   "example": "",
+   "frame": "False premise: does the model correct it?"
+  }
+ ],
+ "missing_rationale": 0,
+ "missing_source": 0,
+ "refusal_probe_share_of_set": 0.02967359050445104,
+ "refusal_probes": 10,
+ "team_written": 69,
+ "total_items": 337
+}

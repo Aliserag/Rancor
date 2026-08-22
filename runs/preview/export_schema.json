@@ -1,0 +1,499 @@
+{
+ "leaderboard": {
+  "$defs": {
+   "CI": {
+    "additionalProperties": false,
+    "properties": {
+     "hi": {
+      "title": "Hi",
+      "type": "number"
+     },
+     "lo": {
+      "title": "Lo",
+      "type": "number"
+     },
+     "n": {
+      "default": 0,
+      "title": "N",
+      "type": "integer"
+     },
+     "score": {
+      "title": "Score",
+      "type": "number"
+     }
+    },
+    "required": [
+     "score",
+     "lo",
+     "hi"
+    ],
+    "title": "CI",
+    "type": "object"
+   },
+   "LeaderboardRow": {
+    "additionalProperties": false,
+    "properties": {
+     "clean": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/CI"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null
+     },
+     "disparity": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/CI"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "handling": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/CI"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "rank": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rank"
+     },
+     "s_amb": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "S Amb"
+     },
+     "tie_chained": {
+      "default": false,
+      "title": "Tie Chained",
+      "type": "boolean"
+     },
+     "tied": {
+      "title": "Tied",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "name",
+     "handling",
+     "disparity",
+     "s_amb",
+     "rank",
+     "tied"
+    ],
+    "title": "LeaderboardRow",
+    "type": "object"
+   }
+  },
+  "additionalProperties": false,
+  "properties": {
+   "axis": {
+    "title": "Axis",
+    "type": "string"
+   },
+   "comparison_groups": {
+    "default": [],
+    "items": {
+     "type": "string"
+    },
+    "title": "Comparison Groups",
+    "type": "array"
+   },
+   "display_name": {
+    "title": "Display Name",
+    "type": "string"
+   },
+   "rows": {
+    "items": {
+     "$ref": "#/$defs/LeaderboardRow"
+    },
+    "title": "Rows",
+    "type": "array"
+   },
+   "separated": {
+    "default": [],
+    "items": {
+     "additionalProperties": true,
+     "type": "object"
+    },
+    "title": "Separated",
+    "type": "array"
+   }
+  },
+  "required": [
+   "axis",
+   "display_name",
+   "rows"
+  ],
+  "title": "AxisLeaderboard",
+  "type": "object"
+ },
+ "meta": {
+  "additionalProperties": false,
+  "properties": {
+   "axes": {
+    "items": {
+     "additionalProperties": {
+      "type": "string"
+     },
+     "type": "object"
+    },
+    "title": "Axes",
+    "type": "array"
+   },
+   "created_at": {
+    "title": "Created At",
+    "type": "string"
+   },
+   "fixture": {
+    "title": "Fixture",
+    "type": "boolean"
+   },
+   "git_commit": {
+    "anyOf": [
+     {
+      "type": "string"
+     },
+     {
+      "type": "null"
+     }
+    ],
+    "title": "Git Commit"
+   },
+   "models": {
+    "items": {
+     "additionalProperties": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "type": "object"
+    },
+    "title": "Models",
+    "type": "array"
+   },
+   "prompt_set_frozen": {
+    "title": "Prompt Set Frozen",
+    "type": "boolean"
+   },
+   "prompt_set_sha256": {
+    "title": "Prompt Set Sha256",
+    "type": "string"
+   },
+   "prompt_set_sha256_current": {
+    "title": "Prompt Set Sha256 Current",
+    "type": "string"
+   },
+   "run_config": {
+    "additionalProperties": true,
+    "default": {},
+    "title": "Run Config",
+    "type": "object"
+   },
+   "run_id": {
+    "title": "Run Id",
+    "type": "string"
+   },
+   "run_prompt_set_sha256": {
+    "title": "Run Prompt Set Sha256",
+    "type": "string"
+   },
+   "usage": {
+    "anyOf": [
+     {
+      "additionalProperties": true,
+      "type": "object"
+     },
+     {
+      "type": "null"
+     }
+    ],
+    "default": null,
+    "title": "Usage"
+   }
+  },
+  "required": [
+   "run_id",
+   "created_at",
+   "fixture",
+   "prompt_set_sha256",
+   "run_prompt_set_sha256",
+   "prompt_set_sha256_current",
+   "prompt_set_frozen",
+   "git_commit",
+   "axes",
+   "models"
+  ],
+  "title": "MetaExport",
+  "type": "object"
+ },
+ "model_detail": {
+  "$defs": {
+   "AxisModelDetail": {
+    "additionalProperties": false,
+    "properties": {
+     "categories": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "$ref": "#/$defs/CI"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "title": "Categories",
+      "type": "object"
+     },
+     "cot_amplification": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cot Amplification"
+     },
+     "keyword_flag_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Keyword Flag Rate"
+     },
+     "persona_effect": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Persona Effect"
+     },
+     "s_amb": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "S Amb"
+     },
+     "selflab_delta": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Selflab Delta"
+     }
+    },
+    "required": [
+     "categories",
+     "cot_amplification",
+     "persona_effect",
+     "selflab_delta",
+     "s_amb",
+     "keyword_flag_rate"
+    ],
+    "title": "AxisModelDetail",
+    "type": "object"
+   },
+   "CI": {
+    "additionalProperties": false,
+    "properties": {
+     "hi": {
+      "title": "Hi",
+      "type": "number"
+     },
+     "lo": {
+      "title": "Lo",
+      "type": "number"
+     },
+     "n": {
+      "default": 0,
+      "title": "N",
+      "type": "integer"
+     },
+     "score": {
+      "title": "Score",
+      "type": "number"
+     }
+    },
+    "required": [
+     "score",
+     "lo",
+     "hi"
+    ],
+    "title": "CI",
+    "type": "object"
+   }
+  },
+  "additionalProperties": false,
+  "properties": {
+   "name": {
+    "title": "Name",
+    "type": "string"
+   },
+   "per_axis": {
+    "additionalProperties": {
+     "$ref": "#/$defs/AxisModelDetail"
+    },
+    "title": "Per Axis",
+    "type": "object"
+   },
+   "run_id": {
+    "title": "Run Id",
+    "type": "string"
+   }
+  },
+  "required": [
+   "name",
+   "run_id",
+   "per_axis"
+  ],
+  "title": "ModelDetail",
+  "type": "object"
+ },
+ "parity": {
+  "$defs": {
+   "CI": {
+    "additionalProperties": false,
+    "properties": {
+     "hi": {
+      "title": "Hi",
+      "type": "number"
+     },
+     "lo": {
+      "title": "Lo",
+      "type": "number"
+     },
+     "n": {
+      "default": 0,
+      "title": "N",
+      "type": "integer"
+     },
+     "score": {
+      "title": "Score",
+      "type": "number"
+     }
+    },
+    "required": [
+     "score",
+     "lo",
+     "hi"
+    ],
+    "title": "CI",
+    "type": "object"
+   },
+   "ParityRow": {
+    "additionalProperties": false,
+    "properties": {
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "per_axis": {
+      "additionalProperties": {
+       "anyOf": [
+        {
+         "$ref": "#/$defs/CI"
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "title": "Per Axis",
+      "type": "object"
+     }
+    },
+    "required": [
+     "name",
+     "per_axis"
+    ],
+    "title": "ParityRow",
+    "type": "object"
+   }
+  },
+  "additionalProperties": false,
+  "properties": {
+   "axes": {
+    "items": {
+     "type": "string"
+    },
+    "title": "Axes",
+    "type": "array"
+   },
+   "min_n": {
+    "default": 3,
+    "title": "Min N",
+    "type": "integer"
+   },
+   "rows": {
+    "items": {
+     "$ref": "#/$defs/ParityRow"
+    },
+    "title": "Rows",
+    "type": "array"
+   },
+   "trope_count": {
+    "title": "Trope Count",
+    "type": "integer"
+   }
+  },
+  "required": [
+   "trope_count",
+   "axes",
+   "rows"
+  ],
+  "title": "ParityExport",
+  "type": "object"
+ }
+}

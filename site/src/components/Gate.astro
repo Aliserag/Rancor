@@ -1,0 +1,60 @@
+---
+// One-time content-warning click-through (SPEC §7). sessionStorage-backed;
+// this is the transcript browser's sanctioned runtime JS.
+//
+// Copy is parameterised because /explore/ is a prompt runner, not the
+// transcript browser, and reused wording told visitors there that they
+// were about to "show transcripts" (live-site audit).
+interface Props {
+  subject?: string;
+  action?: string;
+}
+const {
+  subject = "The transcript browser shows raw model outputs collected while measuring hate and bias.",
+  action = "I understand, show transcripts",
+} = Astro.props;
+const REPO = "https://github.com/Aliserag/Rancor";
+---
+
+<div class="cw-gate" id="cw-gate">
+  <h2>Content warning</h2>
+  <p>
+    {subject} Some material contains stereotypes, slurs, or violent content,
+    shown collapsed and only for audit purposes. These pages are excluded from
+    search indexing.
+  </p>
+  <p class="small">
+    Rancor publishes this material so every score can be checked against the
+    exact prompt, response, and judge rationale that produced it.
+  </p>
+  <button id="cw-accept" type="button">{action}</button>
+  <noscript>
+    <p class="small">
+      <strong>This gate needs JavaScript to open.</strong> Without it,
+      everything here is plain files in the repository:
+      <a href={`${REPO}/tree/main/prompts/v1.0`}>prompts/v1.0</a> and
+      <a href={`${REPO}/tree/main/runs/preview`}>runs/preview</a>.
+    </p>
+  </noscript>
+</div>
+
+<div id="cw-content" hidden>
+  <slot />
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = "rancor-cw-accepted";
+    var gate = document.getElementById("cw-gate");
+    var content = document.getElementById("cw-content");
+    function show() {
+      gate.hidden = true;
+      content.hidden = false;
+    }
+    if (sessionStorage.getItem(KEY) === "1") show();
+    document.getElementById("cw-accept").addEventListener("click", function () {
+      sessionStorage.setItem(KEY, "1");
+      show();
+    });
+  })();
+</script>

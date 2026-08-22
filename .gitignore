@@ -1,0 +1,44 @@
+# Secrets — never committed (CLAUDE.md hard rule 2)
+.env
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.ruff_cache/
+.venv/
+
+# Node / Astro
+node_modules/
+site/dist/
+.astro/
+
+# Development runs are scratch, but the run a published leaderboard cites
+# MUST be committed — the site tells readers the manifest is "in the
+# repository" (E2E finding P3-F1). Publish the audit trail; ignore the
+# derived cache and database.
+runs/*
+!runs/preview/
+runs/preview/judge_cache.jsonl
+runs/preview/run.db
+
+# OS
+.DS_Store
+site/.vercel/
+
+# local working documents, not part of the submission
+CLAUDE.md
+PLAN.md
+docs/PITCH.md
+docs/FINALS.md
+docs/workflow-test.md
+models.smoke.yaml
+.claude/
+docs/PRODUCTION.md
+docs/PROMPTER-cutB.txt
+docs/RANCOR-PROMPTER-FINAL.txt
+video-assets/
+docs/RANCOR-PROMPTER-V2.txt
+docs/RANCOR-PROMPTER-V3.txt
+docs/RANCOR-PROMPTER-V4.txt

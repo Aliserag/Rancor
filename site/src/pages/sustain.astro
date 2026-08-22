@@ -1,0 +1,329 @@
+---
+import Base from "../layouts/Base.astro";
+import basis from "../data/cost_basis.json";
+
+const perRun = basis.full_rerun.estimated_credits;
+const CUSTODIAN = "0x3543B5DfA5b95D9044e547fff229988862a4E157";
+// Canonical USDC on Base. Verified against Circle's contract-address docs
+// (developers.circle.com/stablecoins/usdc-contract-addresses) and Basescan.
+const USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+---
+
+<Base title="Who keeps this running" active="sustain">
+  <h1>Who keeps this running</h1>
+
+  <p class="lede">
+    Rancor is a public good with a continuation model borrowed from web3. The
+    custodian is an AI agent. It holds scoped permissions to do exactly two
+    things: renew the domain and top up the model credits that pay for
+    re-runs. Anyone on earth who finds this scoreboard useful can fund it
+    directly. No foundation, no invoice, no middleman.
+  </p>
+
+  <p>
+    Models change every few weeks, and a board nobody refreshes is just a
+    snapshot. A full refresh of the board costs about twenty-five dollars.
+    Keeping this alive is not a fundraising problem. It is a wallet with a job
+    description.
+  </p>
+
+  <h2>Fund the custodian</h2>
+
+  <p
+    id="fund-status"
+    class="fund-status"
+    data-seeded-usd="20"
+    data-custodian={CUSTODIAN}
+    data-usdc={USDC_BASE}
+    data-per-run={perRun}
+    aria-live="polite"
+  >
+  </p>
+
+  <p>
+    Send USDC on Base to the custodian's address. Every dollar becomes model
+    credits and domain time.
+  </p>
+
+  <p class="fund-actions">
+    <button class="run-live" id="fund-btn" type="button">
+      Fund the custodian
+    </button>
+  </p>
+
+  <p class="footnote">
+    The twenty-five dollar figure extrapolates a per-call cost measured
+    against production. Machine-readable price quotes
+    live at <a href="/api/fund">/api/fund</a> using
+    <a href="https://x402.org">x402</a>; on-chain settlement of those quotes
+    ships disabled until the custodian switches it on.
+  </p>
+
+  <h2>And it stays checkable regardless</h2>
+  <p>
+    Every prompt, every model answer, every judge's reasoning and the exact
+    settings behind each run are published. The topics it tests are data
+    folders, not code, so a new one can be added without an engineer; a test
+    proves that by inventing a brand-new topic at runtime and checking the
+    pipeline handles it with no code changes. Even if nobody ever funds
+    another run, what this found stays public and stays checkable.
+  </p>
+
+  <dialog class="fund-modal" id="fund-modal" aria-labelledby="fund-modal-title">
+    <button class="modal-close" id="fund-close" type="button" aria-label="Close">
+      &times;
+    </button>
+    <h2 id="fund-modal-title">Fund the custodian</h2>
+    <p>
+      Send USDC on the Base network to this address. Every dollar becomes
+      model credits and domain time.
+    </p>
+    <div class="addr-row">
+      <code class="addr" id="fund-addr">{CUSTODIAN}</code>
+      <button class="copy-addr" id="fund-copy" type="button">Copy</button>
+    </div>
+    <div class="wallet-flow">
+      <div id="wallet-none" hidden>
+        <p class="footnote">
+          No wallet detected in this browser. Send USDC on Base to the address
+          above from any wallet or exchange.
+        </p>
+      </div>
+      <div id="wallet-connect" hidden>
+        <button class="run-live secondary" id="connect-btn" type="button">
+          Connect wallet
+        </button>
+      </div>
+      <div id="wallet-send" hidden>
+        <label class="amount-label" for="fund-amount">Amount in USDC</label>
+        <div class="amount-row">
+          <input
+            id="fund-amount"
+            type="text"
+            inputmode="decimal"
+            placeholder="25"
+            autocomplete="off"
+          />
+          <button class="run-live" id="send-btn" type="button">Send</button>
+        </div>
+      </div>
+      <p class="fund-note" id="fund-note" role="status" aria-live="polite" hidden></p>
+    </div>
+  </dialog>
+</Base>
+
+<style>
+  .lede { font-size: 1.05rem; }
+  .footnote { font-size: 0.85rem; color: var(--muted); }
+  .fund-actions { margin: 1rem 0 0.8rem; }
+</style>
+
+<script>
+  const eth = (window as any).ethereum;
+
+  const status = document.getElementById("fund-status") as HTMLElement;
+  const CUSTODIAN = status.dataset.custodian as string;
+  const USDC = status.dataset.usdc as string;
+  const PER_RUN = Number(status.dataset.perRun);
+
+  const modal = document.getElementById("fund-modal") as HTMLDialogElement;
+  const openBtn = document.getElementById("fund-btn") as HTMLButtonElement;
+  const closeBtn = document.getElementById("fund-close") as HTMLButtonElement;
+  const copyBtn = document.getElementById("fund-copy") as HTMLButtonElement;
+  const noneBox = document.getElementById("wallet-none") as HTMLElement;
+  const connectBox = document.getElementById("wallet-connect") as HTMLElement;
+  const sendBox = document.getElementById("wallet-send") as HTMLElement;
+  const connectBtn = document.getElementById("connect-btn") as HTMLButtonElement;
+  const sendBtn = document.getElementById("send-btn") as HTMLButtonElement;
+  const amountInput = document.getElementById("fund-amount") as HTMLInputElement;
+  const note = document.getElementById("fund-note") as HTMLElement;
+
+  const pad = (hex: string) => hex.replace(/^0x/, "").toLowerCase().padStart(64, "0");
+
+  // --- live funding status: one eth_call against a public Base RPC ---
+  async function refreshStatus(): Promise<void> {
+    try {
+      const res = await fetch("https://mainnet.base.org", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "eth_call",
+          params: [{ to: USDC, data: "0x70a08231" + pad(CUSTODIAN) }, "latest"],
+        }),
+      });
+      const body = await res.json();
+      if (!body.result) throw new Error("no result");
+      const onchain = Number(BigInt(body.result)) / 1e6;
+      const seeded = Number(status.dataset.seededUsd || 0);
+      const refreshes = (seeded + onchain) / PER_RUN;
+      const whole = Math.floor(refreshes);
+      const pct = Math.round((refreshes - whole) * 100);
+      const runsPart = whole >= 1
+        ? `about ${whole} full refresh${whole === 1 ? "" : "es"} funded, next one ${pct}% there`
+        : `next full refresh ${pct}% funded`;
+      status.textContent =
+        `Currently funded: $${seeded.toFixed(0)} seeded + ` +
+        `$${onchain.toFixed(2)} on-chain · ${runsPart}`;
+    } catch {
+      status.textContent = "status unavailable";
+      status.classList.add("fund-status-unavailable");
+    }
+  }
+  refreshStatus();
+
+  // --- modal ---
+  openBtn?.addEventListener("click", () => {
+    modal.showModal();
+    refreshStatus();
+    quiet("");
+    if (eth) {
+      noneBox.hidden = true;
+      connectBox.hidden = false;
+    } else {
+      noneBox.hidden = false;
+      connectBox.hidden = true;
+    }
+  });
+  closeBtn?.addEventListener("click", () => modal.close());
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) modal.close();
+  });
+
+  // --- copy address ---
+  copyBtn?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(CUSTODIAN);
+      copyBtn.textContent = "Copied";
+      copyBtn.classList.add("copied");
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+        copyBtn.classList.remove("copied");
+      }, 1600);
+    } catch {
+      quiet("Copy failed. Select the address by hand.");
+    }
+  });
+
+  function quiet(msg: string): void {
+    note.hidden = msg === "";
+    note.textContent = msg;
+  }
+
+  // --- wallet flow: injected EIP-1193 provider only ---
+  const BASE_CHAIN = "0x2105";
+  let account: string | null = null;
+
+  async function ensureBase(): Promise<void> {
+    try {
+      await eth.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: BASE_CHAIN }],
+      });
+    } catch {
+      await eth.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: BASE_CHAIN,
+            chainName: "Base",
+            rpcUrls: ["https://mainnet.base.org"],
+            nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+            blockExplorerUrls: ["https://basescan.org"],
+          },
+        ],
+      });
+    }
+  }
+
+  connectBtn?.addEventListener("click", async () => {
+    quiet("");
+    connectBtn.disabled = true;
+    try {
+      const accounts: string[] = await eth.request({
+        method: "eth_requestAccounts",
+      });
+      account = accounts[0];
+      await ensureBase();
+      connectBox.hidden = true;
+      sendBox.hidden = false;
+      amountInput.focus();
+    } catch (err: any) {
+      quiet(
+        err?.code === 4001
+          ? "Connection declined. The address above works from any wallet."
+          : "Could not connect. The address above works from any wallet."
+      );
+    } finally {
+      connectBtn.disabled = false;
+    }
+  });
+
+  // amount string -> USDC atomic units (6 decimals), or null if malformed
+  function toUnits(s: string): bigint | null {
+    const m = s.trim().match(/^(\d+)(?:\.(\d{1,6}))?$/);
+    if (!m) return null;
+    return BigInt(m[1]) * 1000000n + BigInt((m[2] ?? "").padEnd(6, "0") || "0");
+  }
+
+  async function readOnchain(): Promise<number | null> {
+    try {
+      const res = await fetch("https://mainnet.base.org", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0", id: 1, method: "eth_call",
+          params: [{ to: USDC, data: "0x70a08231" + pad(CUSTODIAN) }, "latest"],
+        }),
+      });
+      const body = await res.json();
+      return body.result ? Number(BigInt(body.result)) / 1e6 : null;
+    } catch { return null; }
+  }
+
+  // after a send, poll for up to two minutes; stop when the balance moves
+  async function watchForDeposit(before: number | null): Promise<void> {
+    for (let i = 0; i < 24; i++) {
+      await new Promise((r) => setTimeout(r, 5000));
+      const now = await readOnchain();
+      if (now !== null && (before === null || now > before)) {
+        await refreshStatus();
+        quiet("Received on-chain. The board runs a little longer. Thank you.");
+        return;
+      }
+    }
+    await refreshStatus();
+  }
+
+  sendBtn?.addEventListener("click", async () => {
+    quiet("");
+    const units = toUnits(amountInput.value);
+    if (!units || units === 0n) {
+      quiet("Enter an amount in USDC, like 25 or 5.50.");
+      return;
+    }
+    sendBtn.disabled = true;
+    const before = await readOnchain();
+    try {
+      // ERC-20 transfer(address,uint256)
+      const data =
+        "0xa9059cbb" + pad(CUSTODIAN) + units.toString(16).padStart(64, "0");
+      const hash: string = await eth.request({
+        method: "eth_sendTransaction",
+        params: [{ from: account, to: USDC, data }],
+      });
+      quiet(`Sent. Transaction ${hash.slice(0, 10)}… waiting for it to land.`);
+      amountInput.value = "";
+      watchForDeposit(before);
+    } catch (err: any) {
+      quiet(
+        err?.code === 4001
+          ? "Transaction declined. No funds moved."
+          : "The wallet returned an error. You can still send USDC on Base to the address above."
+      );
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+</script>

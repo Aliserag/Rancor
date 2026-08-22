@@ -1,0 +1,65 @@
+---
+// Inline-SVG confidence-interval mark (dataviz spec: thin recessive
+// track, 2px reference tick, ≥8px point, hover handled in CSS at the
+// table-row level, native tooltip via <title>).
+interface Props {
+  point: number;
+  lo: number;
+  hi: number;
+  min: number;
+  max: number;
+  color?: string;
+  center?: number | null; // reference tick (e.g. 0 for disparity)
+  diverging?: boolean; // color by sign around center (harm = accent)
+  unit?: string;
+}
+const {
+  point,
+  lo,
+  hi,
+  min,
+  max,
+  color = "var(--good)",
+  center = null,
+  diverging = false,
+  unit = "",
+} = Astro.props;
+const W = 170;
+const H = 18;
+const PAD = 5;
+const x = (v: number) =>
+  PAD + ((Math.min(Math.max(v, min), max) - min) / (max - min)) * (W - 2 * PAD);
+// Diverging metrics in Rancor are disparity gaps, where NEGATIVE is the
+// harmful direction: the focal group scored lower than the control. This
+// was inverted, so the run's anti-focal-group findings rendered green
+// (reviewer finding).
+const fill = diverging
+  ? point < 0
+    ? "var(--accent)"
+    : point > 0
+      ? "var(--good)"
+      : "var(--muted)"
+  : color;
+const label = `${point.toFixed(2)}${unit}, 95% CI ${lo.toFixed(2)} to ${hi.toFixed(2)}${unit}`;
+---
+
+<svg
+  width={W}
+  height={H}
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={label}
+>
+  <title>{label}</title>
+  <line x1={PAD} y1={H / 2} x2={W - PAD} y2={H / 2} stroke="var(--rule)" stroke-width="1"></line>
+  {
+    center !== null && (
+      <line x1={x(center)} y1={2} x2={x(center)} y2={H - 2}
+        stroke="var(--rule-strong)" stroke-width="2" stroke-dasharray="2 2" />
+    )
+  }
+  <line class="ci-interval" x1={x(lo)} y1={H / 2} x2={x(hi)} y2={H / 2}
+    stroke={fill} stroke-width="4" stroke-linecap="round" opacity="0.45"></line>
+  <circle class="ci-point" cx={x(point)} cy={H / 2} r="4" fill={fill}
+    stroke="var(--panel)" stroke-width="1.5"></circle>
+</svg>

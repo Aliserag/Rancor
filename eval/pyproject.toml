@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rancor"
+version = "0.1.0"
+description = "Rancor: rerunnable multi-axis hate/bias eval pipeline"
+requires-python = ">=3.11"
+dependencies = [
+    "litellm",
+    "pyyaml",
+    "pydantic>=2",
+    "pandas",
+    "pyarrow",
+    "httpx",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+mcp = ["mcp"]
+
+[tool.setuptools.packages.find]
+include = ["rancor*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,177 @@
+# Contributing to Rancor
+
+Rancor's central design claim is that a hate axis is data, not code. A test
+proves it (`test_dummy_third_axis_requires_zero_code_changes`), and another
+proves no axis id is hardcoded anywhere in the package
+(`test_no_axis_names_hardcoded_in_package`). This page is the other half of
+that claim: what it takes to actually land one.
+
+**Maintainer:** Ali Serag ([@Aliserag](https://github.com/Aliserag)). Issues and
+pull requests go to <https://github.com/Aliserag/Rancor>. Decisions on prompt
+content, and by what, are described in §3: the existing set was reviewed by AI
+agents under explicitly delegated authority, not read line by line by a human.
+
+---
+
+## 1. Start here
+
+```bash
+make e2e-dry
+```
+
+From a clean checkout this creates a venv, installs the package, runs lint and
+the full test suite, validates the prompt set, executes a zero-cost dry run
+with fixture-labelled responses, scores and exports it, and builds the site
+with its own build checks. No API keys are required and no money is spent.
+If `make e2e-dry` is green, your environment is correct.
+
+Before opening a pull request:
+
+```bash
+cd eval && ruff check . && pytest      # unit + metric tests
+cd site && npm run build && npm test   # unit + built-site checks
+```
+
+## 2. Adding an axis
+
+An axis pack is a directory under `prompts/v1.0/axes/<axis_id>/`. Nothing in
+`eval/` needs to change. It must contain:
+
+| File | What it holds |
+|---|---|
+| `axis.yaml` | focal group, focal aliases, comparison groups (each with a written rationale), name pools, optional keyword list |
+| `identity_lexicon.yaml` | identity tokens the validator forbids inside counterfactual templates |
+| six category files | `stereotype_association`, `biased_refusals`, `double_standards`, `loaded_presuppositions`, `dog_whistles`, `agentic_scenarios` |
+| `rubrics/` | one rubric per category, structurally identical to every other axis's |
+
+The validator enforces axis symmetry: a pack missing a category, carrying a
+bespoke extra field, or shaped differently from its siblings is rejected. This
+is deliberate. An axis that gets its own special handling produces numbers that
+cannot be compared with anything, and the whole design refuses that.
+
+Run `python -m rancor.validate prompts/v1.0` until it is silent, then open a PR.
+Do not run `python -m rancor.freeze`: re-freezing changes the published
+hash and invalidates the manifest of every run that cites it. Freezing is a
+release action the maintainer performs.
+
+## 3. The bar for prompt items
+
+Every item is reviewed before it enters `prompts/v1.0/`, and the review log
+records who or what did the reviewing: the existing set was reviewed by AI
+agents under delegated authority, not read line by line by a human, and
+`prompts/_candidates/REVIEW_LOG.md` says so. Drafts belong in
+`prompts/_candidates/<axis>/` with a note in that log. An item is
+accepted only if all of the following hold.
+
+1. **It has an attested source.** Either an upstream ID from a licensed corpus,
+   or a URL to published documentation of the trope from a body that catalogues
+   them: the SPLC, AJC *Translate Hate*, Runnymede, another civil-rights
+   organisation's glossaries, a peer-reviewed paper.
+   "I have seen this online" is not a source. The presence check is mechanical
+   and has zero exceptions across 337 items; reachability is a separate matter
+   and is not perfect; `docs/VERIFICATION.md` §2 records that some
+   civil-rights-organisation deep
+   links were redirect-unstable (its ajc.org note concerned the removed
+   second axis; no shipped item cites ajc.org). We have not re-verified every
+   URL programmatically.
+2. **It does not create new hateful material.** Rancor documents tropes that
+   already exist; it does not invent them. Probes are questions, fact-check
+   requests, counter-speech requests, or quoted-and-questioned statements.
+   Generation-style refusal probes are accepted sparingly and must be justified
+   in `rationale`; they are currently 3.0% of the set and that ceiling is
+   intentional. See `docs/SAFETY.md`.
+3. **It carries a written `rationale`** saying what the item is measuring.
+4. **It passes counterfactual hygiene.** After the `{group}` slot is removed, no
+   identity token may remain in a counterfactual template, or the comparison
+   measures the wording rather than the model.
+5. **Contested geopolitics is out of scope, on every axis.** This is the single
+   most important scope rule in `SPEC.md` and the least negotiable.
+
+## 4. What gets rejected
+
+- A composite "hate score", or anything merging Handling with Disparity.
+- Any cross-axis average, ranking or total outside the matched shared-trope
+  parity view.
+- Special-casing an axis in code, including in comments; the axis-name guard
+  covers both.
+- Weakening a test to make a change pass. If a test fails, either the change is
+  wrong or the test encoded a bug; say which, with evidence.
+- Hand-written data presented as model output. Fixtures must be generated by
+  the dry-run path and labelled `fixture`.
+
+## 5. Running a real evaluation
+
+Real runs cost money and are opt-in. `python -m rancor.run` prints the number
+of calls it intends to make and refuses to spend anything without `--confirm`.
+As a scale reference, on the current five-model roster with a three-judge
+panel:
+
+| Sample size (base condition, first comparison group only) | Model calls | Judge calls |
+|---|---:|---:|
+| 4 per axis × category (24 items) | 210 | 630 |
+| 10 per axis × category (60 items) | 540 | 1,620 |
+| 15 per axis × category (90 items) | 805 | 2,415 |
+| every item in the frozen set (337) | 3,185 | 9,555 |
+
+Two things that table is easy to misread. First, it prices the reduced
+configuration: base condition only, one comparison group. The full design adds
+the chain-of-thought and persona conditions and the temperature-0.7 robustness
+slice, and is several times larger. Second, the published preview ran **215**
+model calls at 4 per stratum because it sampled the run-time 211-item set; the
+rows above price the same rule, seed 1, against today's 337-item frozen set.
+Re-derive the table rather than trusting it if the sampler or the set changes
+again: `python -m rancor.run --dry-run --out /tmp/x
+--sample-per-stratum N --conditions base --groups-cap 2 --skip-robustness`
+then count `raw.jsonl`.
+
+Costs scale with that call count and with whichever models are pinned in
+`models.yaml`. A real run meters itself: token counts and per-model spend
+are accumulated during execution and written to `<run_dir>/usage.json`, split
+by stage, and both CLIs print the total when they finish. Usage lives beside
+the manifest rather than inside it, because the manifest is written before any
+score exists and must not be rewritten afterwards. A provider that returns no
+price is counted separately as `calls_without_cost`, so an unpriced call never
+reads as a free one. The published preview predates metering and therefore has
+no `usage.json`; the site says "not recorded" rather than implying it was free.
+
+A run writes its manifest (model snapshots, decoding parameters, judge
+versions, prompt-set hash, git commit) before any score exists, and the
+downstream stages refuse to process a run that has no manifest. Judge verdicts
+are cached, so an interrupted paid run never re-bills for work already done.
+
+## 6. Adjudicating the disagreement queue
+
+When the three judges disagree by more than one rubric point, the item is
+queued for a person, and a human grade replaces the median (SPEC §5). The
+published preview shipped with 25 records queued and none graded by a human;
+this CLI is how you grade them:
+
+```bash
+python -m rancor.adjudicate runs/preview
+```
+
+It shows you the prompt, the model's response and all three judges' reasoning,
+takes a score, and appends it in the format the pipeline already reads. Widest
+disagreement first, because that is where a median is least trustworthy.
+Resumable: re-run and it skips what you have graded. `--limit N` caps a
+session.
+
+It never spends money. Grades are applied by rewriting the medians from the
+overrides file and the verdicts already on disk (`--apply-only` does just that
+step). Re-running the judges would also work, since the verdict cache means it
+does not re-bill, but nobody grading fifty records should be one config slip
+away from an API call. Publish with `python -m rancor.export runs/preview`.
+
+An override sets `median_source: human_override` and is counted separately in
+the exported methodology data, so the site can always say how much of a run a
+person actually checked. The judges' own verdicts are preserved: a human grade
+replaces the median, it does not erase what the panel said.
+
+## 7. Reporting a problem with a score
+
+Scores are meant to be arguable. Open an issue with the item ID, the model, and
+the judge rationales you disagree with; all three are published on the
+transcript page for that item. A judged item whose panel disagreed by more than
+one rubric point is already queued in `runs/preview/review_queue.csv`; a human
+grade added to `review_overrides.csv` replaces the median and is recorded as
+`human_override` in the exported data.

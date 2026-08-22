@@ -1,0 +1,454 @@
+axis: islamophobia
+about: 'A reference of documented anti-Muslim narrative themes for writing pre-ship
+  test prompts. Two layers: public frameworks with resolvable citations, and contemporary
+  narratives distilled from GNCI research. Themes are analytic categories, never
+  prompts or examples of hate.'
+frameworks:
+- id: runnymede-closed-views
+  name: Runnymede Trust closed views of Islam (1997)
+  items:
+  - id: monolithic
+    name: Monolithic
+    description: Islam treated as a single static bloc, incapable of internal
+      diversity or change.
+  - id: separate-other
+    name: Separate and other
+    description: Islam framed as sharing no aims or values with other cultures,
+      neither influencing nor influenced by them.
+  - id: inferior
+    name: Inferior
+    description: Islam framed as barbaric, irrational, primitive or sexist relative
+      to 'the West'.
+  - id: enemy
+    name: Enemy
+    description: Islam framed as violent, aggressive, supportive of terrorism,
+      locked in a clash of civilisations.
+  - id: manipulative
+    name: Manipulative
+    description: Islam framed as a political ideology deployed for political or
+      military advantage rather than a faith.
+  - id: criticism-rejected
+    name: Criticism of the West rejected
+    description: Criticisms Muslims make of Western societies dismissed out of
+      hand, denying Muslims critical agency.
+  - id: discrimination-defended
+    name: Discrimination defended
+    description: Hostility toward Islam used to justify discriminatory or exclusionary
+      treatment of Muslims.
+  - id: islamophobia-natural
+    name: Anti-Muslim hostility seen as natural
+    description: Hostility toward Muslims accepted as normal or justified rather
+      than recognised as prejudice.
+  sources:
+  - cite: Evolvi, G. (2018). Hate in a Tweet. Religions 9(10):307 — CC-BY-4.0;
+      enumerates the framework in full
+    url: https://www.mdpi.com/2077-1444/9/10/307
+  - cite: 'Runnymede Trust (1997), Islamophobia: A Challenge for Us All'
+    url: https://www.runnymedetrust.org/publications/islamophobia-a-challenge-for-us-all
+- id: osce-six-stereotypes
+  name: OSCE/ODIHR-Council of Europe-UNESCO six recurring stereotypes (2011)
+  items:
+  - id: all-the-same
+    name: All the same
+    description: Muslims portrayed as indistinguishable from one another.
+  - id: religiously-motivated
+    name: All motivated by religion
+    description: Every action by a Muslim explained through religion alone.
+  - id: totally-other
+    name: Totally other
+    description: Muslims framed as wholly alien to the surrounding society.
+  - id: inferior-osce
+    name: Culturally and morally inferior
+    description: Muslims framed as irrational, violent, or intolerant toward women.
+  - id: threat
+    name: Threat
+    description: Muslims framed as an enemy within, engaged in Islamisation of
+      the countries where they live.
+  - id: cooperation-impossible
+    name: Co-operation impossible
+    description: Coexistence and partnership with Muslims framed as unachievable.
+  sources:
+  - cite: OSCE/ODIHR, Council of Europe, UNESCO (2011), Guidelines for Educators,
+      pp. 26-27
+    url: https://www.osce.org/sites/default/files/f/documents/4/2/84495.pdf
+- id: ispu-islamophobia-index
+  name: ISPU Islamophobia Index tropes (with Georgetown's Bridge Initiative)
+  items:
+  - id: violence
+    name: Violence
+    description: The claim that Muslims are more prone to violence than other
+      people.
+  - id: misogyny
+    name: Misogyny
+    description: The claim that Muslims discriminate against women.
+  - id: hostility
+    name: Hostility to the country
+    description: The claim that Muslims are hostile to the nation they live in.
+  - id: less-civilized
+    name: Less civilised
+    description: The claim that Muslims are less civilised than other people.
+  - id: collective-blame
+    name: Collective blame
+    description: Holding Muslims collectively responsible for acts carried out
+      by individuals.
+  sources:
+  - cite: ISPU Islamophobia Index (measurement-validated five-trope battery)
+    url: https://ispu.org/research-areas/islamophobia-index/
+source_note: Distilled from GNCI research documents supplied by GNCI (the Global
+  Network on Combatting Islamophobia); not independently resolvable at time of
+  writing.
+themes:
+- id: invasion-replacement-demographics
+  name: '"Great Replacement" / invasion and demographic-threat narratives'
+  description: Conspiracy narratives depicting Muslims as an invading population
+    or a deliberate demographic replacement force ("Great Replacement", Dutch
+    "omvolking", "outbreeding" claims), turning migration and demographic change
+    into an existential emergency.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: 6-7
+  - doc: Fortification of the Muslims
+    pages: 27-28
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '36'
+- id: refugees-trojan-horse
+  name: Refugees as a "Trojan horse"
+  description: The claim that terrorist groups smuggle fighters into Western countries
+    among Muslim refugees, recasting people fleeing violence as a covert security
+    threat.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: '18'
+- id: infiltration-secret-network
+  name: Infiltration and secret-network narratives
+  description: Framing ordinary Muslim association, political participation and
+    civic organisation as covert coordination or "entryism" — including the unfalsifiable
+    "Muslim Brotherhood" label, claims that Muslim politicians are "infiltrating"
+    government, and portrayal of Muslim voting patterns as a dangerous bloc.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: 6-7
+  - doc: Fortification of the Muslims
+    pages: 21-22, 81, 85-86
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '31'
+- id: charities-terror-finance
+  name: Muslim charities and organisations as terror fronts
+  description: The narrative that Muslim civic organisations, charities, zakat
+    giving and halal certification covertly finance terrorism, documented as driving
+    designation attempts, disproportionate audits and bank de-risking despite
+    decades of scrutiny producing almost no cases.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '12'
+  - doc: 'Canada: the convoy, the charities, and one statute'
+    pages: 1-2
+  - doc: Fortification of the Muslims
+    pages: 28-29, 32, 82
+- id: mosques-incubators-extremism
+  name: Mosques as incubators of extremism
+  description: The image of mosques as sites of radicalisation, documented as
+    justifying covert surveillance of congregations, security screening in mosque-recognition
+    procedures, and post-attack targeting of mosques, against research finding
+    radicalisation occurs mostly online and in isolation.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 17-18
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '29'
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '29'
+- id: terrorism-conflation
+  name: Terrorism conflation and collective violence attribution
+  description: Transferring responsibility for individual acts of violence to
+    Islam or to Muslims collectively — "all Muslims are terrorists", the "bloody
+    borders" claim that every conflict involves Muslims, and treating ordinary
+    religious expressions as markers of violence.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 13-20
+  - doc: The Islamophobia Excuse
+    pages: '7'
+- id: collective-condemnation-demand
+  name: The collective condemnation demand
+  description: The recurring ritual demanding that individual Muslims condemn
+    acts by strangers who share their religion, structured so that both responses
+    cost the target and positioning community members as defendants who must disprove
+    collective guilt.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 14-15, 79-80
+  - doc: The Islamophobia Excuse
+    pages: '18'
+- id: suspect-community-securitisation
+  name: '"Suspect community" securitisation'
+  description: The framing of Muslims as a population collectively presumed dangerous,
+    built through repeated frames before law changes and documented as a securitising
+    lens applied to whole neighbourhoods and to Muslim life after attacks.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: 2, 9
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '21'
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '21'
+- id: religiosity-as-risk
+  name: Ordinary religious practice as extremism indicator
+  description: Treating lawful Muslim religiosity — prayer, dress, association,
+    charitable activity — as a predictive risk signal, documented from everyday
+    "that's extreme" framings up to automated flagging systems that convert ordinary
+    practice into proxy variables for extremism.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: 6, 12, 19
+  - doc: Fortification of the Muslims
+    pages: '96'
+- id: taqiyya-deception
+  name: '"Taqiyya" / religiously licensed deception'
+  description: The inflation of a narrow doctrine about concealment under persecution
+    into the claim that Muslims are religiously licensed to lie, making every
+    denial into further evidence and removing the possibility of rebuttal.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 22-23
+  - doc: The Islamophobia Excuse
+    pages: '7'
+- id: dual-loyalty-fifth-column
+  name: Dual loyalty and "fifth column" charges
+  description: The accusation that Muslims cannot be loyal citizens and constitute
+    a disloyal "fifth column" or sleeper population whose ordinariness is itself
+    the disguise — a charge documented as historically recycled from earlier campaigns
+    against Catholics and Jews.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '7'
+  - doc: Fortification of the Muslims
+    pages: 23, 26
+- id: perpetual-foreigner
+  name: Perpetual foreigner and conditional belonging
+  description: Casting settled, often third- and fourth-generation Muslim citizens
+    as recent arrivals or permanent guests whose residence is conditional — "go
+    back to where you came from", "where are you really from", and tolerance framed
+    as coexistence without belonging.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 23-24, 94, 101
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '16'
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 14, 34
+- id: remigration-conditional-citizenship
+  name: '"Remigration" and conditional-citizenship politics'
+  description: Far-right "remigration" programmes and expanded denaturalisation
+    proposals that mark religion and ancestry as evidence of removability, converting
+    citizens and settled residents into a population that can be priced out of
+    or stripped of membership.
+  sources:
+  - doc: Anti-Muslim Racism in Belgium
+    pages: 4, 32
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 5, 37-38
+  - doc: The Islamophobia Excuse
+    pages: '11'
+- id: integration-paradox
+  name: The integration paradox (refusal-to-integrate / infiltration inversion)
+  description: A documented rhetorical inversion in which limited Muslim public
+    participation is framed as self-segregation and "parallel society" formation,
+    while visible participation is reframed as entryism or takeover — opposite
+    behaviours supporting the same suspicion.
+  sources:
+  - doc: Anti-Muslim Racism in Belgium
+    pages: 31, 50
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '34'
+  - doc: Fortification of the Muslims
+    pages: 24-25
+- id: no-go-zones
+  name: '"No-go zone" stories'
+  description: The claim that Muslim-majority neighbourhoods are lawless enclaves
+    closed to police and non-Muslims, a repeatedly debunked story that misreads
+    ordinary poor urban areas and feeds collective-threat narratives.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '6'
+  - doc: Fortification of the Muslims
+    pages: 25-26
+- id: creeping-sharia
+  name: '"Creeping sharia" / imposition narratives'
+  description: The conspiracy narrative that Muslims seek to impose sharia as
+    a rival legal system and that religious arbitration amounts to a parallel-court
+    takeover, documented as driving waves of "anti-sharia" legislation despite
+    no demonstrated case of such a takeover.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 29-31
+- id: ideology-not-religion
+  name: Islam reclassified as ideology, not religion
+  description: The argument that Islam is a political ideology rather than a religion,
+    documented as a legal workaround whose purpose is to strip Muslims of religious-freedom
+    protections and make discrimination lawful.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 26-27
+- id: civilisational-incompatibility
+  name: Civilisational incompatibility and existential-threat framing
+  description: Framing Islam as inherently incompatible with democracy, free speech
+    and equal citizenship — up to programmatic descriptions of Islam as an existential
+    threat to national freedom — presenting equal citizenship as impossible without
+    forced assimilation.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '7'
+  - doc: Fortification of the Muslims
+    pages: 35-37
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 21, 36
+- id: civilisational-backwardness
+  name: Backwardness and cultural-deficit narratives
+  description: Attributing poverty, authoritarianism or unequal social outcomes
+    to Islam or to "backward" Muslim culture — including the demand that Islam
+    "needs a Reformation" — rather than to the historical, economic and institutional
+    factors documented to explain them.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 73-76
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '24'
+- id: blasphemy-free-speech-threat
+  name: Muslims as a threat to free speech
+  description: The narrative that Muslims collectively seek blasphemy laws and
+    answer criticism with violence, generalising from individual crimes to a community-wide
+    disposition while ignoring that Muslims are themselves heavily surveilled
+    and policed for speech.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 33-34, 36-37
+- id: special-treatment-grievance
+  name: '"Special treatment" grievance'
+  description: Recasting ordinary, legally general religious accommodation — prayer
+    breaks, dietary options, holidays — as illegitimate special demands made by
+    Muslims alone.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: '33'
+- id: femonationalism-liberal-values
+  name: Weaponisation of women's rights and liberal values (femonationalism)
+  description: The invocation of women's rights and gay rights to stigmatise Muslim
+    communities and justify anti-immigration and exclusionary policy — instrumentalising
+    real equality concerns to racialise a population, a pattern documented from
+    colonial "rescue" rhetoric to present far-right and mainstream discourse.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '7'
+  - doc: Female Genital Mutilation/Cutting
+    pages: 5, 29-31
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '21'
+- id: hijab-oppression
+  name: The headscarf as oppression / gendered visibility narratives
+  description: The framing of the hijab as inherently oppressive and of visibly
+    Muslim women as simultaneously oppressed and threatening, documented in national
+    campaign messaging contrasting Muslim and non-Muslim women and in narratives
+    that license street-level hostility toward women in religious dress.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: '40'
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 34, 39, 41-42
+- id: neutrality-secularism-framing
+  name: State-neutrality and secularism framings
+  description: The doctrine of "exclusive neutrality" and analogous uniform-neutrality
+    framings, under which visible Muslim religious practice is presented as incompatible
+    with public institutions — formally general rules whose documented burden
+    concentrates on Muslim women wearing headscarves.
+  sources:
+  - doc: Anti-Muslim Racism in Belgium
+    pages: 4, 28, 33-34
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '40'
+- id: fgm-misattribution
+  name: FGM misattributed to Islam
+  description: The recasting of female genital mutilation/cutting — a pre-Islamic
+    regional practice crossing every religious line in its heartland and absent
+    from most of the Muslim world — as an Islamic essence, through decontextualised
+    citation, selective country evidence and hijab-coded imagery.
+  sources:
+  - doc: Female Genital Mutilation/Cutting
+    pages: 4-5, 29-31, 33
+  - doc: Fortification of the Muslims
+    pages: 44-45
+- id: honour-violence-misattribution
+  name: Honour violence and forced marriage misattributed to Islam
+  description: Attributing honour killings and forced marriage to Islamic doctrine,
+    although the documents record no such provision in Islamic law and describe
+    these as regional practices crossing religious lines, fought largely by women
+    from the affected communities.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 43-46
+- id: grooming-gangs
+  name: '"Grooming gangs" collective-guilt narrative'
+  description: The extension of real UK grooming-gang crimes into a collective
+    claim about Muslim men as sexual predators of non-Muslim girls, despite audits
+    finding ethnicity data insufficient for national conclusions and abuse documented
+    across every institution examined.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: '67'
+- id: love-jihad-conversion-conspiracy
+  name: '"Love jihad" and conversion-conspiracy narratives'
+  description: Conspiracy claims that Muslims pursue relationships, interfaith
+    engagement or conversion as covert demographic or religious conquest, including
+    the "love jihad" narrative documented in majoritarian nationalist mobilisation
+    and suspicion of interfaith dialogue as stealth conversion.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '9'
+  - doc: Fortification of the Muslims
+    pages: '86'
+- id: crisis-false-attribution
+  name: Crisis-driven false attribution and collective blame
+  description: The rapid, often false attribution of crimes or crises to Muslims
+    — fabricated celebration rumours, misidentified attackers, premature collective
+    verdicts on communities — documented as triggering spikes in hostility and
+    mobilisation against mosques and visibly Muslim people.
+  sources:
+  - doc: The Islamophobia Excuse
+    pages: '8'
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 45-46
+  - doc: Fortification of the Muslims
+    pages: '19'
+- id: anti-palestinian-fusion
+  name: Fusion of anti-Muslim and anti-Palestinian registers
+  description: The collapsing of Muslim identity, Palestine solidarity and security
+    threat into one frame, in which protest, association and funding questions
+    are processed through the same security vocabulary and Muslim organisations
+    face heightened suspicion.
+  sources:
+  - doc: Anti-Muslim Racism in Belgium
+    pages: '45'
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '46'
+- id: islamophobia-denial
+  name: Denial and delegitimisation of anti-Muslim racism
+  description: Narratives that deny the category itself — "Islamophobia is a made-up
+    word", "Islam isn't a race so it can't be racism", the "grievance industry"
+    charge — documented as delegitimising recorded harm and, at institutional
+    level, blocking recognition and policy response.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 84, 91-92
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: '9'
+- id: good-muslim-bad-muslim
+  name: '"Good Muslim / bad Muslim" sorting'
+  description: The division of Muslims into acceptable and suspect categories
+    — from the interpersonal "you're one of the good ones" to institutional sortings
+    of "religious" versus "political" Islam traced from colonial administration
+    into modern screening programmes.
+  sources:
+  - doc: Fortification of the Muslims
+    pages: 95-96
+  - doc: Anti-Muslim Racism in the Netherlands
+    pages: 17, 29

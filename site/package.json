@@ -1,0 +1,16 @@
+{
+  "name": "rancor-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "node tests/packet.test.mjs && node --test tests/upstream.test.mjs && node tests/endpoints.test.mjs && node tests/check_build.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.0",
+    "@astrojs/vercel": "^9.0.5",
+    "astro": "^5.12.0"
+  }
+}

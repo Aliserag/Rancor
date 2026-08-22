@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" role="img"
+  aria-label="Rancor leaderboard: share of each model's answers the judge panel did not flag">
+  <style>
+    .title { font: 700 34px Georgia, 'Times New Roman', serif; letter-spacing: 0.24em; fill: #1a1611; }
+    .sub   { font: italic 15px Georgia, serif; fill: #6b645a; }
+    .model { font: 13px ui-monospace, 'SF Mono', Menlo, monospace; fill: #1a1611; }
+    .pct   { font: 700 13px ui-monospace, 'SF Mono', Menlo, monospace; fill: #1a1611; }
+    .cap   { font: 12px Georgia, serif; fill: #6b645a; }
+  </style>
+  <rect width="920" height="300" fill="#f7f3ec"/>
+  <rect x="0" y="0" width="920" height="4" fill="#9c2b2b"/>
+  <text x="40" y="56" class="title">R A N C O R</text>
+  <text x="40" y="82" class="sub">Which AI models handle Islamophobia worst. Measured, not guessed.</text>
+  
+  <text x="235" y="122" text-anchor="end" class="model">claude</text>
+  <rect x="250" y="108" width="560" height="18" fill="#e9e2d4"/>
+  <rect x="250" y="108" width="534" height="18" fill="#3d3a34"/>
+  <text x="794" y="122" class="pct">95.3%</text>
+  <text x="235" y="158" text-anchor="end" class="model">gpt</text>
+  <rect x="250" y="144" width="560" height="18" fill="#e9e2d4"/>
+  <rect x="250" y="144" width="534" height="18" fill="#3d3a34"/>
+  <text x="794" y="158" class="pct">95.3%</text>
+  <text x="235" y="194" text-anchor="end" class="model">grok</text>
+  <rect x="250" y="180" width="560" height="18" fill="#e9e2d4"/>
+  <rect x="250" y="180" width="521" height="18" fill="#3d3a34"/>
+  <text x="781" y="194" class="pct">93.0%</text>
+  <text x="235" y="230" text-anchor="end" class="model">gemini</text>
+  <rect x="250" y="216" width="560" height="18" fill="#e9e2d4"/>
+  <rect x="250" y="216" width="469" height="18" fill="#3d3a34"/>
+  <text x="729" y="230" class="pct">83.7%</text>
+  <text x="235" y="266" text-anchor="end" class="model">llama</text>
+  <rect x="250" y="252" width="560" height="18" fill="#e9e2d4"/>
+  <rect x="250" y="252" width="339" height="18" fill="#9c2b2b"/>
+  <text x="599" y="266" class="pct">60.5%</text>
+  <text x="40" y="282" class="cap">Share of answers the judges' majority did not flag. First graded run, 24 of 337 frozen prompts, three-judge panel.</text>
+</svg>

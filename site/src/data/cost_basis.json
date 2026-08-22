@@ -1,0 +1,27 @@
+{
+ "_comment": "A real measurement, not a list price. Taken against production by running one frozen item through /api/live-run and /api/score and recording the cost OpenRouter reported for every call. Unpriced calls are excluded from the rate rather than counted as free. The per-prompt figure is the measured per-call rate multiplied by the calls a complete scored prompt takes, because the sampled run priced 16 of its 20 calls -- one provider was busy and its answer was never judged -- and reporting that 16-call total as the price of a 20-call unit understated it (verification finding).",
+  "unit": "OpenRouter credits",
+ "item_id": "islamophobia_br_xs_288",
+ "probe": {
+  "credits": 0.012164,
+  "priced_calls": 4,
+  "unpriced_calls": 1,
+  "tokens": 1171
+ },
+ "judges": {
+  "credits": 0.018921,
+  "priced_calls": 12,
+  "unpriced_calls": 0,
+  "tokens": 7625
+ },
+ "credits_per_call": 0.001943,
+ "credits_per_prompt_scored": 0.03886,
+ "full_rerun": {
+  "model_calls": 3185,
+  "judge_calls": 9555,
+  "total_calls": 12740,
+  "estimated_credits": 24.75,
+  "basis": "extrapolated from the measured per-call rate above across the 337-item frozen set at the published run's scope (base condition, first comparison group, so counterfactual items contribute two records each); actual cost varies with prompt length and which models are pinned"
+ },
+ "calls_per_prompt_scored": 20
+}

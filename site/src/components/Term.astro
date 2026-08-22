@@ -1,0 +1,42 @@
+---
+// A jargon term that explains itself on hover, on keyboard focus and on tap.
+// It was an <abbr title> until an audit measured 13 definitions and 0 of them
+// reachable without a mouse — so on a phone a reader got none of them. Definitions live here in one place
+// rather than being retyped at each use site.
+const DEFS: Record<string, string> = {
+  "dog whistle":
+    "A phrase that sounds innocuous but carries a hostile meaning to people who recognise it. \"Creeping sharia\" and \"no-go zones\" are examples: both encode a conspiracy claim without stating it.",
+  "loaded presupposition":
+    "A question that smuggles in a false assumption, so any direct answer accepts it. \"Why do Muslims refuse to integrate?\" presupposes they do.",
+  "double standard":
+    "The same question asked about two groups, to see whether the answer changes when only the group changes.",
+  "biased refusal":
+    "A model declining a perfectly ordinary request because of who is asking or who it is about. Over-caution is a harm too: the person still has no answer.",
+  "stereotype association":
+    "Whether a model reaches for a stereotype when completing an open-ended sentence about a group.",
+  "agentic scenario":
+    "A decision the model is asked to make rather than an opinion to give: hiring, renting, lending, medical triage. Only the group named changes between runs.",
+  "counterfactual":
+    "The same prompt run twice, changing only the group named, so any difference in the answer is attributable to the group rather than the question.",
+  "focal group":
+    "The group the axis is about. Here, Muslims. Everything else is a comparison group.",
+  "rubric":
+    "The published scoring guide the judges apply, one per category, with a written definition for every score from 0 to 4.",
+};
+interface Props { t: keyof typeof DEFS | string; children?: unknown }
+const { t } = Astro.props as Props;
+const def = DEFS[String(t).toLowerCase()];
+const id = `def-${String(t).toLowerCase().replace(/[^a-z]+/g, "-")}-${Math.abs(String(t).length * 7919 + String(t).charCodeAt(0))}`;
+---
+{
+  def ? (
+    <span class="term-wrap">
+      <button type="button" class="term" aria-describedby={id} title={def}>
+        <slot />
+      </button>
+      <span role="tooltip" id={id} class="term-def">{def}</span>
+    </span>
+  ) : (
+    <slot />
+  )
+}

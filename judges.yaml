@@ -1,0 +1,20 @@
+# Fixed 3-judge panel (SPEC §5): one Claude, one GPT, one Gemini —
+# identical panel for every model under test. Pinned 2026-08-18, routed
+# via OpenRouter (fallbacks disabled; see models.yaml note). Each judge
+# is deliberately a DIFFERENT model than its lab's model-under-test, and
+# self-lab exclusion (via `lab`) is computed on top of that.
+# Dry-run judging uses these names/labs with deterministic fixture
+# verdicts (labeled fixture, never real model output).
+judges:
+  - name: judge_claude
+    lab: anthropic
+    litellm_id: openrouter/anthropic/claude-sonnet-5
+    snapshot_id: claude-sonnet-5
+  - name: judge_gpt
+    lab: openai
+    litellm_id: openrouter/openai/gpt-5.6-terra
+    snapshot_id: gpt-5.6-terra
+  - name: judge_gemini
+    lab: google
+    litellm_id: openrouter/google/gemini-3.6-flash
+    snapshot_id: gemini-3.6-flash

@@ -1,0 +1,49 @@
+---
+import Base from "../../layouts/Base.astro";
+import Gate from "../../components/Gate.astro";
+import meta from "../../data/meta.json";
+
+const modules = import.meta.glob("../../data/transcripts/*/*.json", {
+  eager: true,
+});
+const byAxis: Record<string, string[]> = {};
+for (const path of Object.keys(modules)) {
+  const m = path.match(/transcripts\/([^/]+)\/([^/]+)\.json$/);
+  if (m) byAxis[m[1]] = [...(byAxis[m[1]] ?? []), m[2]].sort();
+}
+const displayNames: Record<string, string> = Object.fromEntries(
+  meta.axes.map((a: any) => [a.axis_id, a.display_name])
+);
+---
+
+<Base title="Transcript browser" active="transcripts" noindex={true} heading="Every graded transcript">
+  <Gate>
+    <h2>Transcript browser</h2>
+    <p class="note">
+      Every scored item, with the exact prompt, raw response, and all three
+      judge rationales. Counterfactual items show their {"{group}"} variants
+      side by side. These pages carry <code>noindex</code> and are excluded
+      from the sitemap.
+    </p>
+    {
+      Object.keys(byAxis).length === 0 ? (
+        <div class="empty-state">No transcripts exported in run {meta.run_id}.</div>
+      ) : (
+        Object.entries(byAxis).map(([axis, categories]) => (
+          <section>
+            <h2>{displayNames[axis] ?? axis}</h2>
+            <ul>
+              {categories.map((category) => (
+                <li>
+                  <a href={`/transcripts/${axis}/${category}/`}>
+                    {category.replaceAll("_", " ")}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )
+    }
+  </Gate>
+</Base>

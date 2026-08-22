@@ -1,0 +1,77 @@
+name: eval-rerun
+# Manual-trigger real eval rerun (SPEC §8). Spends API credits: requires
+# the explicit confirm input (cost guard) and pinned snapshots in
+# models.yaml / judges.yaml (the pipeline fails loudly otherwise).
+
+on:
+  workflow_dispatch:
+    inputs:
+      models_ref:
+        description: "Path to the models config to run"
+        required: true
+        default: "models.yaml"
+      confirm:
+        description: "Spend API credits for a real run"
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    env:
+      # untrusted input never interpolated into run: scripts directly
+      MODELS_REF: ${{ inputs.models_ref }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: pip install -e "./eval[dev]"
+      - name: Validate prompt set
+        run: python -m rancor.validate prompts/v1.0
+      - name: Cost guard
+        if: ${{ !inputs.confirm }}
+        run: |
+          echo "confirm=false: refusing to spend (SPEC §8 cost guard)" >&2
+          exit 2
+      - name: Run eval
+        run: |
+          RUN_DIR="runs/$(date -u +%Y%m%d)"
+          echo "RUN_DIR=$RUN_DIR" >> "$GITHUB_ENV"
+          python -m rancor.run --confirm --models "$MODELS_REF" --out "$RUN_DIR"
+      - name: Judge
+        run: python -m rancor.judge "$RUN_DIR" --models "$MODELS_REF"
+      - name: Score + export
+        run: python -m rancor.export "$RUN_DIR"
+      - name: Build site
+        run: npm ci --no-audit --no-fund && npm run build && npm test
+        working-directory: site
+      - name: Stage run outputs
+        # scratch run dirs are gitignored; a published run's audit trail is
+        # force-added AND must be listed in add-paths, or the PR silently
+        # drops it (E2E finding P3-F1)
+        run: git add -f "$RUN_DIR"
+      - name: Open PR with run outputs
+        uses: peter-evans/create-pull-request@v6
+        with:
+          add-paths: |
+            runs/
+            site/src/data/
+          branch: eval-run-${{ github.run_id }}
+          commit-message: "Eval run outputs (${{ github.run_id }})"
+          title: "Eval run outputs"
+          body: |
+            Automated eval rerun (SPEC §8). Review the run manifest,
+            review_queue.csv, and regenerated site JSON before merging.

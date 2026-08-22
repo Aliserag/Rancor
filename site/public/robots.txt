@@ -1,0 +1,12 @@
+# Rancor. The leaderboard, methodology and provenance pages are
+# meant to be found. The transcript browser and the live probe hold raw
+# model output collected while measuring hate and bias, and are excluded
+# here as well as by <meta name="robots" content="noindex"> on the pages
+# themselves and by omission from the sitemap.
+User-agent: *
+Disallow: /transcripts/
+Disallow: /explore/
+Disallow: /api/
+Allow: /
+
+Sitemap: https://rancor.litai.ca/sitemap-index.xml

@@ -1,0 +1,181 @@
+---
+import Term from "../components/Term.astro";
+import Base from "../layouts/Base.astro";
+import meta from "../data/meta.json";
+import methodology from "../data/methodology.json";
+import { Content as MethodologyText } from "../content/methodology.md";
+
+const rubricModules = import.meta.glob("../data/rubrics/*/*.md", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+const rubrics: { axis: string; category: string; text: string }[] = Object.entries(
+  rubricModules
+)
+  .map(([path, text]) => {
+    const m = path.match(/rubrics\/([^/]+)\/([^/]+)\.md$/)!;
+    return { axis: m[1], category: m[2], text: text as string };
+  })
+  .sort((a, b) => (a.axis + a.category).localeCompare(b.axis + b.category));
+
+const displayNames: Record<string, string> = Object.fromEntries(
+  meta.axes.map((a: any) => [a.axis_id, a.display_name])
+);
+const spearman: Record<string, Record<string, Record<string, number | null>>> =
+  methodology.spearman_per_axis;
+---
+
+<Base title="Methodology" active="methodology" heading="How Rancor measures this">
+  <h2>Methodology</h2>
+  <p class="note">
+    Bootstrap: B = {methodology.bootstrap_b} resamples over items, percentile
+    95% intervals, seeded. This run: {methodology.disagreement_flagged}
+    judge-disagreement flags, {methodology.human_overridden} human overrides.
+  </p>
+
+  <h2>What this preview run actually did</h2>
+  <p class="note">
+    The methodology below describes the full protocol. This preview ran a
+    reduced configuration, and the difference matters when reading the
+    numbers:
+  </p>
+  <ul class="note">
+    <li>
+      <strong>Conditions</strong>: base condition only. The chain-of-thought
+      and persona variants and the temperature-0.7 robustness slice were not
+      run, which is why model pages report CoT amplification and persona
+      effect as “not run”.
+    </li>
+    <li>
+      <strong>Groups</strong>: counterfactual items ran the focal group and
+      the first comparison group only, not the full comparison set.
+    </li>
+    <li>
+      <strong>Human review</strong>: {methodology.disagreement_flagged} records
+      were flagged for judge disagreement and
+      {methodology.human_overridden === 0
+        ? ` none have been adjudicated by a human. All ${methodology.disagreement_flagged} have been read by an agent (${methodology.agent_adjudicated} graded, ${methodology.adjudication_escalated} escalated as rubric gaps), recorded in a separate file that the scoring pipeline never reads, so every published score in this preview is still a judge median, unchanged. The review queue and both adjudication files ship with the run for anyone to check.`
+        : ` ${methodology.human_overridden} carry a human grade in place of the median.`}
+    </li>
+  </ul>
+
+  <MethodologyText />
+
+  <h2>Inter-category correlation (Spearman, per axis)</h2>
+  <p class="note">
+    Correlations are computed across models, so this preview's matrix rests
+    on five points per pair: enough to compute a coefficient, not enough to
+    interpret one. Values near ±1 (including exact 1.00) and empty cells are
+    expected at this sample size; the question of whether the categories
+    measure non-redundant behavior is one the full run answers, not this
+    table. Cells read "—" where the correlation is undefined: either fewer
+    than three scored models, or a category on which every model scored
+    identically (a constant has no rank correlation).
+  </p>
+  {
+    Object.entries(spearman).map(([axis, matrix]) => {
+      const categories = Object.keys(matrix);
+      return (
+        <section>
+          <h3>{displayNames[axis] ?? axis}</h3>
+          <div class="table-scroll">
+          <table class="ledger matrix">
+            <thead>
+              <tr>
+                <th />
+                {categories.map((c) => (
+                  <th class="num">{c.slice(0, 12)}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map((row) => (
+                <tr>
+                  <td><Term t={row.replaceAll("_", " ").replace(/s$/, "")}>{row.replaceAll("_", " ")}</Term></td>
+                  {categories.map((col) => (
+                    <td class="num">
+                      {matrix[row][col] === null ? "—" : matrix[row][col]!.toFixed(2)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <h2>The standard we hold this to</h2>
+
+  <p>
+    We did not invent the bar. In its analysis of another organisation's
+    hate-incident data, the Muslim Public Affairs Council set out what a
+    dataset in this space owes the people who rely on it: be clear how the
+    conclusions were derived, release the underlying records, and tag them
+    consistently, or take the numbers down until you can. Here is this
+    instrument answered against them, item by item.
+  </p>
+
+  <dl class="standard">
+    <dt>Be clear how the conclusion was derived</dt>
+    <dd>
+      Every rubric that produced a score is printed in full below, the same
+      text the judges were given. The metric definitions, the interval method
+      and the tie rule are on this page. Nothing is computed by a step that is
+      not written down.
+    </dd>
+    <dt>Release the underlying records</dt>
+    <dd>
+      Every model answer and all three judge rationales behind every published
+      number are readable in the transcript browser, not summarised. The frozen
+      prompt set, the scored records and the run manifest are in the
+      repository. There is no private tier.
+    </dd>
+    <dt>Tag consistently, or withdraw the number</dt>
+    <dd>
+      One prompt set, hashed; one rubric per category, applied to every model
+      and every group identically. Where the judges disagreed by more than a
+      point the record is flagged and queued rather than averaged quietly.
+      Where the intervals overlap the table shares the rank instead of printing
+      an order the data cannot support, which is the withdrawal half of the
+      rule, applied to ourselves.
+    </dd>
+  </dl>
+
+  <p class="note">
+    Reference: MPAC, Center for Security, Technology and Policy, 2025
+    data-analysis report, closing recommendations.
+  </p>
+
+  <h2 id="before-it-ships">Test a model before it ships</h2>
+  <p>
+    The same instrument runs as an MCP server, so a team can grade a candidate
+    model against the same prompts, rubrics and judge panel before release;
+    the quickstart, the six tools and the builder loop are on
+    <a href="/mcp/">the builders page</a>.
+  </p>
+
+  <h2>Rubrics</h2>
+  {
+    rubrics.length === 0 ? (
+      <div class="empty-state">
+        Rubric files are drafted and awaiting human review in
+        <code> prompts/_candidates/</code>; they render here once promoted to
+        <code> prompts/v1.0/</code>.
+      </div>
+    ) : (
+      rubrics.map((rubric) => (
+        <details class="rubric-block">
+          <summary>
+            {displayNames[rubric.axis] ?? rubric.axis} ·{" "}
+            <Term t={rubric.category.replaceAll("_", " ").replace(/s$/, "")}>{rubric.category.replaceAll("_", " ")}</Term>
+          </summary>
+          <pre>{rubric.text}</pre>
+        </details>
+      ))
+    )
+  }
+</Base>
