@@ -1,0 +1,65 @@
+<svg viewBox="0 0 920 470" width="920" height="470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How Rancor connects: the frozen eval feeds an open harness, the harness feeds the public leaderboard, anyone can rerun the loop, and an MCP server aims the same instrument at models before they ship.">
+  <style>
+    .title { font: 700 24px Georgia, 'Times New Roman', serif; letter-spacing: 0.24em; fill: #1a1611; }
+    .head  { font: 700 14px ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: 0.08em; fill: #1a1611; }
+    .line  { font: 12.5px Georgia, serif; fill: #3d3a34; }
+    .loop  { font: 700 12px ui-monospace, 'SF Mono', Menlo, monospace; fill: #9c2b2b; }
+    .cap   { font: italic 13px Georgia, serif; fill: #6b645a; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3d3a34"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9c2b2b"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="918" height="468" rx="10" fill="#f7f3ec" stroke="#e9e2d4" stroke-width="2"/>
+  <text x="460" y="44" text-anchor="middle" class="title">THE INSTRUMENT</text>
+
+  <g id="loop">
+    <path d="M 760 106 L 760 84 L 160 84 L 160 102" fill="none" stroke="#9c2b2b" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="330" y="68" width="260" height="20" fill="#f7f3ec"/>
+    <text x="460" y="82" text-anchor="middle" class="loop">anyone can rerun it, any day</text>
+  </g>
+
+  <g class="box" id="eval">
+    <rect x="40" y="108" width="240" height="122" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="40" y="108" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="160" y="140" text-anchor="middle" class="head">EVAL</text>
+    <text x="160" y="164" text-anchor="middle" class="line">337 frozen prompts</text><text x="160" y="183" text-anchor="middle" class="line">SHA-256 pinned</text><text x="160" y="202" text-anchor="middle" class="line">every item cites its source</text>
+  </g>
+
+  <g class="box" id="harness">
+    <rect x="340" y="108" width="240" height="122" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="340" y="108" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="460" y="140" text-anchor="middle" class="head">HARNESS</text>
+    <text x="460" y="164" text-anchor="middle" class="line">runner &#183; three-judge panel &#183; scores</text><text x="460" y="183" text-anchor="middle" class="line">open source (eval/)</text><text x="460" y="202" text-anchor="middle" class="line">rebuilds from a clean clone</text>
+  </g>
+
+  <g class="box" id="leaderboard">
+    <rect x="640" y="108" width="240" height="122" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="640" y="108" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="760" y="140" text-anchor="middle" class="head">LEADERBOARD</text>
+    <text x="760" y="164" text-anchor="middle" class="line">five models, ranked</text><text x="760" y="183" text-anchor="middle" class="line">every transcript and judge</text><text x="760" y="202" text-anchor="middle" class="line">rationale published</text>
+  </g>
+
+
+  <g id="flow">
+    <path d="M 286 169 L 332 169" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+    <path d="M 586 169 L 632 169" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  </g>
+
+  <g id="mcp-arrow">
+    <path d="M 460 230 L 460 294" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  </g>
+  <g class="box" id="mcp">
+    <rect x="340" y="300" width="240" height="88" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="340" y="300" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="460" y="332" text-anchor="middle" class="head">MCP SERVER</text>
+    <text x="460" y="356" text-anchor="middle" class="line">the same instrument, aimed at</text><text x="460" y="375" text-anchor="middle" class="line">your model, before it ships</text>
+  </g>
+
+
+  <text x="460" y="434" text-anchor="middle" class="cap">built to outlive the hackathon: an AI custodian anyone can fund directly (x402), no middleman</text>
+</svg>

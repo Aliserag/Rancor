@@ -67,6 +67,10 @@ an agent can read: see [who keeps this running](https://rancor.litai.ca/sustain/
 
 ## How it works
 
+<p align="center">
+  <img src="docs/assets/instrument.svg" alt="How Rancor connects: the frozen eval feeds an open harness, the harness feeds the public leaderboard, anyone can rerun the loop any day, and an MCP server aims the same instrument at models before they ship" width="100%">
+</p>
+
 | Piece | What it is |
 |---|---|
 | `prompts/v1.0/` | The frozen prompt set. 337 items, SHA-256 pinned, every item cites its source and licence. |
