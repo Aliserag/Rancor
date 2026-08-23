@@ -807,7 +807,7 @@ check(
     const meta = JSON.parse(readFileSync(join(root, "src/data/meta.json"), "utf8"));
     const html = readFileSync(join(dist, "index.html"), "utf8");
     if (meta.run_prompt_set_sha256 !== meta.prompt_set_sha256) {
-      const stamp = (html.match(/run [^<]*·[^<]*git[\s\S]{0,220}?<\/p>/) || [""])[0];
+      const stamp = (html.match(/run [^<]*·[\s\S]{0,220}?prompt-set[\s\S]{0,120}?<\/p>/) || [""])[0];
       check("the run stamp carries the hash the run actually used",
         stamp.includes(meta.run_prompt_set_sha256));
     }
