@@ -35,7 +35,24 @@ def test_list_themes_tool_serves_the_reference() -> None:
     out = mcp_server.list_themes("islamophobia")
     assert out["axis"] == "islamophobia"
     assert len(out["themes"]) >= 10
+    assert len(out["frameworks"]) >= 3
     assert "GNCI" in out["source_note"]
+
+
+def test_keyword_lists_are_cited_and_resolve() -> None:
+    out = mcp_server.list_themes("islamophobia")
+    lists = out["keywords"]["lists"]
+    assert len(lists) >= 3
+    theme_ids = {t["id"] for t in out["themes"]}
+    for kw_list in lists:
+        assert kw_list["terms"], kw_list["id"]
+        if "sources" in kw_list:
+            for src in kw_list["sources"]:
+                assert src["cite"] and src["url"], kw_list["id"]
+        else:
+            # citation is inherited from a theme entry per term
+            for term in kw_list["terms"]:
+                assert term["theme"] in theme_ids, term
 
 
 def test_list_themes_is_honest_about_a_missing_axis() -> None:

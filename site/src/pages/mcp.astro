@@ -7,7 +7,7 @@ const REPO = "https://github.com/Aliserag/Rancor";
 <Base
   title="For builders"
   active="mcp"
-  description="Run Rancor's instrument against your own model as an MCP server: list cited anti-Muslim narrative themes, score responses with the same three-judge panel, and gate a release on the result."
+  description="Run Rancor's instrument against your own model as an MCP server: list cited anti-Muslim narrative themes and keyword lists, score responses with the same three-judge panel, and gate a release on the result."
   heading="Test your model before it ships">
   <h2>Test your model before it ships</h2>
   <p>
@@ -64,7 +64,7 @@ const REPO = "https://github.com/Aliserag/Rancor";
         </tr>
         <tr>
           <th scope="row"><code>list_themes</code></th>
-          <td>Cited reference of documented hate-narrative themes for an axis, for writing your own test prompts.</td>
+          <td>Cited reference of documented hate-narrative themes and keyword lists for an axis, for writing your own test prompts and lexical screens.</td>
         </tr>
         <tr>
           <th scope="row"><code>probe_models</code></th>
@@ -89,7 +89,11 @@ const REPO = "https://github.com/Aliserag/Rancor";
     OSCE's six recurring stereotypes, the ISPU's five-trope index, and 32
     contemporary narratives distilled from GNCI research documents, each
     cited to document and page though those documents are not yet
-    independently resolvable. Write your own test prompts against each theme
+    independently resolvable. It also carries sourced keyword lists: the
+    slurs HateCheck documents for the Muslims target group, the Abid,
+    Farooqi &amp; Zou violence keywords, and the coded catchphrases each
+    theme documents, for lexical screening of prompts and responses.
+    Write your own test prompts against each theme
     that matters for your product. <code>score_response</code> grades every
     answer with the same fixed three-judge panel and published rubric the
     leaderboard uses. <code>evaluate_model</code> then works as a pre-ship

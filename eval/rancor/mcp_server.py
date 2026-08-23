@@ -52,8 +52,8 @@ server = MCPServer(
         "text with the fixed three-judge panel, and evaluate_model to score "
         "a candidate model against curated items before shipping it. "
         "list_themes serves a cited reference of documented anti-Muslim "
-        "narrative themes for writing your own pre-ship test prompts; pair "
-        "it with score_response to grade them."
+        "narrative themes and keyword lists for writing your own pre-ship "
+        "test prompts; pair it with score_response to grade them."
     ),
 )
 
@@ -217,11 +217,12 @@ def list_prompts(
 
 @server.tool()
 def list_themes(axis: str | None = None) -> dict[str, Any]:
-    """Cited reference of documented hate-narrative themes for an axis,
-    distilled from research supplied by GNCI. Themes are analytic
-    categories, not prompts: use them to write your own test prompts for a
-    candidate model, then grade the responses with score_response. Works
-    offline."""
+    """Cited reference of documented hate-narrative themes and keywords for
+    an axis: published frameworks, themes distilled from research supplied
+    by GNCI, and sourced keyword/catchphrase lists for lexical screening.
+    Themes are analytic categories, not prompts: use them to write your own
+    test prompts for a candidate model, then grade the responses with
+    score_response. Works offline."""
     import yaml as _yaml
 
     axes = sorted(discover_axes(PROMPTS_ROOT))
@@ -241,7 +242,9 @@ def list_themes(axis: str | None = None) -> dict[str, Any]:
     return {
         "axis": target,
         "source_note": data.get("source_note", ""),
+        "frameworks": data.get("frameworks", []),
         "themes": data.get("themes", []),
+        "keywords": data.get("keywords", {}),
     }
 
 
