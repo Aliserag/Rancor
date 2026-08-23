@@ -10,7 +10,7 @@
   <rect width="920" height="300" fill="#f7f3ec"/>
   <rect x="0" y="0" width="920" height="4" fill="#9c2b2b"/>
   <text x="40" y="56" class="title">R A N C O R</text>
-  <text x="40" y="82" class="sub">Which AI models handle Islamophobia worst. Measured, not guessed.</text>
+  <text x="40" y="82" class="sub">Which AI models handle Islamophobia worst.</text>
   
   <text x="235" y="122" text-anchor="end" class="model">claude</text>
   <rect x="250" y="108" width="560" height="18" fill="#e9e2d4"/>
