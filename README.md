@@ -24,6 +24,25 @@ summarised: every score on the site regenerates from the committed run data
 Rancor differs, is tabled on the
 [methodology page](https://rancor.litai.ca/methodology/).
 
+## Why it matters
+
+The link between online hate and offline violence is peer-reviewed and
+replicated. US counties with more Twitter use saw a 32% larger rise in
+anti-Muslim hate crimes after 2016
+([Müller & Schwarz, AEJ: Applied 2023](https://www.aeaweb.org/articles?id=10.1257%2Fapp.20210211),
+[independently reproduced](https://www.rwi-essen.de/en/i4r-discussion-paper-series/1/a-comment-on-from-hashtag-to-hate-25080109)),
+and in Germany anti-refugee posts on Facebook predicted violent attacks on
+refugees, about seventy percent of whom were Muslim, with the pattern
+breaking during Facebook outages
+([Müller & Schwarz, JEEA 2021](https://academic.oup.com/jeea/article-abstract/19/4/2131/5917396),
+[Pew Research](https://www.pewresearch.org/religion/2017/11/29/the-growth-of-germanys-muslim-population-2/)).
+Anti-Muslim hate is at record highs:
+[CAIR logged 8,683 complaints in 2025](https://www.cair.com/press_releases/cairs-2026-civil-rights-report-shows-the-right-to-be-different-narrowed-in-the-past-year/),
+the most since 1996, and
+[Tell MAMA logged 6,313 UK cases in 2024](https://tellmamauk.org/tell-mama-records-the-highest-number-of-anti-muslim-hate-cases-in-2024-since-its-founding/),
+up 43%. What language models say about Muslims is the next, larger
+channel. Until now, nobody was measuring it.
+
 ## What the first run found
 
 In the first graded run (24 of 337 prompts, 215 responses), the best models
