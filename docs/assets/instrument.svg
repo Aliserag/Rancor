@@ -4,6 +4,7 @@
     .head  { font: 700 14px ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: 0.08em; fill: #1a1611; }
     .line  { font: 12.5px Georgia, serif; fill: #3d3a34; }
     .loop  { font: 700 12px ui-monospace, 'SF Mono', Menlo, monospace; fill: #9c2b2b; }
+    .tool  { font: 10.5px ui-monospace, 'SF Mono', Menlo, monospace; fill: #9c2b2b; }
     .cap   { font: italic 13px Georgia, serif; fill: #6b645a; }
   </style>
   <defs>
@@ -41,7 +42,7 @@
     <rect x="640" y="108" width="240" height="122" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
     <rect x="640" y="108" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
     <text x="760" y="140" text-anchor="middle" class="head">LEADERBOARD</text>
-    <text x="760" y="164" text-anchor="middle" class="line">five models, ranked</text><text x="760" y="183" text-anchor="middle" class="line">every transcript and judge</text><text x="760" y="202" text-anchor="middle" class="line">rationale published</text>
+    <text x="760" y="164" text-anchor="middle" class="line">five models, ranked</text><text x="760" y="183" text-anchor="middle" class="line">every transcript and all three</text><text x="760" y="202" text-anchor="middle" class="line">judge rationales published</text>
   </g>
 
 
@@ -54,10 +55,10 @@
     <path d="M 460 230 L 460 294" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
   </g>
   <g class="box" id="mcp">
-    <rect x="340" y="300" width="240" height="88" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="340" y="300" width="240" height="96" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
     <rect x="340" y="300" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
     <text x="460" y="332" text-anchor="middle" class="head">MCP SERVER</text>
-    <text x="460" y="356" text-anchor="middle" class="line">the same instrument, aimed at</text><text x="460" y="375" text-anchor="middle" class="line">your model, before it ships</text>
+    <text x="460" y="352" text-anchor="middle" class="line">the same instrument, aimed at</text><text x="460" y="370" text-anchor="middle" class="line">your model, before it ships</text><text x="460" y="386" text-anchor="middle" class="tool">score_response &#183; evaluate_model</text>
   </g>
 
 
