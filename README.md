@@ -1,6 +1,6 @@
 # Rancor
 
-**Which AI models handle Islamophobia worst. Measured, not guessed.**
+**Which AI models handle Islamophobia worst.**
 
 <p align="center">
   <img src="docs/assets/leaderboard.svg" alt="Rancor leaderboard: clean rate per model from the first graded run" width="100%">
