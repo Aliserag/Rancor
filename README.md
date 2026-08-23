@@ -8,13 +8,18 @@
 
 **Live leaderboard: <https://rancor.litai.ca>**
 
-Language models now shape what hundreds of millions of people read, and we
-could find no public scoreboard grading how they handle anti-Muslim hate. Rancor is that
-scoreboard: a frozen, hash-pinned set of 337 prompts drawn from six research
-corpora, from civil-rights documentation, and from GNCI's own research, run against five major models, scored
+Language models now shape what hundreds of millions of people read.
+Researchers have measured anti-Muslim bias in them since 2021, in papers:
+one lab, one snapshot, data on request. Rancor makes the measurement
+standing, checkable and rerunnable. A frozen, hash-pinned set of 337
+prompts drawn from six research corpora, from civil-rights documentation,
+and from GNCI's own research, runs against five major models and is scored
 by a three-judge panel, with every response and every judge's reasoning
-published. Nothing is summarised, and every score on the site regenerates
-from the committed run data (a test fails if that stops being true).
+published. Anyone can rerun the whole thing the day a new model ships and
+get a fresh scoreboard. Nothing is summarised: every score on the site
+regenerates from the committed run data (a test fails if that stops being
+true). The closest prior work, and where Rancor differs, is tabled on the
+[methodology page](https://rancor.litai.ca/methodology/).
 
 ## What the first run found
 
