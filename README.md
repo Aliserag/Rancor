@@ -8,6 +8,14 @@
 
 **Live leaderboard: <https://rancor.litai.ca>**
 
+<p align="center">
+  <a href="https://youtu.be/clypWxvGWWo">
+    <img src="https://img.youtube.com/vi/clypWxvGWWo/maxresdefault.jpg" alt="Rancor pitch video: the first living, open Islamophobia eval" width="75%">
+  </a>
+  <br>
+  <a href="https://youtu.be/clypWxvGWWo"><strong>Watch the five minute pitch</strong></a>
+</p>
+
 Language models now shape what hundreds of millions of people read.
 Researchers have measured anti-Muslim bias in them since 2021, in papers:
 one lab, one snapshot, data on request. Rancor makes the measurement
