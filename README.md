@@ -15,10 +15,13 @@ standing, checkable and rerunnable. A frozen, hash-pinned set of 337
 prompts drawn from six research corpora, from civil-rights documentation,
 and from GNCI's own research, runs against five major models and is scored
 by a three-judge panel, with every response and every judge's reasoning
-published. Anyone can rerun the whole thing the day a new model ships and
-get a fresh scoreboard. Nothing is summarised: every score on the site
-regenerates from the committed run data (a test fails if that stops being
-true). The closest prior work, and where Rancor differs, is tabled on the
+published. The full evaluation harness ships in this repo
+([`eval/`](eval/)): anyone can rerun the eval the day a new model drops and
+get a fresh scoreboard, and an [MCP server](https://rancor.litai.ca/mcp/)
+aims the same instrument at any model before it ever ships. Nothing is
+summarised: every score on the site regenerates from the committed run data
+(a test fails if that stops being true). The closest prior work, and where
+Rancor differs, is tabled on the
 [methodology page](https://rancor.litai.ca/methodology/).
 
 ## What the first run found
