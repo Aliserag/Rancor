@@ -1,0 +1,88 @@
+<svg viewBox="0 0 1000 720" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .sf-h{font:700 15px ui-monospace,'SF Mono',Menlo,monospace;letter-spacing:.06em;fill:#1a1611}
+    .sf-l{font:13.5px Georgia,serif;fill:#3d3a34}
+    .sf-lbl{font:italic 13px Georgia,serif;fill:#6b645a}
+    .sf-edge{font:700 11px ui-monospace,Menlo,monospace;fill:#9c2b2b}
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#3d3a34"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9c2b2b"/></marker>
+  </defs>
+
+  <!-- box helper: rect + top accent -->
+  <!-- 1 MAP -->
+  <g>
+    <rect x="300" y="24" width="400" height="96" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="300" y="24" width="400" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="500" y="54" text-anchor="middle" class="sf-h">THE CITED MAP</text>
+    <text x="500" y="78" text-anchor="middle" class="sf-l">Runnymede, OSCE, ISPU frameworks, GNCI casework,</text>
+    <text x="500" y="97" text-anchor="middle" class="sf-l">documented themes, slurs and coded keywords. Every entry cited.</text>
+  </g>
+
+  <!-- MCP branch (right) -->
+  <path d="M700 72 L820 72 L820 150" fill="none" stroke="#9c2b2b" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="762" y="64" text-anchor="middle" class="sf-edge">served live as</text>
+  <g>
+    <rect x="700" y="152" width="270" height="96" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="700" y="152" width="270" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="835" y="182" text-anchor="middle" class="sf-h">MCP SERVER</text>
+    <text x="835" y="206" text-anchor="middle" class="sf-l">the same map and panel,</text>
+    <text x="835" y="225" text-anchor="middle" class="sf-l">for developers to test a</text>
+    <text x="835" y="244" text-anchor="middle" class="sf-l">model before it ships</text>
+  </g>
+
+  <!-- MAP -> PROMPTS -->
+  <path d="M420 120 L420 150" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  <text x="360" y="140" text-anchor="middle" class="sf-edge">shapes</text>
+
+  <!-- 2 PROMPTS -->
+  <g>
+    <rect x="300" y="152" width="240" height="80" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="300" y="152" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="420" y="182" text-anchor="middle" class="sf-h">337 FROZEN PROMPTS</text>
+    <text x="420" y="208" text-anchor="middle" class="sf-l">hash-pinned, source-cited</text>
+  </g>
+
+  <!-- PROMPTS -> MODELS -->
+  <path d="M420 232 L420 268" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  <text x="360" y="255" text-anchor="middle" class="sf-edge">each answers</text>
+
+  <!-- 3 MODELS -->
+  <g>
+    <rect x="300" y="270" width="240" height="80" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="300" y="270" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="420" y="300" text-anchor="middle" class="sf-h">FIVE MODELS</text>
+    <text x="420" y="326" text-anchor="middle" class="sf-l">the consumer LLMs people use</text>
+  </g>
+
+  <!-- MODELS -> PANEL -->
+  <path d="M420 350 L420 386" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  <text x="360" y="373" text-anchor="middle" class="sf-edge">scored by</text>
+
+  <!-- 4 PANEL -->
+  <g>
+    <rect x="240" y="388" width="360" height="140" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
+    <rect x="240" y="388" width="360" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="420" y="418" text-anchor="middle" class="sf-h">THREE-JUDGE PANEL</text>
+    <text x="420" y="443" text-anchor="middle" class="sf-l">Claude &#183; GPT &#183; Gemini, three different labs</text>
+    <text x="420" y="464" text-anchor="middle" class="sf-l">each scores against the published rubric</text>
+    <text x="420" y="485" text-anchor="middle" class="sf-l">score = median of three; disagreements go to review</text>
+    <text x="420" y="509" text-anchor="middle" class="sf-lbl">a model is never scored by its own lab's judge</text>
+  </g>
+
+  <!-- PANEL -> LEADERBOARD -->
+  <path d="M420 528 L420 564" fill="none" stroke="#3d3a34" stroke-width="2" marker-end="url(#a)"/>
+  <text x="360" y="551" text-anchor="middle" class="sf-edge">ranked into</text>
+
+  <!-- 5 LEADERBOARD -->
+  <g>
+    <rect x="300" y="566" width="240" height="88" rx="6" fill="#fdfbf5" stroke="#9c2b2b" stroke-width="2.5"/>
+    <rect x="300" y="566" width="240" height="5" rx="2.5" fill="#9c2b2b"/>
+    <text x="420" y="598" text-anchor="middle" class="sf-h">THE LEADERBOARD</text>
+    <text x="420" y="623" text-anchor="middle" class="sf-l">every response and all three</text>
+    <text x="420" y="642" text-anchor="middle" class="sf-l">judge rationales published</text>
+  </g>
+</svg>

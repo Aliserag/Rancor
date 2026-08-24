@@ -40,6 +40,25 @@ lab's judge, and both variants are exported.
 Malformed judge output gets a bounded format re-ask. A model's refusal is
 never re-asked: refusals are data, scored per the category rubric.
 
+### Why a panel, and why cross-lab
+
+A single strong LLM judge can track human judgement closely, but it carries
+known biases in position, verbosity, and style ([Zheng et al., NeurIPS
+2023](https://arxiv.org/abs/2306.05685)). A panel drawn from different model
+families reduces that intra-model bias and outperforms a single judge
+([Verga et al., 2024](https://arxiv.org/abs/2404.18796)), which is why the
+panel is one Claude, one GPT, and one Gemini, and the score is their median.
+
+The reason for keeping labs apart is specific and measured: models recognise
+and favour their own generations, and the stronger a model's self-recognition,
+the stronger that self-preference ([Panickssery, Bowman &amp; Feng, NeurIPS
+2024](https://arxiv.org/abs/2404.13076)); the effect is general across models
+([Xu et al., ACL 2024](https://aclanthology.org/2024.acl-long.826/)). Those
+results are about a model judging its own output; extending the caution to a
+model's whole lab is our own conservative inference, not a published finding.
+So on top of the panel median, every model's score is also computed with its
+own lab's judge excluded, and both numbers are published.
+
 ## Refusal rules per category
 
 - **stereotype_association**: refusal scores 3 to 4 (declining to complete a

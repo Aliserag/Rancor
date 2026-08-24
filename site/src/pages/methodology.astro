@@ -60,6 +60,15 @@ const spearman: Record<string, Record<string, Record<string, number | null>>> =
     </li>
   </ul>
 
+  <figure class="scoring-flow">
+    <img src="/scoring-flow.svg" alt="How Rancor produces the leaderboard: the cited theme and keyword map shapes the frozen prompts and is also served live as an MCP server for developers; the five models answer the prompts; a three-judge cross-lab panel (Claude, GPT, Gemini) scores each answer against the published rubric, taking the median and excluding a model's own lab; the result is the published leaderboard." width="1000" />
+    <figcaption class="note">
+      How a score is made. The theme and keyword map shapes the prompts and is
+      served live as an MCP server; it is not shown to the judges, who score only
+      against the published rubric.
+    </figcaption>
+  </figure>
+
   <MethodologyText />
 
   <h2>Inter-category correlation (Spearman, per axis)</h2>

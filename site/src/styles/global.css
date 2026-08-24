@@ -705,3 +705,7 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
 }
 .amount-row input:focus-visible { outline: 2px solid var(--focus); }
 .fund-note { font-size: 0.85rem; color: var(--muted); margin: 0.8rem 0 0; }
+
+.scoring-flow { margin: 1.6rem 0 2rem; }
+.scoring-flow img { width: 100%; height: auto; max-width: 100%; }
+.scoring-flow figcaption { margin-top: 0.5rem; }
