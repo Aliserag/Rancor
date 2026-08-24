@@ -49,7 +49,7 @@
    ],
    "sources": [
     {
-     "cite": "Evolvi, G. (2018). Hate in a Tweet. Religions 9(10):307 — CC-BY-4.0; enumerates the framework in full",
+     "cite": "Evolvi, G. (2018). Hate in a Tweet. Religions 9(10):307, CC-BY-4.0; enumerates the framework in full",
      "url": "https://www.mdpi.com/2077-1444/9/10/307"
     },
     {
@@ -327,7 +327,7 @@
   {
    "id": "infiltration-secret-network",
    "name": "Infiltration and secret-network narratives",
-   "description": "Framing ordinary Muslim association, political participation and civic organisation as covert coordination or \"entryism\" — including the unfalsifiable \"Muslim Brotherhood\" label, claims that Muslim politicians are \"infiltrating\" government, and portrayal of Muslim voting patterns as a dangerous bloc.",
+   "description": "Framing ordinary Muslim association, political participation and civic organisation as covert coordination or \"entryism\", including the unfalsifiable \"Muslim Brotherhood\" label, claims that Muslim politicians are \"infiltrating\" government, and portrayal of Muslim voting patterns as a dangerous bloc.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -384,7 +384,7 @@
   {
    "id": "terrorism-conflation",
    "name": "Terrorism conflation and collective violence attribution",
-   "description": "Transferring responsibility for individual acts of violence to Islam or to Muslims collectively — \"all Muslims are terrorists\", the \"bloody borders\" claim that every conflict involves Muslims, and treating ordinary religious expressions as markers of violence.",
+   "description": "Transferring responsibility for individual acts of violence to Islam or to Muslims collectively, \"all Muslims are terrorists\", the \"bloody borders\" claim that every conflict involves Muslims, and treating ordinary religious expressions as markers of violence.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",
@@ -433,7 +433,7 @@
   {
    "id": "religiosity-as-risk",
    "name": "Ordinary religious practice as extremism indicator",
-   "description": "Treating lawful Muslim religiosity — prayer, dress, association, charitable activity — as a predictive risk signal, documented from everyday \"that's extreme\" framings up to automated flagging systems that convert ordinary practice into proxy variables for extremism.",
+   "description": "Treating lawful Muslim religiosity, prayer, dress, association, charitable activity, as a predictive risk signal, documented from everyday \"that's extreme\" framings up to automated flagging systems that convert ordinary practice into proxy variables for extremism.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -463,7 +463,7 @@
   {
    "id": "dual-loyalty-fifth-column",
    "name": "Dual loyalty and \"fifth column\" charges",
-   "description": "The accusation that Muslims cannot be loyal citizens and constitute a disloyal \"fifth column\" or sleeper population whose ordinariness is itself the disguise — a charge documented as historically recycled from earlier campaigns against Catholics and Jews.",
+   "description": "The accusation that Muslims cannot be loyal citizens and constitute a disloyal \"fifth column\" or sleeper population whose ordinariness is itself the disguise, a charge documented as historically recycled from earlier campaigns against Catholics and Jews.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -478,7 +478,7 @@
   {
    "id": "perpetual-foreigner",
    "name": "Perpetual foreigner and conditional belonging",
-   "description": "Casting settled, often third- and fourth-generation Muslim citizens as recent arrivals or permanent guests whose residence is conditional — \"go back to where you came from\", \"where are you really from\", and tolerance framed as coexistence without belonging.",
+   "description": "Casting settled, often third- and fourth-generation Muslim citizens as recent arrivals or permanent guests whose residence is conditional, \"go back to where you came from\", \"where are you really from\", and tolerance framed as coexistence without belonging.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",
@@ -516,7 +516,7 @@
   {
    "id": "integration-paradox",
    "name": "The integration paradox (refusal-to-integrate / infiltration inversion)",
-   "description": "A documented rhetorical inversion in which limited Muslim public participation is framed as self-segregation and \"parallel society\" formation, while visible participation is reframed as entryism or takeover — opposite behaviours supporting the same suspicion.",
+   "description": "A documented rhetorical inversion in which limited Muslim public participation is framed as self-segregation and \"parallel society\" formation, while visible participation is reframed as entryism or takeover, opposite behaviours supporting the same suspicion.",
    "sources": [
     {
      "doc": "Anti-Muslim Racism in Belgium",
@@ -572,7 +572,7 @@
   {
    "id": "civilisational-incompatibility",
    "name": "Civilisational incompatibility and existential-threat framing",
-   "description": "Framing Islam as inherently incompatible with democracy, free speech and equal citizenship — up to programmatic descriptions of Islam as an existential threat to national freedom — presenting equal citizenship as impossible without forced assimilation.",
+   "description": "Framing Islam as inherently incompatible with democracy, free speech and equal citizenship, up to programmatic descriptions of Islam as an existential threat to national freedom, presenting equal citizenship as impossible without forced assimilation.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -591,7 +591,7 @@
   {
    "id": "civilisational-backwardness",
    "name": "Backwardness and cultural-deficit narratives",
-   "description": "Attributing poverty, authoritarianism or unequal social outcomes to Islam or to \"backward\" Muslim culture — including the demand that Islam \"needs a Reformation\" — rather than to the historical, economic and institutional factors documented to explain them.",
+   "description": "Attributing poverty, authoritarianism or unequal social outcomes to Islam or to \"backward\" Muslim culture, including the demand that Islam \"needs a Reformation\", rather than to the historical, economic and institutional factors documented to explain them.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",
@@ -617,7 +617,7 @@
   {
    "id": "special-treatment-grievance",
    "name": "\"Special treatment\" grievance",
-   "description": "Recasting ordinary, legally general religious accommodation — prayer breaks, dietary options, holidays — as illegitimate special demands made by Muslims alone.",
+   "description": "Recasting ordinary, legally general religious accommodation, prayer breaks, dietary options, holidays, as illegitimate special demands made by Muslims alone.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",
@@ -628,7 +628,7 @@
   {
    "id": "femonationalism-liberal-values",
    "name": "Weaponisation of women's rights and liberal values (femonationalism)",
-   "description": "The invocation of women's rights and gay rights to stigmatise Muslim communities and justify anti-immigration and exclusionary policy — instrumentalising real equality concerns to racialise a population, a pattern documented from colonial \"rescue\" rhetoric to present far-right and mainstream discourse.",
+   "description": "The invocation of women's rights and gay rights to stigmatise Muslim communities and justify anti-immigration and exclusionary policy, instrumentalising real equality concerns to racialise a population, a pattern documented from colonial \"rescue\" rhetoric to present far-right and mainstream discourse.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -662,7 +662,7 @@
   {
    "id": "neutrality-secularism-framing",
    "name": "State-neutrality and secularism framings",
-   "description": "The doctrine of \"exclusive neutrality\" and analogous uniform-neutrality framings, under which visible Muslim religious practice is presented as incompatible with public institutions — formally general rules whose documented burden concentrates on Muslim women wearing headscarves.",
+   "description": "The doctrine of \"exclusive neutrality\" and analogous uniform-neutrality framings, under which visible Muslim religious practice is presented as incompatible with public institutions, formally general rules whose documented burden concentrates on Muslim women wearing headscarves.",
    "sources": [
     {
      "doc": "Anti-Muslim Racism in Belgium",
@@ -677,7 +677,7 @@
   {
    "id": "fgm-misattribution",
    "name": "FGM misattributed to Islam",
-   "description": "The recasting of female genital mutilation/cutting — a pre-Islamic regional practice crossing every religious line in its heartland and absent from most of the Muslim world — as an Islamic essence, through decontextualised citation, selective country evidence and hijab-coded imagery.",
+   "description": "The recasting of female genital mutilation/cutting, a pre-Islamic regional practice crossing every religious line in its heartland and absent from most of the Muslim world, as an Islamic essence, through decontextualised citation, selective country evidence and hijab-coded imagery.",
    "sources": [
     {
      "doc": "Female Genital Mutilation/Cutting",
@@ -729,7 +729,7 @@
   {
    "id": "crisis-false-attribution",
    "name": "Crisis-driven false attribution and collective blame",
-   "description": "The rapid, often false attribution of crimes or crises to Muslims — fabricated celebration rumours, misidentified attackers, premature collective verdicts on communities — documented as triggering spikes in hostility and mobilisation against mosques and visibly Muslim people.",
+   "description": "The rapid, often false attribution of crimes or crises to Muslims , fabricated celebration rumours, misidentified attackers, premature collective verdicts on communities, documented as triggering spikes in hostility and mobilisation against mosques and visibly Muslim people.",
    "sources": [
     {
      "doc": "The Islamophobia Excuse",
@@ -763,7 +763,7 @@
   {
    "id": "islamophobia-denial",
    "name": "Denial and delegitimisation of anti-Muslim racism",
-   "description": "Narratives that deny the category itself — \"Islamophobia is a made-up word\", \"Islam isn't a race so it can't be racism\", the \"grievance industry\" charge — documented as delegitimising recorded harm and, at institutional level, blocking recognition and policy response.",
+   "description": "Narratives that deny the category itself, \"Islamophobia is a made-up word\", \"Islam isn't a race so it can't be racism\", the \"grievance industry\" charge, documented as delegitimising recorded harm and, at institutional level, blocking recognition and policy response.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",
@@ -778,7 +778,7 @@
   {
    "id": "good-muslim-bad-muslim",
    "name": "\"Good Muslim / bad Muslim\" sorting",
-   "description": "The division of Muslims into acceptable and suspect categories — from the interpersonal \"you're one of the good ones\" to institutional sortings of \"religious\" versus \"political\" Islam traced from colonial administration into modern screening programmes.",
+   "description": "The division of Muslims into acceptable and suspect categories - from the interpersonal \"you're one of the good ones\" to institutional sortings of \"religious\" versus \"political\" Islam traced from colonial administration into modern screening programmes.",
    "sources": [
     {
      "doc": "Fortification of the Muslims",

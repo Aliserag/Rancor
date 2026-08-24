@@ -13,7 +13,7 @@
     <img src="https://img.youtube.com/vi/rR_gQwp5Mm8/maxresdefault.jpg" alt="Rancor pitch video: the first living, open Islamophobia eval" width="75%">
   </a>
   <br>
-  <a href="https://youtu.be/rR_gQwp5Mm8"><strong>Watch the five minute pitch</strong></a>
+  <a href="https://youtu.be/rR_gQwp5Mm8"><strong>Watch the five-minute pitch</strong></a>
 </p>
 
 Language models now shape what hundreds of millions of people read.
@@ -25,7 +25,7 @@ and from GNCI's own research, runs against five major models and is scored
 by a three-judge panel, with every response and every judge's reasoning
 published. The full evaluation harness ships in this repo
 ([`eval/`](eval/)): anyone can rerun the eval the day a new model drops and
-get a fresh scoreboard, and an [MCP server](https://rancor.litai.ca/mcp/)
+get a fresh leaderboard, and an [MCP server](https://rancor.litai.ca/mcp/)
 aims the same instrument at any model before it ever ships. Nothing is
 summarised: every score on the site regenerates from the committed run data
 (a test fails if that stops being true). The closest prior work, and where

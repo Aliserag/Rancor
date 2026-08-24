@@ -8,7 +8,7 @@ that claim: what it takes to actually land one.
 
 **Maintainer:** Ali Serag ([@Aliserag](https://github.com/Aliserag)). Issues and
 pull requests go to <https://github.com/Aliserag/Rancor>. Decisions on prompt
-content, and by what, are described in §3: the existing set was reviewed by AI
+content, and who or what makes them, are described in §3: the existing set was reviewed by AI
 agents under explicitly delegated authority, not read line by line by a human.
 
 ---

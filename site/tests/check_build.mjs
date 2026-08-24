@@ -941,5 +941,35 @@ check(
     lb.rows.every((r) => svg.includes(`>${r.name}<`))
 );
 
+// --- Adversarial audit regression guards ---
+
+// H5: repeated <Term> uses on a page must produce unique tooltip ids, or
+// aria-describedby resolves every instance to the first tooltip.
+{
+  const home = readFileSync(join(dist, "index.html"), "utf8");
+  const ids = [...home.matchAll(/id="(def-[a-z-]+-\d+)"/g)].map((m) => m[1]);
+  const unique = new Set(ids);
+  check(
+    `term tooltip ids are unique (${unique.size}/${ids.length})`,
+    ids.length > 0 && unique.size === ids.length
+  );
+}
+
+
+// Banned public-copy terms after the Developers/eval renames.
+{
+  const files = [
+    "index.html", "mcp/index.html", "methodology/index.html", "sustain/index.html",
+  ].map((f) => readFileSync(join(dist, f), "utf8")).join("\n");
+  check("no 'for builders' / 'the builders page' survives", !/\bthe builders page\b/i.test(files) && !/loop for builders/i.test(files));
+  check("'scoreboard' is not used as the product noun", !/fresh scoreboard|this scoreboard/i.test(files));
+}
+
+// Theme data carries no em-dashes (project bans them in public copy).
+{
+  const themes = readFileSync(join(root, "src/data/themes_islamophobia.json"), "utf8");
+  check("theme data has no em-dashes", !themes.includes("\u2014"));
+}
+
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);
 process.exit(failures === 0 ? 0 : 1);
