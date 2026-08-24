@@ -6,10 +6,20 @@ import meta from "../../data/meta.json";
 const modules = import.meta.glob("../../data/transcripts/*/*.json", {
   eager: true,
 });
-const byAxis: Record<string, string[]> = {};
-for (const path of Object.keys(modules)) {
+const byAxis: Record<string, { category: string; items: number; answers: number }[]> = {};
+for (const [path, mod] of Object.entries(modules)) {
   const m = path.match(/transcripts\/([^/]+)\/([^/]+)\.json$/);
-  if (m) byAxis[m[1]] = [...(byAxis[m[1]] ?? []), m[2]].sort();
+  if (!m) continue;
+  const items = (mod as any).default?.items ?? (mod as any).items ?? [];
+  const answers = items.reduce(
+    (n: number, it: any) =>
+      n + it.entries.reduce((k: number, e: any) => k + e.variants.length, 0),
+    0
+  );
+  byAxis[m[1]] = [
+    ...(byAxis[m[1]] ?? []),
+    { category: m[2], items: items.length, answers },
+  ].sort((a, b) => a.category.localeCompare(b.category));
 }
 const displayNames: Record<string, string> = Object.fromEntries(
   meta.axes.map((a: any) => [a.axis_id, a.display_name])
@@ -33,11 +43,14 @@ const displayNames: Record<string, string> = Object.fromEntries(
           <section>
             <h2>{displayNames[axis] ?? axis}</h2>
             <ul>
-              {categories.map((category) => (
+              {categories.map(({ category, items, answers }) => (
                 <li>
                   <a href={`/transcripts/${axis}/${category}/`}>
                     {category.replaceAll("_", " ")}
                   </a>
+                  <span class="note">
+                    {" "}· {items} {items === 1 ? "prompt" : "prompts"}, {answers} scored answers, every judge rationale
+                  </span>
                 </li>
               ))}
             </ul>

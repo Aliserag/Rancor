@@ -96,6 +96,10 @@ const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
             <div class="model-tab-panels">
               {item.entries.map((entry: any) => (
                 <div class="model-tab-panel">
+          <p class="panel-model">
+            {entry.model_name}'s answer{item.entries.length > 1 ? ", of five" : ""}
+            {entry.min_median !== null && <> · worst median {entry.min_median}/4</>}
+          </p>
           <div class="variants">
             {entry.variants.map((variant: any) => (
               <div class="variant">

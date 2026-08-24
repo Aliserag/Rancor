@@ -587,7 +587,12 @@ th abbr[title] {
 .model-tabs > input:nth-of-type(3):checked ~ .model-tab-row label:nth-of-type(3),
 .model-tabs > input:nth-of-type(4):checked ~ .model-tab-row label:nth-of-type(4),
 .model-tabs > input:nth-of-type(5):checked ~ .model-tab-row label:nth-of-type(5) {
-  background: var(--panel); border-color: var(--rule); color: var(--ink);
+  background: var(--ink); border-color: var(--ink); color: var(--paper);
+  font-weight: 700;
+}
+.panel-model {
+  font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+  margin: 0 0 0.6rem;
 }
 .model-tabs > input:nth-of-type(1):checked ~ .model-tab-panels .model-tab-panel:nth-of-type(1),
 .model-tabs > input:nth-of-type(2):checked ~ .model-tab-panels .model-tab-panel:nth-of-type(2),
