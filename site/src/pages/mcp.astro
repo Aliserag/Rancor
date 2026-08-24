@@ -2,10 +2,14 @@
 import Base from "../layouts/Base.astro";
 
 const REPO = "https://github.com/Aliserag/Rancor";
+import themes from "../data/themes_islamophobia.json";
+const kwLists = (themes as any).keywords.lists;
+const kwCount = kwLists.reduce((n: number, l: any) => n + l.terms.length, 0);
+const fwItemCount = (themes as any).frameworks.reduce((n: number, f: any) => n + f.items.length, 0);
 ---
 
 <Base
-  title="For builders"
+  title="Developers"
   active="mcp"
   description="Run Rancor's instrument against your own model as an MCP server: list cited anti-Muslim narrative themes and keyword lists, score responses with the same three-judge panel, and gate a release on the result."
   heading="Test your model before it ships">
@@ -85,14 +89,7 @@ const REPO = "https://github.com/Aliserag/Rancor";
   <h3>The loop for builders</h3>
   <p>
     <code>list_themes</code> gives you a cited map of documented anti-Muslim
-    narrative themes: the Runnymede Trust's eight closed views of Islam, the
-    OSCE's six recurring stereotypes, the ISPU's five-trope index, and 32
-    contemporary narratives distilled from GNCI research documents, each
-    cited to document and page though those documents are not yet
-    independently resolvable. It also carries sourced keyword lists: the
-    slurs HateCheck documents for the Muslims target group, the Abid,
-    Farooqi &amp; Zou violence keywords, and the coded catchphrases each
-    theme documents, for lexical screening of prompts and responses.
+    narrative themes and keyword lists, explorable below.
     Write your own test prompts against each theme
     that matters for your product. <code>score_response</code> grades every
     answer with the same fixed three-judge panel and published rubric the
@@ -106,6 +103,124 @@ const REPO = "https://github.com/Aliserag/Rancor";
     come only from graded runs with a manifest, and
     <code>describe_instrument</code> says exactly that in its own output.
   </p>
+
+
+  <h3 id="theme-map">The theme map, explorable</h3>
+  <p class="note">
+    The exact data <code>list_themes</code> serves: {(themes as any).frameworks.length} published
+    frameworks ({fwItemCount} items), {(themes as any).themes.length} contemporary narrative
+    themes distilled from GNCI research, and {kwCount} keywords and coded
+    catchphrases. Every entry cited.
+  </p>
+
+  <div class="fw-row">
+    {(themes as any).frameworks.map((fw: any, i: number) => (
+      <details class="fw" open={i === 0}>
+        <summary>{fw.name} <span class="pill">{fw.items.length}</span></summary>
+        <ul>
+          {fw.items.map((it: any) => (
+            <li><strong>{it.name}.</strong> {it.description}</li>
+          ))}
+        </ul>
+        <p class="cites">
+          {fw.sources.map((src: any) => (
+            <a href={src.url}>{src.cite.split(";")[0]}</a>
+          ))}
+        </p>
+      </details>
+    ))}
+  </div>
+
+  <p class="theme-toolbar">
+    <input id="theme-search" type="search" placeholder="Filter the 32 themes: replacement, taqiyya, refugees…" aria-label="Filter themes" />
+    <span id="theme-count" class="note" aria-live="polite"></span>
+  </p>
+  <div id="theme-grid">
+    {(themes as any).themes.map((t: any) => (
+      <article class="theme-card">
+        <h4>{t.name}</h4>
+        <p>{t.description}</p>
+        <p class="cites">{t.sources.map((src: any) => `${src.doc}, p. ${src.pages}`).join(" · ")}</p>
+      </article>
+    ))}
+  </div>
+  <p class="note">{(themes as any).source_note}</p>
+
+  <h3>Keyword lists for lexical screening</h3>
+  {kwLists.map((l: any) => (
+    <details class="kw">
+      <summary>{l.name} <span class="pill">{l.terms.length}</span></summary>
+      {l.note && <p class="note">{l.note}</p>}
+      <p class="chips">
+        {l.terms.map((t: any) => (
+          <span class="chip">{typeof t === "string" ? t : t.term}</span>
+        ))}
+      </p>
+      {l.sources && (
+        <p class="cites">
+          {l.sources.map((src: any) => <a href={src.url}>{src.cite.split(",")[0]}</a>)}
+        </p>
+      )}
+    </details>
+  ))}
+  <p class="note">{(themes as any).keywords.about}</p>
+
+  <script is:inline>
+    (() => {
+      const input = document.getElementById("theme-search");
+      const count = document.getElementById("theme-count");
+      const cards = [...document.querySelectorAll(".theme-card")];
+      const update = () => {
+        const q = input.value.trim().toLowerCase();
+        let shown = 0;
+        for (const c of cards) {
+          const hit = !q || c.textContent.toLowerCase().includes(q);
+          c.hidden = !hit;
+          if (hit) shown++;
+        }
+        count.textContent = q ? `${shown} of ${cards.length} themes` : "";
+      };
+      input.addEventListener("input", update);
+    })();
+  </script>
+
+  <style>
+    .fw-row { display: grid; gap: 0.6rem; margin: 0 0 1.4rem; }
+    details.fw, details.kw {
+      border: 1px solid var(--rule); border-left: 4px solid var(--accent, #9c2b2b);
+      background: var(--panel); padding: 0.6rem 0.9rem; border-radius: 4px;
+    }
+    details.fw summary, details.kw summary {
+      cursor: pointer; font-weight: 700; font-family: var(--mono); font-size: 0.85rem;
+    }
+    .pill {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--paper);
+      background: var(--ink); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.3rem;
+    }
+    .theme-toolbar { display: flex; align-items: baseline; gap: 0.8rem; margin: 0 0 0.8rem; }
+    #theme-search {
+      flex: 1; max-width: 26rem; font-family: var(--mono); font-size: 0.85rem;
+      padding: 0.45rem 0.6rem; border: 1px solid var(--rule); background: var(--panel);
+      color: var(--ink);
+    }
+    #theme-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+      gap: 0.7rem; margin: 0 0 0.8rem;
+    }
+    .theme-card {
+      border: 1px solid var(--rule); background: var(--panel); border-radius: 4px;
+      padding: 0.7rem 0.85rem;
+    }
+    .theme-card h4 { margin: 0 0 0.35rem; font-size: 0.95rem; }
+    .theme-card p { margin: 0 0 0.4rem; font-size: 0.85rem; line-height: 1.45; }
+    .cites { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin: 0; }
+    .cites a { margin-right: 0.6rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.5rem 0; }
+    .chip {
+      font-family: var(--mono); font-size: 0.75rem; border: 1px solid var(--rule);
+      background: var(--paper); padding: 0.15rem 0.5rem; border-radius: 999px;
+    }
+  </style>
 
   <p class="note">
     Read the source:
