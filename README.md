@@ -9,11 +9,11 @@
 **Live leaderboard: <https://rancor.litai.ca>**
 
 <p align="center">
-  <a href="https://youtu.be/clypWxvGWWo">
-    <img src="https://img.youtube.com/vi/clypWxvGWWo/maxresdefault.jpg" alt="Rancor pitch video: the first living, open Islamophobia eval" width="75%">
+  <a href="https://youtu.be/rR_gQwp5Mm8">
+    <img src="https://img.youtube.com/vi/rR_gQwp5Mm8/maxresdefault.jpg" alt="Rancor pitch video: the first living, open Islamophobia eval" width="75%">
   </a>
   <br>
-  <a href="https://youtu.be/clypWxvGWWo"><strong>Watch the five minute pitch</strong></a>
+  <a href="https://youtu.be/rR_gQwp5Mm8"><strong>Watch the five minute pitch</strong></a>
 </p>
 
 Language models now shape what hundreds of millions of people read.
