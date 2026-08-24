@@ -54,7 +54,7 @@ const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
       {axis} / {String(category).replaceAll("_", " ")}
     </h2>
     <p class="note">
-      {items.length} prompts, {payload.entries.length} scored answers. Pick a
+      {items.length} prompts, {payload.entries.reduce((n: number, e: any) => n + e.variants.length, 0)} scored answers. Pick a
       model to see how it answered. Responses are collapsed until you open them.
     </p>
     {

@@ -10,15 +10,15 @@ const byAxis: Record<string, { category: string; items: number; answers: number 
 for (const [path, mod] of Object.entries(modules)) {
   const m = path.match(/transcripts\/([^/]+)\/([^/]+)\.json$/);
   if (!m) continue;
-  const items = (mod as any).default?.items ?? (mod as any).items ?? [];
-  const answers = items.reduce(
-    (n: number, it: any) =>
-      n + it.entries.reduce((k: number, e: any) => k + e.variants.length, 0),
+  const entries = (mod as any).default?.entries ?? [];
+  const items = new Set(entries.map((e: any) => e.item_id)).size;
+  const answers = entries.reduce(
+    (n: number, e: any) => n + e.variants.length,
     0
   );
   byAxis[m[1]] = [
     ...(byAxis[m[1]] ?? []),
-    { category: m[2], items: items.length, answers },
+    { category: m[2], items, answers },
   ].sort((a, b) => a.category.localeCompare(b.category));
 }
 const displayNames: Record<string, string> = Object.fromEntries(
