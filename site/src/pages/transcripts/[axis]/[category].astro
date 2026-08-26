@@ -59,7 +59,7 @@ const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
     </p>
     {
       items.map((item: any) => (
-        <article class="entry">
+        <article class="entry" id={slug(item.itemId)}>
           <div class="entry-head">
             {defectIds.has(item.itemId) && (
               <span class="role-chip role-artifact" title="Every model floors on this item and every judge agrees; a universal failure is far more likely a broken item than a universal model defect. Kept and disclosed rather than deleted; see the methodology page's published flaws.">

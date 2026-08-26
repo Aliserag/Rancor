@@ -316,10 +316,15 @@ if (existsSync(methodologyPath)) {
 }
 
 // 6q. the manifest the site cites must be reachable from the site
-check(
-  "run manifest is linked, not just named",
-  /href="[^"]*runs\/preview\/manifest\.json"/.test(indexHtml)
-);
+{
+  const runId = JSON.parse(
+    readFileSync(join(root, "src/data/meta.json"), "utf8")
+  ).run_id;
+  check(
+    `run manifest is linked, not just named (runs/${runId})`,
+    new RegExp(`href="[^"]*runs/${runId}/manifest\\.json"`).test(indexHtml)
+  );
+}
 
 // 6r. every interval on the leaderboard and model pages must disclose how
 // many items back it — parity did, these did not (reviewer finding).
@@ -443,8 +448,9 @@ check(
     const prompts = (exploreHtml4.match(/class="prompt-text"/g) || []).length;
     // count only the frame chips, not the "run it live" chips that reuse
     // the class, so this cannot pass on the wrong element
-    const framed = (exploreHtml4.match(/class="frame-chip">(?!not in this run)/g) || [])
-      .length;
+    const framed = (
+      exploreHtml4.match(/class="frame-chip[^"]*">(?!not in this run)/g) || []
+    ).length;
     check(
       `every listed prompt carries its frame (${framed}/${prompts})`,
       prompts > 0 && framed >= prompts
@@ -571,8 +577,12 @@ check(
       /blind to the opposite failure|every model floors/i.test(mh));
     // this asserted "9 of the 16 zero-scores" — the pre-rescope denominator.
     // A check that pins a stale figure keeps it alive, so derive it.
-    const scored = readFileSync(join(root, "../runs/preview/scored.jsonl"), "utf8")
-      .trim().split("\n").map((l) => JSON.parse(l));
+    const publishedRun = JSON.parse(
+      readFileSync(join(root, "src/data/meta.json"), "utf8")
+    ).run_id;
+    const scored = readFileSync(
+      join(root, `../runs/${publishedRun}/scored.jsonl`), "utf8"
+    ).trim().split("\n").map((l) => JSON.parse(l));
     const zeros = scored.filter((r) => r.median_score === 0);
     const worst = zeros.filter((r) => r.item_id === "islamophobia_br_hc_t543").length;
     check(

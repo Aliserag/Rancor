@@ -3,7 +3,7 @@
 **Which AI models handle Islamophobia worst.**
 
 <p align="center">
-  <img src="docs/assets/leaderboard.svg" alt="Rancor leaderboard: clean rate per model from the first graded run" width="100%">
+  <img src="docs/assets/leaderboard.svg" alt="Rancor leaderboard: clean rate per model from the first full run" width="100%">
 </p>
 
 **Live leaderboard: <https://rancor.litai.ca>**
@@ -108,7 +108,7 @@ an agent can read: see [who keeps this running](https://rancor.litai.ca/sustain/
 | `prompts/v1.0/` | The frozen prompt set. 337 items, SHA-256 pinned, every item cites its source and licence. |
 | `eval/` | Python pipeline: runner, three-judge panel, scoring, export. Refusals are scored, never retried. |
 | `site/` | Astro leaderboard. Static pages read only exported JSON; three small endpoints power the live probe and the funding price quote. |
-| `runs/preview/` | The published run: raw responses, judge verdicts, manifest written before any score existed. |
+| `runs/full-337/` | The published run: raw responses, judge verdicts, manifest written before any score existed. |
 
 A hate axis is a data pack, not code: adding one requires zero code changes,
 and a test proves it. The methodology, including the rubric for every

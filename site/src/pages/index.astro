@@ -287,7 +287,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
               <span class="role-chip role-artifact">known instrument defect</span>
             )}
             <span class="item-id">{h.item_id}</span>
-            <a href={`/transcripts/${h.axis}/${h.category}/`}>view transcript →</a>
+            <a href={`/transcripts/${h.axis}/${h.category}/#${h.item_id.replace(/[^a-zA-Z0-9]/g, "-")}`}>view transcript →</a>
           </div>
         ))}
       </section>
@@ -308,11 +308,13 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
         <strong>
           Treat that as a lead, not a result:
         </strong>
-        {" "}{findings.separated_pairs.length} of ten model pairs separate this way.
-        At 95% intervals roughly one apparent separation in twenty is what
-        chance alone would produce, so {findings.separated_pairs.length} is a
-        signal rather than noise. We still do not correct for multiple
-        comparisons, and we would rather say that than overstate it.
+        {" "}{findings.separated_pairs.length} of ten model pairs separate on
+        <em>Handling</em>, the rubric average that sets the rank; the clean-rate
+        column separates {boards[axes[0].axis_id].separated.length}. At 95%
+        intervals roughly one apparent separation in twenty is what chance alone
+        would produce, so these are signal rather than noise. We still do not
+        correct for multiple comparisons, and we would rather say that than
+        overstate it.
       </p>
     ) : (
       <p>
@@ -393,8 +395,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       than the headline scores use, but it is <em>not</em> independent of the
       sample: those responses come from the same 337 items. So each rate
       also shows how many distinct prompts stand behind it;
-      where that number is small the rate is fragile, and GPT's refusal rate
-      rests on a single prompt.
+      where that number is small the rate is fragile.
     </p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Model scores, scrollable">
       <table class="ledger">
@@ -459,8 +460,10 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       )}
       {" "}The last column is the check on the second: a majority of zero does
       not mean no judge ever saw it. And <em>violent</em>, the most severe
-      label in the taxonomy, is folded into the stereotyped column; none
-      occurred in this run, but it has no column of its own.
+      label in the taxonomy, is folded into the stereotyped column rather
+      than getting one of its own:
+      {" "}{findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0)}
+      {" "}majority-violent {findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0) === 1 ? "record" : "records"} in this run.
     </p>
 
     {findings.unanimous_failures.length > 0 && (

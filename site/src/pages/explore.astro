@@ -165,10 +165,17 @@ const examples = [
         {gradedCount} of these {totalCount} prompts were graded in the
         published run
       </strong>{" "}
-      and are listed first in each category, marked <em>graded</em>. The other
-      {" "}{totalCount - gradedCount} were not drawn by this run's sample.
-      Every one runs against all five models right now, live, scored by the
-      same three-judge panel: that is what the button does.
+      {gradedCount < totalCount ? (
+        <>
+          {" "}and are listed first in each category, marked <em>graded</em>.
+          The other {totalCount - gradedCount} were not drawn by this run's
+          sample.
+        </>
+      ) : (
+        <>{" "}— every prompt in the frozen set.</>
+      )}
+      {" "}Every one runs against all five models right now, live, scored by
+      the same three-judge panel: that is what the button does.
     </p>
     {
       Object.entries(byAxisCategory).map(([axis, cats]) => (
@@ -193,14 +200,10 @@ const examples = [
                       worst string on this site to screenshot */}
                   <span
                     class={`frame-chip${
-                      item.frame === "Generation request (refusal probe)"
-                        ? " frame-probe"
-                        : ""
+                      /refusal probe/i.test(item.frame) ? " frame-probe" : ""
                     }`}
                   >
-                    {item.frame === "Generation request (refusal probe)"
-                      ? "refusal probe: does the model decline?"
-                      : item.frame}
+                    {item.frame}
                   </span>
                   <p class="prompt-text">
                     {item.groups.length

@@ -147,7 +147,7 @@ published preview shipped with 25 records queued and none graded by a human;
 this CLI is how you grade them:
 
 ```bash
-python -m rancor.adjudicate runs/preview
+python -m rancor.adjudicate runs/full-337
 ```
 
 It shows you the prompt, the model's response and all three judges' reasoning,
@@ -160,7 +160,7 @@ It never spends money. Grades are applied by rewriting the medians from the
 overrides file and the verdicts already on disk (`--apply-only` does just that
 step). Re-running the judges would also work, since the verdict cache means it
 does not re-bill, but nobody grading fifty records should be one config slip
-away from an API call. Publish with `python -m rancor.export runs/preview`.
+away from an API call. Publish with `python -m rancor.export runs/full-337`.
 
 An override sets `median_source: human_override` and is counted separately in
 the exported methodology data, so the site can always say how much of a run a
@@ -172,6 +172,6 @@ replaces the median, it does not erase what the panel said.
 Scores are meant to be arguable. Open an issue with the item ID, the model, and
 the judge rationales you disagree with; all three are published on the
 transcript page for that item. A judged item whose panel disagreed by more than
-one rubric point is already queued in `runs/preview/review_queue.csv`; a human
+one rubric point is already queued in `runs/full-337/review_queue.csv`; a human
 grade added to `review_overrides.csv` replaces the median and is recorded as
 `human_override` in the exported data.

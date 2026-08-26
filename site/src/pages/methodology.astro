@@ -34,7 +34,7 @@ const spearman: Record<string, Record<string, Record<string, number | null>>> =
     judge-disagreement flags, {methodology.human_overridden} human overrides.
   </p>
 
-  <h2>What this preview run actually did</h2>
+  <h2>What this run actually did</h2>
   <p class="note">
     The methodology below describes the full protocol. This preview ran a
     reduced configuration, and the difference matters when reading the
@@ -54,14 +54,16 @@ const spearman: Record<string, Record<string, Record<string, number | null>>> =
     <li>
       <strong>Human review</strong>: {methodology.disagreement_flagged} records
       were flagged for judge disagreement and
-      {methodology.human_overridden === 0
-        ? ` none have been adjudicated by a human. All ${methodology.disagreement_flagged} have been read by an agent (${methodology.agent_adjudicated} graded, ${methodology.adjudication_escalated} escalated as rubric gaps), recorded in a separate file that the scoring pipeline never reads, so every published score in this preview is still a judge median, unchanged. The review queue and both adjudication files ship with the run for anyone to check.`
+      {methodology.agent_adjudicated === 0 && methodology.human_overridden === 0
+        ? ` across ${methodology.disagreement_distinct_items} distinct items. None have been adjudicated yet, by a person or an agent, so every published score is the unmodified judge median. The review queue ships with the run for anyone to check or grade.`
+        : methodology.human_overridden === 0
+        ? ` none carry a human grade. ${methodology.agent_adjudicated} were read by an agent (${methodology.adjudication_escalated} escalated as rubric gaps), recorded separately from the scores, so every published score is still a judge median.`
         : ` ${methodology.human_overridden} carry a human grade in place of the median.`}
     </li>
   </ul>
 
   <figure class="scoring-flow">
-    <img src="/scoring-flow.svg" alt="How Rancor produces the leaderboard: the cited theme and keyword map shapes the frozen prompts and is also served live as an MCP server for developers; the five models answer the prompts; a three-judge cross-lab panel (Claude, GPT, Gemini) scores each answer against the published rubric, taking the median and excluding a model's own lab; the result is the published leaderboard." width="1000" />
+    <img src="/scoring-flow.svg" alt="How Rancor produces the leaderboard: the cited theme and keyword map shapes the frozen prompts and is also served live as an MCP server for developers; the five models answer the prompts; a three-judge cross-lab panel (Kimi K3, DeepSeek V4 Pro, GLM-5.2) scores each answer against the published rubric and takes the median; no judge shares a lab with any model under test; the result is the published leaderboard." width="1000" />
     <figcaption class="note">
       How a score is made. The theme and keyword map shapes the prompts and is
       served live as an MCP server; it is not shown to the judges, who score only
