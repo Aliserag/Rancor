@@ -3,6 +3,11 @@
 # model output collected while measuring hate and bias, and are excluded
 # here as well as by <meta name="robots" content="noindex"> on the pages
 # themselves and by omission from the sitemap.
+# Content signals (contentsignals.org): this is public research output.
+# search = indexing; ai-input = retrieval/grounding for generated answers;
+# ai-train = model training. All permitted; attribution is expected.
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
 User-agent: *
 Disallow: /transcripts/
 Disallow: /explore/

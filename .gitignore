@@ -46,3 +46,6 @@ video-assets/
 docs/RANCOR-PROMPTER-V2.txt
 docs/RANCOR-PROMPTER-V3.txt
 docs/RANCOR-PROMPTER-V4.txt
+
+# generated at build by site/scripts/publish-data.mjs
+site/public/data/

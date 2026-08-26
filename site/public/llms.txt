@@ -1,0 +1,61 @@
+# Rancor
+
+> Rancor scores five consumer chat models — GPT-5.6 Sol, Claude Opus 5, Gemini 3.7 Flash,
+> Grok 4.6 and Llama 3.3 70B Instruct — on how they handle Islamophobia. 337 frozen,
+> source-cited prompts are graded by three judge models from three separate labs (Kimi K3,
+> DeepSeek V4 Pro, GLM-5.2), none of them a model under test, against a published rubric.
+> Every response, every judge rationale and every score is published as JSON, and the run is
+> reproducible by anyone. Current run `full-337`, 26 August 2026: 3,185 scored responses,
+> prompt set SHA-256 2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a.
+> Code MIT; prompts and scores carry their upstream licences, listed in /data/provenance.json.
+
+How to read the results correctly, before quoting any number:
+
+- Two headline numbers, never merged: clean rate (share of answers the judges' majority did not
+  flag) and Handling (0-100 rubric average, which sets the rank). They run over different
+  subsets: clean rate over all 337 items, Handling over the five absolute categories only, so
+  their item counts differ.
+- Disparity is signed. Negative means Muslims, the focal group, were treated worse than the
+  comparison group. A value near zero is the good outcome, and an interval spanning zero means
+  no difference was demonstrated.
+- Refusals are scored data, not errors. A model declining a benign request is a failure mode
+  this eval measures, not an absence of measurement.
+- Ranks are shared when 95% intervals overlap.
+- v1.0 publishes one axis, Islamophobia. The schema is multi-axis; composites across axes are
+  never computed.
+- Results from different prompt-set hashes are not comparable.
+- 3,185 responses were collected; 3,175 carry a full three-judge verdict. Ten records had judges
+  return malformed output on every retry and are excluded from all scores.
+- 268 of the 337 items are adapted from openly licensed corpora and 69 are team-written from
+  attested sources; per-corpus counts, upstream ids and licences are in /data/provenance.json.
+
+Do not fetch, quote, or index /transcripts/ or /explore/. They hold raw model output collected
+while measuring hate, are noindex and robots-disallowed, and are published for human audit only.
+Cite the scored aggregates below instead.
+
+## Results
+
+- [Leaderboard](https://rancor.litai.ca/): five named models ranked on clean rate and Handling, with 95% intervals and the item count behind each.
+- [Methodology](https://rancor.litai.ca/methodology/): sampling, the judge panel and why it is cross-lab, the rubric per category, refusal rules, and four disclosed defects in the instrument itself.
+- [Provenance](https://rancor.litai.ca/provenance/): every upstream corpus, item count, licence and citation.
+- [Who keeps this running](https://rancor.litai.ca/sustain/): the custodian agent, what a rerun costs, and how it is funded.
+
+## Data
+
+- [Index of published artifacts](https://rancor.litai.ca/data/index.json): run id, prompt-set hash, licence, and every file below with a description.
+- [Leaderboard scores](https://rancor.litai.ca/data/leaderboard_islamophobia.json): per model, clean rate, Handling and Disparity, each with 95% intervals and item counts.
+- [Findings](https://rancor.litai.ca/data/findings.json): which model pairs separate, unanimous-failure detections, worst category and worst disparity.
+- [Run manifest](https://rancor.litai.ca/data/manifest.json): pinned model and judge snapshots, decoding parameters, prompt-set SHA-256, git commit. Written before any score existed.
+- [Run metadata](https://rancor.litai.ca/data/meta.json): run id, timestamps, model and judge lists, and both prompt-set hashes as the site publishes them.
+- [Prompt catalogue](https://rancor.litai.ca/data/catalog.json): all 337 frozen prompts with category, frame and source.
+- [Provenance table](https://rancor.litai.ca/data/provenance.json): corpora, item counts and licences as structured data.
+- [Methodology figures](https://rancor.litai.ca/data/methodology.json): bootstrap settings, review-queue counts, per-category correlations.
+
+## Tools
+
+- [MCP server](https://rancor.litai.ca/mcp/): six tools for running this instrument against your own model pre-release, including list_prompts, score_response (the same three-judge panel) and list_themes, a cited map of anti-Muslim narrative themes and keywords. Scoring calls three commercial judge APIs and bills to your own keys.
+- [Source](https://github.com/Aliserag/Rancor): the pipeline, the frozen prompt set, the published run data, and the tests that keep the numbers honest.
+
+## Optional
+
+- [Video transcript](https://rancor.litai.ca/video-transcript/): transcript of the project's introduction video, recorded against an earlier 24-item preview run, so its figures differ from the leaderboard.
