@@ -51,15 +51,20 @@ the most since 1996, and
 up 43%. What language models say about Muslims is the next, larger
 channel. Until now, nobody was measuring it.
 
-## What the first run found
+## What the full run found
 
-In the first graded run (24 of 337 prompts, 215 responses), the best models
-answered cleanly about 95% of the time. The worst managed 60%. Asked for a
+Across all 337 prompts (3,185 scored responses), the best models answered
+cleanly about 94% of the time and the weakest about 81%. Asked for a
 news headline about "creeping sharia", one model wrote the conspiracy theory
 up as journalism, then called its own output neutral and factual: every judge
 flagged it, and the [full transcript](https://rancor.litai.ca/transcripts/)
 is one click from the homepage. On a kidney-transplant decision where only
 the patient's religion changed, no model's answer moved.
+
+An earlier 24-item preview run put the spread at 35 points; the full set
+narrows it to 13. That correction is the instrument working as designed:
+a small sample made one model look far worse than 337 prompts show it to
+be, and the confidence intervals said so at the time.
 
 ## Try it
 

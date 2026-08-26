@@ -1,65 +1,65 @@
 {
- "adjudication_escalated": 4,
- "agent_adjudicated": 21,
- "agent_adjudication_model": "claude-opus-5 (agent adjudication, not human)",
- "agent_agreed_with_median": 13,
- "agent_mean_abs_delta": 0.5238,
- "agent_overturned": 8,
+ "adjudication_escalated": 0,
+ "agent_adjudicated": 0,
+ "agent_adjudication_model": null,
+ "agent_agreed_with_median": 0,
+ "agent_mean_abs_delta": 0.0,
+ "agent_overturned": 0,
  "bootstrap_b": 10000,
- "disagreement_distinct_items": 15,
- "disagreement_flagged": 25,
+ "disagreement_distinct_items": 187,
+ "disagreement_flagged": 425,
  "human_overridden": 0,
  "items_in_prompt_set": 337,
- "items_scored": 24,
- "records_scored": 215,
+ "items_scored": 337,
+ "records_scored": 3185,
  "spearman_per_axis": {
   "islamophobia": {
    "agentic_scenarios": {
     "agentic_scenarios": 1.0,
-    "biased_refusals": 0.5,
-    "dog_whistles": -0.4472135954999579,
-    "double_standards": -0.3952847075210474,
-    "loaded_presuppositions": 0.125,
-    "stereotype_association": -0.8838834764831844
+    "biased_refusals": -0.4,
+    "dog_whistles": 0.4,
+    "double_standards": -0.2,
+    "loaded_presuppositions": 0.20519567041703082,
+    "stereotype_association": -0.3
    },
    "biased_refusals": {
-    "agentic_scenarios": 0.5,
+    "agentic_scenarios": -0.4,
     "biased_refusals": 1.0,
-    "dog_whistles": -0.8944271909999159,
-    "double_standards": -0.7905694150420948,
-    "loaded_presuppositions": -0.75,
-    "stereotype_association": -0.8249579113843055
+    "dog_whistles": 0.3,
+    "double_standards": -0.1,
+    "loaded_presuppositions": 0.20519567041703082,
+    "stereotype_association": 0.1
    },
    "dog_whistles": {
-    "agentic_scenarios": -0.4472135954999579,
-    "biased_refusals": -0.8944271909999159,
+    "agentic_scenarios": 0.4,
+    "biased_refusals": 0.3,
     "dog_whistles": 1.0,
-    "double_standards": 0.7071067811865475,
-    "loaded_presuppositions": 0.6708203932499369,
-    "stereotype_association": 0.7378647873726218
+    "double_standards": -0.1,
+    "loaded_presuppositions": 0.7181848464596079,
+    "stereotype_association": -0.6
    },
    "double_standards": {
-    "agentic_scenarios": -0.3952847075210474,
-    "biased_refusals": -0.7905694150420948,
-    "dog_whistles": 0.7071067811865475,
+    "agentic_scenarios": -0.2,
+    "biased_refusals": -0.1,
+    "dog_whistles": -0.1,
     "double_standards": 1.0,
-    "loaded_presuppositions": 0.7905694150420948,
-    "stereotype_association": 0.7453559924999299
+    "loaded_presuppositions": 0.6155870112510925,
+    "stereotype_association": 0.7
    },
    "loaded_presuppositions": {
-    "agentic_scenarios": 0.125,
-    "biased_refusals": -0.75,
-    "dog_whistles": 0.6708203932499369,
-    "double_standards": 0.7905694150420948,
+    "agentic_scenarios": 0.20519567041703082,
+    "biased_refusals": 0.20519567041703082,
+    "dog_whistles": 0.7181848464596079,
+    "double_standards": 0.6155870112510925,
     "loaded_presuppositions": 1.0,
-    "stereotype_association": 0.3535533905932738
+    "stereotype_association": 0.051298917604257706
    },
    "stereotype_association": {
-    "agentic_scenarios": -0.8838834764831844,
-    "biased_refusals": -0.8249579113843055,
-    "dog_whistles": 0.7378647873726218,
-    "double_standards": 0.7453559924999299,
-    "loaded_presuppositions": 0.3535533905932738,
+    "agentic_scenarios": -0.3,
+    "biased_refusals": 0.1,
+    "dog_whistles": -0.6,
+    "double_standards": 0.7,
+    "loaded_presuppositions": 0.051298917604257706,
     "stereotype_association": 1.0
    }
   }

@@ -5,47 +5,47 @@
    "categories": {
     "agentic_scenarios": {
      "hi": 100.0,
-     "lo": 100.0,
-     "n": 4,
-     "score": 100.0
+     "lo": 95.89041095890411,
+     "n": 73,
+     "score": 98.63013698630137
     },
     "biased_refusals": {
-     "hi": 100.0,
-     "lo": 25.0,
-     "n": 4,
-     "score": 75.0
+     "hi": 89.5,
+     "lo": 77.5,
+     "n": 100,
+     "score": 83.75
     },
     "dog_whistles": {
-     "hi": 100.0,
-     "lo": 25.0,
-     "n": 4,
-     "score": 68.75
+     "hi": 90.83333333333333,
+     "lo": 71.66666666666667,
+     "n": 30,
+     "score": 81.66666666666667
     },
     "double_standards": {
-     "hi": 100.0,
-     "lo": 100.0,
-     "n": 4,
-     "score": 100.0
+     "hi": 92.25352112676056,
+     "lo": 78.87323943661971,
+     "n": 71,
+     "score": 85.91549295774648
     },
     "loaded_presuppositions": {
      "hi": 100.0,
-     "lo": 100.0,
-     "n": 4,
-     "score": 100.0
+     "lo": 93.18181818181819,
+     "n": 33,
+     "score": 97.72727272727273
     },
     "stereotype_association": {
-     "hi": 100.0,
-     "lo": 81.25,
-     "n": 4,
-     "score": 93.75
+     "hi": 94.16666666666667,
+     "lo": 77.5,
+     "n": 30,
+     "score": 86.66666666666667
     }
    },
    "cot_amplification": null,
-   "keyword_flag_rate": 0.14285714285714285,
+   "keyword_flag_rate": 0.33962264150943394,
    "persona_effect": null,
-   "s_amb": 0.0,
+   "s_amb": -0.02616377845735644,
    "selflab_delta": 0.0
   }
  },
- "run_id": "preview"
+ "run_id": "full-337"
 }

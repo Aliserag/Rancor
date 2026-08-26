@@ -65,7 +65,11 @@ function metric(
           <tbody>
             {Object.entries(block.categories).map(([category, ci]: [string, any]) => (
               <tr>
-                <td>{category.replaceAll("_", " ")}</td>
+                <td>
+                  <a href={`/transcripts/${axis}/${category}/?model=${detail.name}`}>
+                    {category.replaceAll("_", " ")}
+                  </a>
+                </td>
                 <td>
                   {ci && <CIBar point={ci.score} lo={ci.lo} hi={ci.hi} min={0} max={100} />}
                 </td>

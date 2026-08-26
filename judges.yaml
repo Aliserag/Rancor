@@ -1,20 +1,37 @@
-# Fixed 3-judge panel (SPEC §5): one Claude, one GPT, one Gemini —
-# identical panel for every model under test. Pinned 2026-08-18, routed
-# via OpenRouter (fallbacks disabled; see models.yaml note). Each judge
-# is deliberately a DIFFERENT model than its lab's model-under-test, and
-# self-lab exclusion (via `lab`) is computed on top of that.
-# Dry-run judging uses these names/labs with deterministic fixture
-# verdicts (labeled fixture, never real model output).
+# Fixed 3-judge panel (SPEC §5): identical panel for every model under
+# test. Re-pinned 2026-08-25 for the full 337-item run.
+#
+# This panel is three OPEN models from three different labs, served over
+# Baseten's OpenAI-compatible model API. The cross-lab property is
+# unchanged (Moonshot / DeepSeek / Z.ai), and each judge is a different
+# model than every model under test, so self-lab exclusion still applies.
+#
+# Why the change: judging on this panel costs nothing, which is what
+# makes a full 337-item rerun affordable on donations rather than a
+# grant. The frontier panel used by the published preview run is kept
+# verbatim in judges.preview-panel.yaml and recorded in that run's own
+# manifest, so the earlier board remains reproducible exactly as graded.
+#
+# Keys are read from the environment at call time (api_key_env); no
+# secret belongs in this file (standing rule 2).
 judges:
-  - name: judge_claude
-    lab: anthropic
-    litellm_id: openrouter/anthropic/claude-sonnet-5
-    snapshot_id: claude-sonnet-5
-  - name: judge_gpt
-    lab: openai
-    litellm_id: openrouter/openai/gpt-5.6-terra
-    snapshot_id: gpt-5.6-terra
-  - name: judge_gemini
-    lab: google
-    litellm_id: openrouter/google/gemini-3.6-flash
-    snapshot_id: gemini-3.6-flash
+  - name: judge_kimi
+    lab: moonshot
+    litellm_id: openai/moonshotai/Kimi-K3
+    snapshot_id: Kimi-K3
+    api_base: https://inference.baseten.co/v1
+    api_key_env: BASETEN_API_KEY
+  - name: judge_deepseek
+    lab: deepseek
+    litellm_id: openai/deepseek-ai/DeepSeek-V4-Pro
+    snapshot_id: DeepSeek-V4-Pro
+    api_base: https://inference.baseten.co/v1
+    api_key_env: BASETEN_API_KEY
+  - name: judge_glm
+    lab: zai
+    litellm_id: openai/zai-org/GLM-5.2
+    snapshot_id: GLM-5.2
+    api_base: https://inference.baseten.co/v1
+    api_key_env: BASETEN_API_KEY
+    # GLM rejects effort "low"; "none" keeps judging deterministic and fast
+    reasoning_effort: none

@@ -300,7 +300,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
     <h2>What this run found</h2>
     {findings.any_separation ? (
       <p>
-        <strong>Two models did separate.</strong> On
+        <strong>Models did separate.</strong> On
         {" "}{findings.separated_pairs[0].axis}, <strong>{findings.separated_pairs[0].worse}</strong>
         {" "}scored {findings.separated_pairs[0].gap.toFixed(1)} points below
         {" "}<strong>{findings.separated_pairs[0].better}</strong>, far enough apart that their
@@ -308,13 +308,11 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
         <strong>
           Treat that as a lead, not a result:
         </strong>
-        {" "}it is one separated pair out of ten model pairs, and at 95% intervals
-        roughly one apparent
-        separation in twenty is what you would expect from chance alone. We do
-        not correct for multiple comparisons, and at this sample size we would
-        rather say so than bank the finding.
-        {findings.separated_pairs.length > 1 &&
-          ` ${findings.separated_pairs.length} such pairs separated in total.`}
+        {" "}{findings.separated_pairs.length} of ten model pairs separate this way.
+        At 95% intervals roughly one apparent separation in twenty is what
+        chance alone would produce, so {findings.separated_pairs.length} is a
+        signal rather than noise. We still do not correct for multiple
+        comparisons, and we would rather say that than overstate it.
       </p>
     ) : (
       <p>
@@ -337,8 +335,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
           the 0 to 100 rubric average that sets the rank. Every pair's 95%
           intervals overlap there, so the table shares the rank rather than
           printing an order it cannot defend. The clean-rate column does
-          separate three pairs; Handling does not. A larger run would answer
-          both questions.
+          separate four pairs; Handling does not.
         </dd>
       </dl>
     )}
@@ -394,7 +391,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       and scores 0 to 1. Rates below are
       over every scored response for that model. That is a bigger denominator
       than the headline scores use, but it is <em>not</em> independent of the
-      sample: those 215 responses come from the same 24 items. So each rate
+      sample: those responses come from the same 337 items. So each rate
       also shows how many distinct prompts stand behind it;
       where that number is small the rate is fragile, and GPT's refusal rate
       rests on a single prompt.

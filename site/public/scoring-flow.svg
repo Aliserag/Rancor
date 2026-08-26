@@ -67,10 +67,10 @@
     <rect x="240" y="388" width="360" height="140" rx="6" fill="#fdfbf5" stroke="#e9e2d4" stroke-width="2"/>
     <rect x="240" y="388" width="360" height="5" rx="2.5" fill="#9c2b2b"/>
     <text x="420" y="418" text-anchor="middle" class="sf-h">THREE-JUDGE PANEL</text>
-    <text x="420" y="443" text-anchor="middle" class="sf-l">Claude &#183; GPT &#183; Gemini, three different labs</text>
+    <text x="420" y="443" text-anchor="middle" class="sf-l">Kimi &#183; DeepSeek &#183; GLM, three different labs</text>
     <text x="420" y="464" text-anchor="middle" class="sf-l">each scores against the published rubric</text>
     <text x="420" y="485" text-anchor="middle" class="sf-l">score = median of three; disagreements go to review</text>
-    <text x="420" y="509" text-anchor="middle" class="sf-lbl">a model is never scored by its own lab's judge</text>
+    <text x="420" y="509" text-anchor="middle" class="sf-lbl">no judge shares a lab with any model under test</text>
   </g>
 
   <!-- PANEL -> LEADERBOARD -->

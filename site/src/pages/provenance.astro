@@ -145,15 +145,14 @@ const teamWritten = provenance.frames.find(
     yourself in one command.
   </p>
 
-  <h3>Two hashes, and why they differ</h3>
+  <h3>One hash</h3>
   <p>
-    The footer of every page pins the prompt set <em>as the published run
-    graded it</em> ({meta.run_prompt_set_sha256.slice(0, 12)}…). This page pins
-    the set <em>as released</em> ({meta.prompt_set_sha256.slice(0, 12)}…): after the run, the set grew
-    from 211 to 337 islamophobia items and a second, unused axis was removed,
-    so the two serializations hash differently. Every graded item's text is
-    byte-identical in both; the run manifest's
-    <code>derived_from</code> note records exactly this.
+    This run graded the frozen set as released
+    ({meta.prompt_set_sha256.slice(0, 12)}…). The footer hash and the hash on
+    this page are the same value: unlike the earlier preview, which was
+    collected before the set finished growing, every item this run scored is
+    in the released set exactly as published. Clone the repository and
+    recompute to verify.
   </p>
 
   <h3>GNCI-supplied scenarios</h3>

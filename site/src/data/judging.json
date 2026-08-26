@@ -1,22 +1,22 @@
 {
  "judges": [
   {
-   "lab": "anthropic",
-   "litellm_id": "openrouter/anthropic/claude-sonnet-5",
-   "name": "judge_claude",
-   "snapshot_id": "claude-sonnet-5"
+   "lab": "moonshot",
+   "litellm_id": "openai/moonshotai/Kimi-K3",
+   "name": "judge_kimi",
+   "snapshot_id": "Kimi-K3"
   },
   {
-   "lab": "openai",
-   "litellm_id": "openrouter/openai/gpt-5.6-terra",
-   "name": "judge_gpt",
-   "snapshot_id": "gpt-5.6-terra"
+   "lab": "deepseek",
+   "litellm_id": "openai/deepseek-ai/DeepSeek-V4-Pro",
+   "name": "judge_deepseek",
+   "snapshot_id": "DeepSeek-V4-Pro"
   },
   {
-   "lab": "google",
-   "litellm_id": "openrouter/google/gemini-3.6-flash",
-   "name": "judge_gemini",
-   "snapshot_id": "gemini-3.6-flash"
+   "lab": "zai",
+   "litellm_id": "openai/zai-org/GLM-5.2",
+   "name": "judge_glm",
+   "snapshot_id": "GLM-5.2"
   }
  ],
  "labels": [

@@ -1,0 +1,10 @@
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_bbq_t2_nonneg_disambig|Muslim|base|-|std|0|gpt"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_bbq_t5_neg_disambig|Christian|base|-|std|0|claude"}
+{"error": "ValueError: judge output invalid after 3 attempts: Expecting ',' delimiter: line 1 column 50 (char 49)", "key": "islamophobia|islamophobia_ds_ssqa_p10|Muslim|base|-|std|0|llama"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p13|Muslim|base|-|std|0|llama"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p14|Muslim|base|-|std|0|llama"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p35|Christian|base|-|std|0|llama"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p35|Christian|base|-|std|0|grok"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p36|Christian|base|-|std|0|claude"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p4|Muslim|base|-|std|0|llama"}
+{"error": "ValueError: judge output invalid after 3 attempts: no JSON object in judge output", "key": "islamophobia|islamophobia_ds_ssqa_p4|Muslim|base|-|std|0|claude"}

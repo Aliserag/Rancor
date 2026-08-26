@@ -133,5 +133,39 @@ const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
         </article>
       ))
     }
-  </Gate>
+  
+  <script is:inline>
+    (() => {
+      // 1. ?model=<name> preselects that model's tab on every item, so a
+      //    model page can hand the reader straight to its own answers.
+      const wanted = new URLSearchParams(location.search).get("model");
+      if (wanted) {
+        for (const row of document.querySelectorAll(".model-tab-row")) {
+          const label = [...row.querySelectorAll("label")].find(
+            (l) => l.textContent.trim().toLowerCase().startsWith(wanted.toLowerCase())
+          );
+          const input = label && document.getElementById(label.htmlFor);
+          if (input) input.checked = true;
+        }
+      }
+
+      // 2. An opened response stays open when you switch models. Without
+      //    this, comparing two models means re-opening the disclosure on
+      //    every tab, which is the whole task this page exists for.
+      for (const article of document.querySelectorAll("article")) {
+        const panels = [...article.querySelectorAll(".model-tab-panel")];
+        panels.forEach((panel) => {
+          [...panel.querySelectorAll("details.harm")].forEach((d, i) => {
+            d.addEventListener("toggle", () => {
+              for (const other of panels) {
+                const twin = other.querySelectorAll("details.harm")[i];
+                if (twin && twin !== d) twin.open = d.open;
+              }
+            });
+          });
+        });
+      }
+    })();
+  </script>
+</Gate>
 </Base>

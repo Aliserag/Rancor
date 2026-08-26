@@ -259,6 +259,8 @@ def completion_with_retry(
     temperature: float,
     max_tokens: int,
     extra_body: dict | None = None,
+    api_base: str | None = None,
+    api_key: str | None = None,
 ) -> str:
     """One real API call via LiteLLM; bounded, jittered retry on transport
     errors only. A response containing a refusal is a COMPLETED record —
@@ -282,6 +284,15 @@ def completion_with_retry(
         # never let the router silently substitute a different backend
         body.setdefault("provider", {"allow_fallbacks": False})
     extra: dict = {"extra_body": body} if body else {}
+    if api_base:
+        # custom OpenAI-compatible host: never let the OpenRouter
+        # fallback-guard leak into a non-OpenRouter request
+        extra.pop("extra_body", None)
+        if body and "reasoning" in body:
+            extra["extra_body"] = {"reasoning": body["reasoning"]}
+        extra["api_base"] = api_base
+    if api_key:
+        extra["api_key"] = api_key
     last_error: Exception | None = None
     for attempt in range(MAX_TRANSPORT_RETRIES):
         try:

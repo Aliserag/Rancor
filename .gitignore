@@ -22,6 +22,10 @@ runs/*
 !runs/preview/
 runs/preview/judge_cache.jsonl
 runs/preview/run.db
+!runs/full-337/
+runs/full-337/judge_cache.jsonl
+runs/full-337/run.db
+runs/full-337/usage.json
 
 # OS
 .DS_Store

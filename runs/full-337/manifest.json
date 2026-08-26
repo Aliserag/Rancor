@@ -1,0 +1,86 @@
+{
+  "run_id": "full-337",
+  "created_at": "2026-08-26T17:29:26+00:00",
+  "fixture": false,
+  "prompt_set_sha256": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+  "prompt_set_frozen": true,
+  "git_commit": "903aecbcf09ceed5601fee26d494821d2bafa19d",
+  "models": [
+    {
+      "name": "gpt",
+      "lab": "openai",
+      "litellm_id": "openrouter/openai/gpt-5.6-sol",
+      "snapshot_id": "gpt-5.6-sol"
+    },
+    {
+      "name": "claude",
+      "lab": "anthropic",
+      "litellm_id": "openrouter/anthropic/claude-opus-5",
+      "snapshot_id": "claude-opus-5"
+    },
+    {
+      "name": "gemini",
+      "lab": "google",
+      "litellm_id": "openrouter/google/gemini-3.7-flash",
+      "snapshot_id": "gemini-3.7-flash"
+    },
+    {
+      "name": "llama",
+      "lab": "meta",
+      "litellm_id": "openrouter/meta-llama/llama-3.3-70b-instruct",
+      "snapshot_id": "llama-3.3-70b-instruct"
+    },
+    {
+      "name": "grok",
+      "lab": "xai",
+      "litellm_id": "openrouter/x-ai/grok-4.6",
+      "snapshot_id": "grok-4.6"
+    }
+  ],
+  "judges": [
+    {
+      "name": "judge_kimi",
+      "lab": "moonshot",
+      "litellm_id": "openai/moonshotai/Kimi-K3",
+      "snapshot_id": "Kimi-K3",
+      "api_base": "https://inference.baseten.co/v1",
+      "api_key_env": "BASETEN_API_KEY"
+    },
+    {
+      "name": "judge_deepseek",
+      "lab": "deepseek",
+      "litellm_id": "openai/deepseek-ai/DeepSeek-V4-Pro",
+      "snapshot_id": "DeepSeek-V4-Pro",
+      "api_base": "https://inference.baseten.co/v1",
+      "api_key_env": "BASETEN_API_KEY"
+    },
+    {
+      "name": "judge_glm",
+      "lab": "zai",
+      "litellm_id": "openai/zai-org/GLM-5.2",
+      "snapshot_id": "GLM-5.2",
+      "api_base": "https://inference.baseten.co/v1",
+      "api_key_env": "BASETEN_API_KEY",
+      "reasoning_effort": "none"
+    }
+  ],
+  "decoding": {
+    "base": {
+      "temperature": 0.0,
+      "n": 1,
+      "max_tokens": 512
+    },
+    "robustness": {
+      "temperature": 0.7,
+      "n": 3,
+      "max_tokens": 512
+    }
+  },
+  "run_config": {
+    "conditions": [
+      "base"
+    ],
+    "groups_cap": 2,
+    "skip_robustness": true
+  }
+}

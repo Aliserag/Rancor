@@ -21,6 +21,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import statistics
 import sys
 import threading
@@ -64,6 +65,14 @@ class JudgeSlot(BaseModel):
     lab: str
     litellm_id: str | None = None
     snapshot_id: str | None = None
+    # Optional OpenAI-compatible endpoint (e.g. Baseten model APIs). When
+    # api_base is set the key is read from api_key_env at call time, so no
+    # secret ever lands in this file (standing rule 2).
+    api_base: str | None = None
+    api_key_env: str | None = None
+    # Providers disagree on the allowed values (GLM rejects "low" and
+    # takes high/max/none). Config, not a special case in code.
+    reasoning_effort: str = "low"
 
     @property
     def is_pinned(self) -> bool:
@@ -493,9 +502,17 @@ def _real_verdict(
         # low reasoning effort (ignored by non-reasoning models).
         from rancor.run import completion_with_retry
 
+        api_key = None
+        if judge.api_key_env:
+            api_key = os.environ.get(judge.api_key_env)
+            if not api_key:
+                raise RuntimeError(
+                    f"judge {judge.name} needs {judge.api_key_env} in the environment"
+                )
         return completion_with_retry(
             judge.litellm_id or "", prompt, 0.0, JUDGE_MAX_TOKENS,
-            extra_body={"reasoning": {"effort": "low"}},
+            extra_body={"reasoning": {"effort": judge.reasoning_effort}},
+            api_base=judge.api_base, api_key=api_key,
         )
 
     return request_verdict(call, judge_prompt)

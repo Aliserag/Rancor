@@ -73,7 +73,8 @@ def test_published_site_data_regenerates_from_the_published_run(tmp_path):
     from rancor.export import export_run
 
     site_data = REPO / "site" / "src" / "data"
-    export_run(REPO / "runs" / "preview", REPO / "prompts" / "v1.0", tmp_path)
+    published_run = json.loads((site_data / "meta.json").read_text())["run_id"]
+    export_run(REPO / "runs" / published_run, REPO / "prompts" / "v1.0", tmp_path)
 
     # One file in site/src/data/ is deliberately not run output:
     # cost_basis.json records what live calls actually cost, measured against
@@ -81,7 +82,11 @@ def test_published_site_data_regenerates_from_the_published_run(tmp_path):
     # from the stored run. It is exempted by name, never by pattern, and it
     # has to declare its own provenance -- otherwise this exemption becomes
     # the loophole the rest of this test exists to close.
-    not_run_output = {Path("cost_basis.json"), Path("video_transcript.json")}
+    not_run_output = {
+        Path("cost_basis.json"),
+        Path("video_transcript.json"),
+        Path("themes_islamophobia.json"),
+    }
     payload = json.loads((site_data / "cost_basis.json").read_text())
     assert "not a list price" in payload.get("_comment", ""), (
         "cost_basis.json must state that it is a measurement, not run output"
@@ -93,6 +98,19 @@ def test_published_site_data_regenerates_from_the_published_run(tmp_path):
     # unchecked -- it must still regenerate byte-identically from its own
     # generator, or the published transcript has drifted from the script that
     # is actually read on camera.
+    # themes_islamophobia.json is the third exemption: the theme and keyword
+    # reference the MCP server serves, derived from themes/islamophobia.yaml
+    # rather than from a run. Exempt from the exporter, not from checking --
+    # it must still match its source, or the Developers page and list_themes
+    # have drifted apart.
+    import yaml as _yaml
+
+    published_themes = json.loads((site_data / "themes_islamophobia.json").read_text())
+    source_themes = _yaml.safe_load((REPO / "themes" / "islamophobia.yaml").read_text())
+    assert published_themes == source_themes, (
+        "themes_islamophobia.json is stale: re-export it from themes/islamophobia.yaml"
+    )
+
     sys.path.insert(0, str(REPO / "scripts"))
     import export_transcript
 
@@ -156,7 +174,10 @@ def test_published_hash_is_the_one_a_visitor_would_recompute() -> None:
 
     # and the run's own hash must still be recorded, distinctly
     meta = json.loads((site_data / "meta.json").read_text())
-    manifest = json.loads((REPO / "runs" / "preview" / "manifest.json").read_text())
+    published_run = meta["run_id"]
+    manifest = json.loads(
+        (REPO / "runs" / published_run / "manifest.json").read_text()
+    )
     assert meta["run_prompt_set_sha256"] == manifest["prompt_set_sha256"]
 
 
@@ -194,8 +215,10 @@ def test_cost_basis_matches_the_frozen_set() -> None:
     from rancor.schema import load_prompt_set
 
     prompts = REPO / "prompts" / "v1.0"
-    basis = json.loads((REPO / "site" / "src" / "data" / "cost_basis.json").read_text())
-    manifest = load_manifest(REPO / "runs" / "preview")
+    site_data = REPO / "site" / "src" / "data"
+    basis = json.loads((site_data / "cost_basis.json").read_text())
+    published_run = json.loads((site_data / "meta.json").read_text())["run_id"]
+    manifest = load_manifest(REPO / "runs" / published_run)
     cap = manifest.run_config.get("groups_cap")
 
     records = 0
