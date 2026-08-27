@@ -353,7 +353,10 @@ const examples = [
         counter.textContent = `${input.value.length} / 600`;
         if (loader.dataset.axis) axisSel.value = loader.dataset.axis;
         if (loader.dataset.category) catSel.value = loader.dataset.category;
-        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        // CSS scroll-behavior does not govern an explicit behavior argument,
+        // so this needs its own reduced-motion guard.
+        const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        form.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
         form.requestSubmit();
       }
     });

@@ -27,7 +27,13 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--paper); scroll-behavior: smooth; }
+html { background: var(--paper); }
+/* Smooth scrolling is motion the user did not ask for, and the skip link
+   -- an accessibility control -- triggers it. Opt in, like every keyframe
+   animation on this site already does. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
   margin: 0;
@@ -901,4 +907,7 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
 /* Frozen item ids are unbreakable ~40-character tokens; at 320px the longest
    measured 367px against a 316px viewport and pushed the transcript pages
    into two-dimensional scrolling (WCAG 1.4.10). */
-.item-id { overflow-wrap: anywhere; }
+.item-id,
+/* .tag-chip renders the same frozen item ids on /explore/ and was the one
+   place this pattern was missed: 337.5px inside a 288px row at 320. */
+.tag-chip { overflow-wrap: anywhere; }
