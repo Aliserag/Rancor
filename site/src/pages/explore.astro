@@ -509,7 +509,16 @@ const examples = [
       out.append(
         note(
           `Scored against the ${payload.rubric} rubric by ${payload.judges.join(", ")}. ` +
-            "Live scores are a demonstration and never enter the leaderboard."
+            "Live scores are a demonstration and never enter the leaderboard." +
+            // A graded run also hands the judges item-specific notes. Free text
+            // has no item, so it is scored on the rubric alone: a measurably
+            // different instrument, and the page used to present the two
+            // identically. The endpoint has always returned this flag.
+            (payload.item_notes_applied
+              ? ""
+              : " Free text is scored on the rubric alone, without the" +
+                " item-specific notes a graded run gives the judges, and the" +
+                " rubric may not fit what you asked. Read these as diagnostics.")
         )
       );
     }
