@@ -1007,7 +1007,7 @@ check(
     // denominator here would contradict every other surface
     const grouped = entry.records.toLocaleString("en-GB");
     check(
-      `/reports/${entry.run_id}/ states ${grouped} scored responses`,
+      `/reports/${entry.run_id}/ states its response count ${grouped}`,
       html.includes(grouped)
     );
     check(
@@ -1079,7 +1079,7 @@ check(
     llms.includes(meta.prompt_set_sha256)
   );
   check(
-    `llms.txt states ${current.records.toLocaleString("en-GB")} scored responses`,
+    `llms.txt states the response count ${current.records.toLocaleString("en-GB")}`,
     llms.includes(current.records.toLocaleString("en-GB"))
   );
   check(
@@ -1312,6 +1312,41 @@ check(
     "the stylesheet resets [hidden] so the attribute is not overridden",
     /\[hidden\][^{]*\{[^}]*display\s*:\s*none/i.test(cssAll)
   );
+}
+
+// S. "Scored" and "collected" are different totals and the difference is a
+// disclosed defect: ten records had judges return malformed output on every
+// retry, so 3,185 were collected and 3,175 scored. Calling the collected
+// number "scored" contradicts the leaderboard, which prints 3,175.
+{
+  const collected = JSON.parse(
+    readFileSync(join(root, "src/data/reports/index.json"), "utf8")
+  ).find((e) => e.current).records.toLocaleString("en-GB");
+
+  const llms = readFileSync(join(root, "public/llms.txt"), "utf8");
+  check(
+    `llms.txt does not call ${collected} collected responses "scored"`,
+    !new RegExp(`${collected.replace(",", ",")} scored responses`).test(llms)
+  );
+  const transcripts = readFileSync(join(dist, "transcripts/index.html"), "utf8");
+  check(
+    "the transcript index does not call collected answers scored",
+    !/scored answers/.test(transcripts)
+  );
+
+  // and an archived report's data links must offer ITS run's records
+  const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  for (const entry of reports) {
+    const html = readFileSync(join(dist, "reports", entry.run_id, "index.html"), "utf8");
+    const footer = html.slice(html.indexOf("<footer"));
+    for (const file of ["raw.jsonl", "scored.jsonl"]) {
+      check(
+        `/reports/${entry.run_id}/ links its own ${file}`,
+        footer.includes(`runs/${entry.run_id}/${file}`),
+        (footer.match(new RegExp(`runs/[a-z0-9-]+/${file}`)) || [])[0] || "missing"
+      );
+    }
+  }
 }
 
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);

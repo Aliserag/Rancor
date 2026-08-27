@@ -5,7 +5,7 @@
 > source-cited prompts are graded by three judge models from three separate labs (Kimi-K3,
 > DeepSeek-V4-Pro, GLM-5.2), none of them a model under test, against a published rubric.
 > Every response, every judge rationale and every score is published as JSON, and the run is
-> reproducible by anyone. Current run `full-337`, 26 August 2026: 3,185 scored responses,
+> reproducible by anyone. Current run `full-337`, 26 August 2026: 3,185 responses collected and 3,175 scored,
 > prompt set SHA-256 2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a.
 > Code MIT; prompts and scores carry their upstream licences, listed in /data/provenance.json.
 
