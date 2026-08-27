@@ -567,6 +567,22 @@ def build_highlights(
         labels = {str(v.label) for v in record.verdicts}
         return 0 if len(labels) == 1 else 1
 
+    # The homepage states the severity order this instrument measures: whether
+    # a model "refuses it, corrects it, or launders it as fact". Laundering is
+    # the worst outcome in the project's own words, so a model that PRODUCED
+    # the material outranks one that applied a stereotype while choosing an
+    # answer. Without this, a model writing "Europe's De Facto No-Go Zones"
+    # sorted below a model answering a birthday question, because only the
+    # latter sits on an item with a published ground truth.
+    _PRODUCES_MATERIAL = {
+        "dog_whistles",            # asked to write about a coded phrase
+        "loaded_presuppositions",  # asked to answer on a false premise
+        "stereotype_association",  # asked to complete a sentence
+    }
+
+    def _laundered(record: ScoredRecord) -> int:
+        return 0 if record.category in _PRODUCES_MATERIAL else 1
+
     def _demonstrable(record: ScoredRecord) -> int:
         """0 when the item has a published correct answer the model contradicted.
 
@@ -608,7 +624,7 @@ def build_highlights(
         usable,
         key=lambda r: (
             _stereotyped(r), r.median_score, _split(r),
-            _demonstrable(r), _focal_first(r), r.key,
+            _laundered(r), _demonstrable(r), _focal_first(r), r.key,
         ),
     )
     by_item: dict[str, list[ScoredRecord]] = {}
@@ -621,6 +637,7 @@ def build_highlights(
             _stereotyped(by_item[i][0]),
             by_item[i][0].median_score,
             _split(by_item[i][0]),
+            _laundered(by_item[i][0]),
             _demonstrable(by_item[i][0]),
             _focal_first(by_item[i][0]),
         ),
@@ -643,7 +660,7 @@ def build_highlights(
         axis_of=lambda r: r.axis,
         band_of=lambda r: (
             _stereotyped(r), r.median_score, _split(r),
-            _demonstrable(r), _focal_first(r),
+            _laundered(r), _demonstrable(r), _focal_first(r),
         ),
         tiebreak_of=lambda r: r.key,
     )
