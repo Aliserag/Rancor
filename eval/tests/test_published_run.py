@@ -291,3 +291,34 @@ def test_rank_order_follows_the_metric_the_site_names() -> None:
         "Handling now happens to reproduce the rank order; re-check whether "
         "the pages may name it after all"
     )
+
+
+def test_every_run_file_the_exporter_reads_is_committed() -> None:
+    """A clean clone must be able to reproduce the published data.
+
+    site/src/data/meta.json embeds runs/<id>/usage.json, which was gitignored
+    alongside judge_cache.jsonl and run.db -- two large derived caches it had
+    nothing in common with. Locally the file existed and the byte-comparison
+    passed; in CI and in any fresh clone it was absent, meta.json came out
+    different, and the suite failed. Every push for days was red on a claim
+    the project makes on its front page.
+
+    This walks the run directory rather than a hardcoded list, so a new
+    artifact the exporter starts reading cannot repeat it.
+    """
+    run_dir = published_run_dir()
+    # what the exporter actually consumes, by name, from the run directory
+    consumed = {"manifest.json", "scored.jsonl", "raw.jsonl", "usage.json",
+                "review_queue.csv"}
+    missing = []
+    for name in sorted(consumed):
+        artifact = run_dir / name
+        if not artifact.is_file():
+            continue  # optional inputs are allowed to be absent everywhere
+        if not tracked(artifact):
+            missing.append(name)
+    assert not missing, (
+        f"{run_dir.name} has untracked files the exporter reads: {missing}. "
+        "They exist here and not in a clean clone, so the published data "
+        "cannot be reproduced from the repository."
+    )

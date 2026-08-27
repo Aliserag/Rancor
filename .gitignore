@@ -25,7 +25,10 @@ runs/preview/run.db
 !runs/full-337/
 runs/full-337/judge_cache.jsonl
 runs/full-337/run.db
-runs/full-337/usage.json
+# runs/full-337/usage.json is NOT ignored: the exporter embeds it in
+# site/src/data/meta.json, so a clean checkout cannot reproduce the
+# published data without it. It is 773 bytes of call and token counts,
+# already public on the site, and contains no secrets.
 
 # OS
 .DS_Store

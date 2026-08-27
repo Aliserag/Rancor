@@ -35,6 +35,13 @@ if (!existsSync(dist)) {
 }
 
 const meta = JSON.parse(readFileSync(join(root, "src/data/meta.json"), "utf8"));
+// `make e2e-dry` rebuilds the site from FIXTURE data with a dry run, so any
+// check tying the PUBLISHED site to the PUBLISHED run is asserting something
+// that is deliberately untrue there. meta.fixture is the flag the pipeline
+// sets for exactly this case, and the watermark check below covers the
+// fixture build instead. Without this, e2e-dry -- the documented
+// from-a-clean-checkout acceptance command -- fails, which it silently was.
+const publishedRun = !meta.fixture;
 const htmlFiles = [...walk(dist)].filter((p) => p.endsWith(".html"));
 
 // 1. noindex on EVERY transcript page (SPEC §7)
@@ -945,7 +952,7 @@ check(
 // ever changes, the graphic must change with it or the front door lies
 const svg = readFileSync(join(root, "../docs/assets/leaderboard.svg"), "utf8");
 const lb = JSON.parse(readFileSync(join(root, "src/data/leaderboard_islamophobia.json"), "utf8"));
-check(
+publishedRun && check(
   "the README graphic matches the leaderboard clean rates",
   lb.rows.every((r) => svg.includes(`>${r.clean.score.toFixed(1)}%<`)) &&
     lb.rows.every((r) => svg.includes(`>${r.name}<`))
@@ -1032,7 +1039,7 @@ check(
     "exactly one report is marked current",
     index.filter((e) => e.current).length === 1
   );
-  check(
+  publishedRun && check(
     `current report is ${meta.run_id}`,
     index.find((e) => e.current)?.run_id === meta.run_id
   );
@@ -1073,7 +1080,8 @@ check(
   const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
   const current = reports.find((e) => e.current);
 
-  check("llms.txt names the current run", llms.includes(`\`${meta.run_id}\``));
+  publishedRun &&
+    check("llms.txt names the current run", llms.includes(`\`${meta.run_id}\``));
   check(
     "llms.txt publishes the current prompt-set hash",
     llms.includes(meta.prompt_set_sha256)
