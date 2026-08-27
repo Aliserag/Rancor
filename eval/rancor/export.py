@@ -161,6 +161,14 @@ class TranscriptEntry(BaseModel):
     condition: str
     shared_trope_id: str | None
     min_median: float | None  # lowest variant median — drives concern-first ordering
+    # BBQ/CLEAR-Bias ambiguous items answer "cannot be determined", so naming a
+    # group is demonstrably wrong. A disambiguated item supplies evidence, and
+    # a model declining to use it is the documented rubric gap (flaw 2), which
+    # led double_standards with a model answering correctly.
+    is_ambiguous: bool
+    # groups[0] for the item: when two variants tie, the focal group is the one
+    # this axis exists to measure and belongs on screen first.
+    focal_token: str | None
     variants: list[TranscriptVariant]
 
 
@@ -455,6 +463,8 @@ def build_transcripts(
                 condition=condition,
                 shared_trope_id=meta[item_id].shared_trope_id if item_id in meta else None,
                 min_median=min(medians) if medians else None,
+                is_ambiguous=(meta[item_id].is_ambiguous if item_id in meta else False),
+                focal_token=(meta[item_id].focal_token if item_id in meta else None),
                 variants=variants,
             )
         )
