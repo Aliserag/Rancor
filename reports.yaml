@@ -1,0 +1,14 @@
+# Runs published as reports on the site.
+#
+# Listing a run here is the editorial act of publishing it: the archive under
+# site/src/data/reports/ is generated from this list by
+# scripts/archive_reports.py, and eval/tests/test_report_archive.py verifies
+# every archived file still regenerates byte-for-byte from the run it names.
+# Runs absent from this list (development, smoke and panel-comparison runs)
+# stay in runs/ and are not shown on the site.
+#
+# The newest entry is the current report only if site/src/data/meta.json also
+# points at it; "current" is derived, never declared here.
+reports:
+  - preview
+  - full-337

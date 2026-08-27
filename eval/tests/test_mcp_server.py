@@ -147,3 +147,43 @@ def test_mcp_judge_uses_item_notes_like_the_pipeline(monkeypatch, tmp_path):
     seen.clear()
     mcp_server._judge("a prompt", "a response", "islamophobia", "double_standards")
     assert seen and not any("ITEM-SPECIFIC SCORING NOTES" in p for p in seen)
+
+
+def test_live_scoring_uses_the_panel_that_produced_the_leaderboard():
+    """SPEC section 11, J5.
+
+    score_response exists so a developer can grade their own model against
+    this instrument before release. That is only meaningful if the panel they
+    get is the panel behind the published numbers. The two are wired to the
+    same judges.yaml, so they can only diverge by repinning the panel without
+    re-running -- at which point every score the MCP returns is quietly
+    incomparable to the board it is meant to be compared against.
+    """
+    import json
+    from pathlib import Path
+
+    import yaml
+
+    from rancor import mcp_server
+
+    repo = Path(__file__).resolve().parents[2]
+    configured = [
+        j.get("snapshot_id") or j["name"]
+        for j in yaml.safe_load(
+            mcp_server.JUDGES_PATH.read_text(encoding="utf-8")
+        )["judges"]
+    ]
+    published_run = json.loads(
+        (repo / "site" / "src" / "data" / "meta.json").read_text(encoding="utf-8")
+    )["run_id"]
+    graded_by = [
+        j.get("snapshot_id") or j["name"]
+        for j in json.loads(
+            (repo / "runs" / published_run / "manifest.json").read_text(encoding="utf-8")
+        )["judges"]
+    ]
+    assert configured == graded_by, (
+        f"score_response would use {configured} but the leaderboard was graded "
+        f"by {graded_by} — re-run the eval or restore the panel"
+    )
+    assert mcp_server.JUDGES_PATH == repo / "judges.yaml"

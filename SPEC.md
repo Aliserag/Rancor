@@ -222,6 +222,13 @@ Astro static site reading exported JSON only:
   including: sampling protocol and "near-reproducible" temp-0 caveat, judge
   prompts, refusal rules per category, counterfactual comparison-set
   justification, API-vs-consumer-app note, limitations section.
+- Reports: `/reports/` lists every published run newest first with its date,
+  scope, judge panel and prompt-set hash; `/reports/<run_id>/` is that run's
+  permanent leaderboard. Called "reports" throughout the interface -- "run"
+  is the pipeline's word for the same object and does not appear in
+  navigation. Which runs are published is editorial and declared in
+  `reports.yaml`; the archive under `site/src/data/reports/` is generated
+  from it by `scripts/archive_reports.py` and is never hand-written.
 - Demo mode: `--dry-run` fixtures produce a clearly watermarked "FIXTURE
   DATA" leaderboard so the site is demoable before the first paid run.
 
@@ -245,6 +252,50 @@ Real paid full run (I trigger that manually), axes beyond the v1.0 two
 (anti-Black, anti-immigrant, anti-LGBTQ, anti-Asian...; data packs on the
 roadmap), community advisory features, multilingual prompts, held-out
 private set, PDF report generator, contested-geopolitics items on any axis.
+
+## 11. Core user journeys
+
+Each journey names its entry point, the promise it makes, and the condition
+that must hold for the promise to be true. Conditions are enforced by
+`site/tests/check_build.mjs` and `eval/tests/`, not by inspection.
+
+**J1 - Which models handle this worst?** `/` -> rank -> `/models/<name>/`.
+Ranks are shared when 95% intervals overlap, so the table must never imply an
+ordering the intervals do not support. Handling sets the rank; the clean rate
+is reported beside it and never merged with it.
+
+**J2 - Should I believe that number?** `/` -> `/methodology/` -> a transcript
+-> `/data/*.json`. Every headline score must be reachable, in at most three
+clicks, to the raw response and the three judge rationales behind it. The
+methodology page discloses the instrument's own defects; removing a
+disclosure requires fixing the defect, not editing the page.
+
+**J3 - Where did the prompts come from?** `/provenance/` -> `/explore/`.
+Every item resolves to an upstream id and licence, or to an attested source
+URL for team-written items. Zero unsourced items is asserted at build.
+
+**J4 - Can I cite a number that will still resolve next month?**
+`/reports/` -> `/reports/<run_id>/`. Publishing a new run must not silently
+change what an older citation points at: each report keeps its own scores
+permanently, states the prompt set and judge panel it used, and says plainly
+when it has been superseded. A difference between two reports is shown as a
+change only when both ran the same prompt set with the same judge panel
+(hard rule 8); otherwise the pair is labelled with what differed, because
+subtracting across a changed instrument measures the instrument.
+
+**J5 - Can I run this against my own model before release?** `/mcp/` -> the
+tool list -> `score_response`. The published rubric and the judge panel a
+caller gets must be the same ones that produced the leaderboard, or the score
+they get back is not comparable to it.
+
+**J6 - Who keeps this running?** `/sustain/`. States the real measured cost
+of a rerun, not an estimate, and what funds it.
+
+**J7 - An agent reads this instead of a person.** `/llms.txt` ->
+`/data/index.json`. Names the models, judges, prompt-set hash and licence;
+states the two headline numbers' different denominators and Disparity's sign
+convention before any number can be quoted; and directs crawlers away from
+`/transcripts/` and `/explore/`, which exist for human audit only.
 
 ## docs/RESEARCH.md note
 

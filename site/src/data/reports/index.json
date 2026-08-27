@@ -1,0 +1,76 @@
+[
+ {
+  "run_id": "full-337",
+  "created_at": "2026-08-26T17:29:26+00:00",
+  "items": 337,
+  "records": 3185,
+  "prompt_set_sha256": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+  "judges": [
+   "Kimi-K3",
+   "DeepSeek-V4-Pro",
+   "GLM-5.2"
+  ],
+  "models": [
+   {
+    "name": "claude",
+    "clean": 94.16403785488959
+   },
+   {
+    "name": "gpt",
+    "clean": 93.71069182389937
+   },
+   {
+    "name": "grok",
+    "clean": 90.56603773584905
+   },
+   {
+    "name": "llama",
+    "clean": 81.0126582278481
+   },
+   {
+    "name": "gemini",
+    "clean": 80.84772370486657
+   }
+  ],
+  "current": true,
+  "compared_to": "preview",
+  "incomparable_because": "a different prompt set and a different judge panel"
+ },
+ {
+  "run_id": "preview",
+  "created_at": "2026-08-19T02:54:00+00:00",
+  "items": 24,
+  "records": 215,
+  "prompt_set_sha256": "85b591a438b79156556cb8c63394f8178f0a21a752287f590608480679618b62",
+  "judges": [
+   "claude-sonnet-5",
+   "gpt-5.6-terra",
+   "gemini-3.6-flash"
+  ],
+  "models": [
+   {
+    "name": "claude",
+    "clean": 95.34883720930233
+   },
+   {
+    "name": "gpt",
+    "clean": 95.34883720930233
+   },
+   {
+    "name": "grok",
+    "clean": 93.02325581395348
+   },
+   {
+    "name": "gemini",
+    "clean": 83.72093023255815
+   },
+   {
+    "name": "llama",
+    "clean": 60.46511627906977
+   }
+  ],
+  "current": false,
+  "compared_to": null,
+  "incomparable_because": null
+ }
+]

@@ -981,5 +981,128 @@ check(
   check("theme data has no em-dashes", !themes.includes("\u2014"));
 }
 
+// R. The reports journey: every published run keeps a permanent page, and no
+// two reports are offered as subtractable unless the instrument held still.
+// The first draft rendered a green "+20.5" beside llama across a run that had
+// changed prompt set AND judge panel, which reads as the model improving when
+// it measures neither.
+{
+  const index = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  check("reports index is not empty", index.length > 0);
+
+  const listing = readFileSync(join(dist, "reports/index.html"), "utf8");
+  for (const entry of index) {
+    const page = join(dist, "reports", entry.run_id, "index.html");
+    check(`report permalink built: /reports/${entry.run_id}/`, existsSync(page));
+    if (!existsSync(page)) continue;
+    const html = readFileSync(page, "utf8");
+
+    // the listing must actually link to it, or the report is unreachable
+    check(
+      `listing links /reports/${entry.run_id}/`,
+      listing.includes(`href="/reports/${entry.run_id}/"`)
+    );
+
+    // response counts are the run's own; publishing the clean-rate
+    // denominator here would contradict every other surface
+    const grouped = entry.records.toLocaleString("en-GB");
+    check(
+      `/reports/${entry.run_id}/ states ${grouped} scored responses`,
+      html.includes(grouped)
+    );
+    check(
+      `/reports/${entry.run_id}/ names its judges`,
+      entry.judges.length > 0 && entry.judges.every((j) => html.includes(j))
+    );
+    check(
+      `/reports/${entry.run_id}/ prints its own prompt-set hash`,
+      html.includes(entry.prompt_set_sha256)
+    );
+
+    // a superseded report must say so; the current one must not
+    const archived = /this is an archived report/i.test(html);
+    check(
+      `/reports/${entry.run_id}/ ${entry.current ? "is not" : "is"} marked archived`,
+      archived === !entry.current
+    );
+  }
+
+  // exactly one current report, and it is the one the site publishes
+  check(
+    "exactly one report is marked current",
+    index.filter((e) => e.current).length === 1
+  );
+  check(
+    `current report is ${meta.run_id}`,
+    index.find((e) => e.current)?.run_id === meta.run_id
+  );
+
+  // the integrity rule, checked against the rendered page rather than the
+  // data: a Change column may appear only for a comparable pair
+  const changeColumns = (listing.match(/>Change</g) || []).length;
+  const comparable = index.filter(
+    (e) => e.compared_to && !e.incomparable_because
+  ).length;
+  check(
+    `change column shown only for comparable pairs (${changeColumns}/${comparable})`,
+    changeColumns === comparable
+  );
+  for (const entry of index.filter((e) => e.incomparable_because)) {
+    check(
+      `/reports/ explains why ${entry.run_id} is not comparable`,
+      listing.includes(entry.incomparable_because)
+    );
+  }
+
+  // the video transcript quotes a superseded run; it must point at the report
+  // that still holds those figures rather than only apologising for them
+  const transcript = readFileSync(join(dist, "video-transcript/index.html"), "utf8");
+  check(
+    "video transcript links the report it quotes",
+    /href="\/reports\/[^"]+\/"/.test(transcript)
+  );
+}
+
+// L. llms.txt is the agent-facing contract: it hardcodes the current run id,
+// the prompt-set hash and the scored-response count, and agents quote it
+// instead of reading the pages. Nothing verified it, so publishing a new run
+// would leave every agent citing superseded numbers with full confidence --
+// the same staleness that once left checks pinned to runs/preview.
+{
+  const llms = readFileSync(join(root, "public/llms.txt"), "utf8");
+  const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  const current = reports.find((e) => e.current);
+
+  check("llms.txt names the current run", llms.includes(`\`${meta.run_id}\``));
+  check(
+    "llms.txt publishes the current prompt-set hash",
+    llms.includes(meta.prompt_set_sha256)
+  );
+  check(
+    `llms.txt states ${current.records.toLocaleString("en-GB")} scored responses`,
+    llms.includes(current.records.toLocaleString("en-GB"))
+  );
+  check(
+    `llms.txt states ${current.items} graded prompts`,
+    llms.includes(String(current.items))
+  );
+  for (const judge of current.judges) {
+    check(`llms.txt names judge ${judge}`, llms.includes(judge));
+  }
+  // it must keep steering crawlers away from the human-audit surfaces
+  check(
+    "llms.txt still excludes /transcripts/ and /explore/",
+    /\/transcripts\//.test(llms) && /\/explore\//.test(llms)
+  );
+  // and it must not name a run that is not published
+  const stale = reports
+    .filter((e) => !e.current)
+    .filter((e) => llms.includes(`\`${e.run_id}\``));
+  check(
+    `llms.txt names no superseded run (found: ${stale.map((e) => e.run_id).join(", ") || "none"})`,
+    stale.length === 0
+  );
+}
+
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);
 process.exit(failures === 0 ? 0 : 1);

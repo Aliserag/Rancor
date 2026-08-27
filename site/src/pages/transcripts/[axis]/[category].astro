@@ -152,19 +152,26 @@ const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
       // 2. An opened response stays open when you switch models. Without
       //    this, comparing two models means re-opening the disclosure on
       //    every tab, which is the whole task this page exists for.
-      for (const article of document.querySelectorAll("article")) {
-        const panels = [...article.querySelectorAll(".model-tab-panel")];
-        panels.forEach((panel) => {
-          [...panel.querySelectorAll("details.harm")].forEach((d, i) => {
-            d.addEventListener("toggle", () => {
-              for (const other of panels) {
-                const twin = other.querySelectorAll("details.harm")[i];
-                if (twin && twin !== d) twin.open = d.open;
-              }
-            });
-          });
-        });
-      }
+      // One delegated listener per page instead of one per disclosure: these
+      // pages carry up to a thousand <details>, and attaching individually
+      // cost a listener each at parse time.
+      document.addEventListener(
+        "toggle",
+        (event) => {
+          const d = event.target;
+          if (!(d instanceof HTMLElement) || !d.matches("details.harm")) return;
+          const panel = d.closest(".model-tab-panel");
+          const article = d.closest("article");
+          if (!panel || !article) return;
+          const index = [...panel.querySelectorAll("details.harm")].indexOf(d);
+          for (const other of article.querySelectorAll(".model-tab-panel")) {
+            if (other === panel) continue;
+            const twin = other.querySelectorAll("details.harm")[index];
+            if (twin && twin.open !== d.open) twin.open = d.open;
+          }
+        },
+        true
+      );
     })();
   </script>
 </Gate>

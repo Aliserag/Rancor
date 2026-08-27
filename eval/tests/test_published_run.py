@@ -121,10 +121,21 @@ def test_published_site_data_regenerates_from_the_published_run(tmp_path):
         "python3 scripts/export_transcript.py"
     )
 
+    # reports/ is the fourth exemption and the only one that is itself run
+    # output -- just from OTHER runs, which this exporter call cannot produce
+    # because it exports one run. Exempt from this comparison, not from
+    # checking: test_report_archive.py regenerates every file under it from
+    # the run named in reports.yaml and compares byte-for-byte.
+    archived = {
+        p.relative_to(site_data)
+        for p in (site_data / "reports").rglob("*.json")
+    }
+    assert archived, "site/src/data/reports/ is empty -- run scripts/archive_reports.py"
+
     published = {
         p.relative_to(site_data)
         for p in site_data.rglob("*.json")
-    } - not_run_output
+    } - not_run_output - archived
     regenerated = {p.relative_to(tmp_path) for p in tmp_path.rglob("*.json")}
     assert published == regenerated, (
         f"file sets differ: only published={sorted(published - regenerated)}, "

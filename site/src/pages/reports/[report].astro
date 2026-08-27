@@ -1,0 +1,166 @@
+---
+import Base from "../../layouts/Base.astro";
+import CIBar from "../../components/CIBar.astro";
+import reports from "../../data/reports/index.json";
+
+export function getStaticPaths() {
+  const boards = import.meta.glob(
+    "../../data/reports/*/leaderboard_islamophobia.json",
+    { eager: true }
+  );
+  return Object.entries(boards).map(([path, mod]) => ({
+    params: { report: path.match(/reports\/([^/]+)\/leaderboard/)![1] },
+    props: { board: (mod as any).default },
+  }));
+}
+
+const { board } = Astro.props;
+const { report } = Astro.params;
+// index.json is generated from the run alongside the board, so its counts and
+// judge list are the run's own -- not meta.json's, which carries no judges.
+const entry = (reports as any[]).find((r) => r.run_id === report)!;
+const rows = [...board.rows].sort(
+  (a: any, b: any) => (a.rank ?? 99) - (b.rank ?? 99) || b.clean.score - a.clean.score
+);
+const fmt = (v: number, d = 1) => v.toFixed(d);
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+const dated = fmtDate(entry.created_at);
+---
+
+<Base
+  title={`Report: ${dated}`}
+  active="reports"
+  heading={`Report: ${dated}`}
+  description={`The Rancor leaderboard exactly as published on ${dated}, from run ${report}.`}
+>
+  <h2>Report: {dated}</h2>
+
+  {
+    entry.current ? (
+      <p class="lede">
+        This is the current report. The <a href="/">leaderboard</a> shows these
+        same scores with the full methodology, every transcript and every
+        per-model breakdown.
+      </p>
+    ) : (
+      <p class="dated-note">
+        <strong>This is an archived report.</strong> These are the scores
+        exactly as published on {dated}, and this page will not change. They
+        have since been superseded — see the
+        {" "}<a href="/">current leaderboard</a> or
+        {" "}<a href="/reports/">every report</a>.
+      </p>
+    )
+  }
+
+  <div
+    class="table-scroll"
+    tabindex="0"
+    role="region"
+    aria-label={`Scores published on ${dated}`}
+  >
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th scope="col" class="num">Rank</th>
+          <th scope="col">Model</th>
+          <th scope="col">Answered cleanly</th>
+          <th scope="col" class="num">·</th>
+          <th scope="col">Handling</th>
+          <th scope="col" class="num">·</th>
+          <th scope="col">Disparity</th>
+          <th scope="col" class="num">·</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row: any) => (
+          <tr>
+            <td class="num">
+              {row.tied && <span class="rank-tied">=</span>}
+              {row.rank ?? "–"}
+            </td>
+            <th scope="row" class="model-name">{row.name}</th>
+            <td>
+              {row.clean && (
+                <CIBar point={row.clean.score} lo={row.clean.lo} hi={row.clean.hi} min={0} max={100} />
+              )}
+            </td>
+            <td class="num">
+              {row.clean ? `${fmt(row.clean.score)}%` : "–"}
+              <span class="cell-n">{row.clean && ` n=${row.clean.n}`}</span>
+            </td>
+            <td>
+              {row.handling && (
+                <CIBar point={row.handling.score} lo={row.handling.lo} hi={row.handling.hi} min={0} max={100} />
+              )}
+            </td>
+            <td class="num">
+              {row.handling ? (
+                <>
+                  {`${fmt(row.handling.score)} [${fmt(row.handling.lo)}, ${fmt(row.handling.hi)}]`}
+                  <span class="cell-n">{` n=${row.handling.n}`}</span>
+                </>
+              ) : "not run"}
+            </td>
+            <td>
+              {row.disparity && (
+                <CIBar
+                  point={row.disparity.score}
+                  lo={row.disparity.lo}
+                  hi={row.disparity.hi}
+                  min={-4}
+                  max={4}
+                  diverging={true}
+                  center={0}
+                  unit=" pts"
+                />
+              )}
+            </td>
+            <td class="num">
+              {row.disparity ? (
+                <>
+                  {`${row.disparity.score >= 0 ? "+" : ""}${fmt(row.disparity.score, 2)} [${fmt(row.disparity.lo, 2)}, ${fmt(row.disparity.hi, 2)}]`}
+                  <span class="cell-n">{` n=${row.disparity.n}`}</span>
+                </>
+              ) : "not run"}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">
+    Models share a rank when their 95% intervals overlap. Handling is the 0–100
+    rubric average that sets the rank; it runs over the five absolute categories
+    only, which is why its item count differs from the clean rate's. Disparity is
+    signed, and negative means Muslims were treated worse than the comparison
+    group. <a href="/methodology/">The methodology page</a> defines all three.
+  </p>
+
+  <h3>What this report ran</h3>
+  <dl class="claim-status report-meta">
+    <dt>Run</dt>
+    <dd><code>{entry.run_id}</code>, published {dated}</dd>
+    <dt>Scope</dt>
+    <dd>
+      {entry.items} prompts graded,
+      {" "}{entry.records.toLocaleString("en-GB")} scored responses.
+    </dd>
+    <dt>Prompt set</dt>
+    <dd><code>{entry.prompt_set_sha256}</code></dd>
+    <dt>Judges</dt>
+    <dd>{entry.judges.join(", ")}</dd>
+  </dl>
+
+  <p class="note">
+    Reports graded on different prompt sets or by different judge panels are not
+    comparable by subtraction. <a href="/reports/">The reports index</a> says
+    which pairs are.
+  </p>
+</Base>

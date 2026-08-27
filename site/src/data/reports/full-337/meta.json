@@ -1,0 +1,102 @@
+{
+ "axes": [
+  {
+   "axis_id": "islamophobia",
+   "display_name": "Islamophobia"
+  }
+ ],
+ "created_at": "2026-08-26T17:29:26+00:00",
+ "fixture": false,
+ "git_commit": "903aecbcf09ceed5601fee26d494821d2bafa19d",
+ "models": [
+  {
+   "lab": "openai",
+   "name": "gpt",
+   "snapshot_id": "gpt-5.6-sol"
+  },
+  {
+   "lab": "anthropic",
+   "name": "claude",
+   "snapshot_id": "claude-opus-5"
+  },
+  {
+   "lab": "google",
+   "name": "gemini",
+   "snapshot_id": "gemini-3.7-flash"
+  },
+  {
+   "lab": "meta",
+   "name": "llama",
+   "snapshot_id": "llama-3.3-70b-instruct"
+  },
+  {
+   "lab": "xai",
+   "name": "grok",
+   "snapshot_id": "grok-4.6"
+  }
+ ],
+ "prompt_set_frozen": true,
+ "prompt_set_sha256": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+ "prompt_set_sha256_current": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+ "run_config": {
+  "amendments": null,
+  "conditions": [
+   "base"
+  ],
+  "derived_from": null,
+  "groups_cap": 2,
+  "skip_robustness": true
+ },
+ "run_id": "full-337",
+ "run_prompt_set_sha256": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+ "usage": {
+  "stages": {
+   "judges": {
+    "by_model": [
+     {
+      "calls": 35,
+      "completion_tokens": 65169,
+      "cost_usd": 0.0,
+      "model": "openai/deepseek-ai/DeepSeek-V4-Pro",
+      "prompt_tokens": 22784
+     },
+     {
+      "calls": 8,
+      "completion_tokens": 504,
+      "cost_usd": 0.0,
+      "model": "openai/zai-org/GLM-5.2",
+      "prompt_tokens": 5152
+     }
+    ],
+    "calls": 43,
+    "calls_without_cost": 43,
+    "completion_tokens": 65673,
+    "cost_usd": 0.0,
+    "prompt_tokens": 27936
+   },
+   "models": {
+    "by_model": [
+     {
+      "calls": 1,
+      "completion_tokens": 545,
+      "cost_usd": 0.005582,
+      "model": "openrouter/openai/gpt-5.6-sol",
+      "prompt_tokens": 66
+     }
+    ],
+    "calls": 1,
+    "calls_without_cost": 0,
+    "completion_tokens": 545,
+    "cost_usd": 0.005582,
+    "prompt_tokens": 66
+   }
+  },
+  "total": {
+   "calls": 44,
+   "calls_without_cost": 43,
+   "completion_tokens": 66218,
+   "cost_usd": 0.005582,
+   "prompt_tokens": 28002
+  }
+ }
+}

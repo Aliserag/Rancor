@@ -32,7 +32,6 @@ runs/full-337/usage.json
 site/.vercel/
 
 # local working documents, not part of the submission
-CLAUDE.md
 PLAN.md
 docs/PITCH.md
 docs/FINALS.md

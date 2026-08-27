@@ -1,0 +1,103 @@
+{
+ "axes": [
+  {
+   "axis_id": "islamophobia",
+   "display_name": "Islamophobia"
+  }
+ ],
+ "created_at": "2026-08-19T02:54:00+00:00",
+ "fixture": false,
+ "git_commit": "f7110a911013ced1d5713f15c95a0aa1dd0fcc5d",
+ "models": [
+  {
+   "lab": "openai",
+   "name": "gpt",
+   "snapshot_id": "gpt-5.6-sol"
+  },
+  {
+   "lab": "anthropic",
+   "name": "claude",
+   "snapshot_id": "claude-opus-5"
+  },
+  {
+   "lab": "google",
+   "name": "gemini",
+   "snapshot_id": "gemini-3.7-flash"
+  },
+  {
+   "lab": "meta",
+   "name": "llama",
+   "snapshot_id": "llama-3.3-70b-instruct"
+  },
+  {
+   "lab": "xai",
+   "name": "grok",
+   "snapshot_id": "grok-4.6"
+  }
+ ],
+ "prompt_set_frozen": true,
+ "prompt_set_sha256": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+ "prompt_set_sha256_current": "2dd0e5eb607706ebeb2f991081dbec6f125d463d07ad7fa02f56c0d897ba586a",
+ "run_config": {
+  "amendments": [
+   {
+    "date": "2026-08-19",
+    "items_repaired": [
+     "(5 ids from the removed second axis; full list in runs/preview/manifest.json)"
+    ],
+    "prompt_set_sha256_after": "85b591a438b79156556cb8c63394f8178f0a21a752287f590608480679618b62",
+    "prompt_set_sha256_before": "c0d97a22689bccdd21251d2d824d28d517400fd0aa3097baa7d14a6e228ddb7d",
+    "reason": "E2E finding N1: five re-axised HateCheck items led their group list with the other axis's focal group, so scoring treated the wrong group as focal. Items repaired, prompt set re-frozen, affected records re-run and re-judged.",
+    "records_rerun": 20
+   }
+  ],
+  "conditions": [
+   "base"
+  ],
+  "derived_from": {
+   "note": "Responses were collected under prompt set 85b591a438b7, which also carried a second axis, since removed from this project. Records for that axis were dropped; every record kept is the verbatim response to an item whose text is unchanged in the current frozen set. Nothing was re-run, re-scored or edited. The current frozen set has since grown, so it hashes differently -- see prompt_set_sha256_current in the site export.",
+   "prompt_set_sha256": "85b591a438b79156556cb8c63394f8178f0a21a752287f590608480679618b62",
+   "removed_axes": [
+    "(1 ids from the removed second axis; full list in runs/preview/manifest.json)"
+   ]
+  },
+  "groups_cap": 2,
+  "max_tokens_correction": "records for reasoning-truncated models re-run at max_tokens=1024 after 2026-08-19 finding (empty/truncated visible text at 256)",
+  "reasoning_effort": "low (uniform, requested via OpenRouter)",
+  "sample": {
+   "item_ids": [
+    "isl_sa_abid_analogy",
+    "islamophobia_ag_de_q0",
+    "islamophobia_ag_de_q42",
+    "islamophobia_ag_de_q74",
+    "islamophobia_ag_de_q8",
+    "islamophobia_br_hc_t534",
+    "islamophobia_br_hc_t543",
+    "islamophobia_br_xs_288",
+    "islamophobia_br_xs_297",
+    "islamophobia_ds_bbq_t15_neg_ambig",
+    "islamophobia_ds_bbq_t15_neg_disambig",
+    "islamophobia_ds_cb_10",
+    "islamophobia_ds_ssqa_p22",
+    "islamophobia_dw_creeping_sharia_define",
+    "islamophobia_dw_creeping_sharia_headline",
+    "islamophobia_dw_eurabia_respond",
+    "islamophobia_dw_the_great_replacement_respond",
+    "islamophobia_lp_tw_6",
+    "islamophobia_lp_xs_306",
+    "islamophobia_lp_xs_317",
+    "islamophobia_lp_xs_319",
+    "islamophobia_sa_cb_9",
+    "islamophobia_sa_trope_law_takeover",
+    "islamophobia_sa_tw_1"
+   ],
+   "per_stratum": 4,
+   "rule": "seeded stratified random, N per category",
+   "seed": 1
+  },
+  "skip_robustness": true
+ },
+ "run_id": "preview",
+ "run_prompt_set_sha256": "85b591a438b79156556cb8c63394f8178f0a21a752287f590608480679618b62",
+ "usage": null
+}

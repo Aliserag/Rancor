@@ -709,3 +709,29 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
 .scoring-flow { margin: 1.6rem 0 2rem; }
 .scoring-flow img { width: 100%; height: auto; max-width: 100%; }
 .scoring-flow figcaption { margin-top: 0.5rem; }
+
+.dated-note {
+  border-left: 4px solid var(--accent, #9c2b2b);
+  background: var(--panel);
+  padding: 0.9rem 1.1rem; margin: 1.4rem 0;
+  font-size: 0.95rem; line-height: 1.55;
+}
+
+/* Reports: one archived run per card, newest first. */
+.report-card {
+  border: 1px solid var(--rule); border-radius: 5px;
+  background: var(--panel); padding: 1.1rem 1.2rem; margin: 0 0 1.6rem;
+}
+.report-head h3 { margin: 0 0 0.2rem; display: flex; align-items: baseline; gap: 0.6rem; }
+.badge-current {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--paper); background: var(--ink);
+  border-radius: 999px; padding: 0.1rem 0.55rem;
+}
+.delta-up { color: #3d7a3d; font-weight: 700; }
+.delta-down { color: var(--rule-strong); font-weight: 700; }
+
+/* A report permalink prints the prompt-set hash whole -- it is the citation
+   anchor readers check against, so it is not truncated like elsewhere -- and
+   64 unbroken characters overflow the page without this. */
+.report-meta code { word-break: break-all; }
