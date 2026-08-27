@@ -14,6 +14,10 @@
   --rule: #d9d0bd;
   --rule-strong: #a89b82;
   --accent: #8f2a1e;      /* oxblood: concern, disparity toward harm */
+  /* Reading measure. Body text ran to 123 characters per line at 1280px --
+     the container width, 68rem, was doing double duty as the text column.
+     Bringhurst's range is 45-75; this lands at ~69. */
+  --measure: 68ch;
   --good: #067e61;        /* sea-green: handling, safe direction */
   --warn: #936600;
   --fixture: #b45309;
@@ -64,6 +68,9 @@ body {
 .skip-link:focus-visible { left: 0.5rem; top: 0.5rem; }
 
 .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
+/* The container stays wide for tables and grids; only running text is
+   constrained, which is the standard wide-container/narrow-measure split. */
+main p, main li, main dd, main dt { max-width: var(--measure); }
 
 a { color: inherit; transition: color var(--t-fast); }
 main a {
@@ -576,7 +583,7 @@ th abbr[title] {
 .hashline .stamp { border-bottom: 1px dotted var(--rule-strong); cursor: help; }
 
 .lede { font-size: 1.15rem; margin: 1.1rem 0 0.3rem; }
-.lede-sub { color: var(--muted); margin: 0 0 1.2rem; max-width: 46rem; }
+.lede-sub { color: var(--muted); margin: 0 0 1.2rem; max-width: var(--measure); }
 
 /* Transcripts group by prompt, with one tab per model that answered it.
    Radio inputs so the comparison works without JavaScript. */
@@ -624,7 +631,7 @@ th abbr[title] {
    left for a reader to infer from five rows that all share rank 1. */
 .verdict {
   border-left: 3px solid var(--accent); padding: 0.7rem 0 0.7rem 0.9rem;
-  margin: 0 0 1rem; max-width: 52rem;
+  margin: 0 0 1rem; max-width: var(--measure);
 }
 
 /* Jargon defines itself in place. Same dotted affordance as the table headers. */
@@ -665,7 +672,7 @@ button.term:focus ~ .term-def { opacity: 1; display: block; }
 }
 
 /* one line under the verdict answering "who is this for" before anything else */
-.audience { color: var(--muted); margin: 0.4rem 0 1.4rem; max-width: 46rem; }
+.audience { color: var(--muted); margin: 0.4rem 0 1.4rem; max-width: var(--measure); }
 
 /* the frozen item's id on a highlight row: two different items with the same
    display text must never read as one row rendered twice */
