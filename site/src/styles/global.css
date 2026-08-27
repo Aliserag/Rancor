@@ -918,3 +918,28 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
 /* .tag-chip renders the same frozen item ids on /explore/ and was the one
    place this pattern was missed: 337.5px inside a 288px row at 320. */
 .tag-chip { overflow-wrap: anywhere; }
+
+/* Progressive disclosure on the leaderboard. The insight stays on the page;
+   the counting mechanics and the defect's arithmetic sit one click down, so a
+   reader who wants the caveat finds it and a reader scanning the result is not
+   made to wade through 260 words of it first. */
+.reading-key {
+  font-size: 0.95rem; margin: 0.9rem 0 0.5rem;
+  max-width: var(--measure);
+}
+.counting-note,
+.defect-detail { margin: 0 0 1.2rem; }
+.counting-note > summary,
+.defect-detail > summary {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 0.3rem 0; cursor: pointer;
+}
+.counting-note > summary:hover,
+.defect-detail > summary:hover { color: var(--accent); }
+.counting-note[open] > summary,
+.defect-detail[open] > summary {
+  color: var(--ink); border-bottom: 1px solid var(--rule); margin-bottom: 0.6rem;
+}
+.counting-note .note,
+.defect-detail p { margin-top: 0; }

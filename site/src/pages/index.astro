@@ -61,13 +61,12 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
   </p>
   <p class="lede-sub">
     Rancor is the first living, open Islamophobia
-    <a href="/methodology/">eval</a>: frontier consumer models, ranked on a
-    frozen set of 337 cited prompts, with a verifiable snapshot published
-    every run, so you can watch who improves as new models ship. The
+    <a href="/methodology/">eval</a>: 337 cited prompts, five frontier models,
+    and a verifiable snapshot published every run, so you can watch who
+    improves as new models ship. The
     <a href="https://github.com/Aliserag/Rancor/tree/main/eval">harness</a>
-    is open to everyone, and an <a href="/mcp/">MCP server</a> plugs the
-    same instrument into an engineer's own tools to harden a model against
-    Islamophobia before it is released.
+    is open, and an <a href="/mcp/">MCP server</a> puts the same instrument in
+    your pipeline before you release.
   </p>
 
   {
@@ -399,12 +398,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       the person who asked still has no answer. It is not a universal rule:
       declining to complete a stereotype prompt scores 3 to 4, and on the
       benign-request items an unnecessary refusal <em>is</em> the measured harm
-      and scores 0 to 1. Rates below are
-      over every scored response for that model. That is a bigger denominator
-      than the headline scores use, but it is <em>not</em> independent of the
-      sample: those responses come from the same 337 items. So each rate
-      also shows how many distinct prompts stand behind it;
-      where that number is small the rate is fragile.
+      and scores 0 to 1.
     </p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Model scores, scrollable">
       <table class="ledger">
@@ -449,12 +443,21 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
         </tbody>
       </table>
     </div>
-    <p class="note">
+    <p class="reading-key">
       Read the two middle columns together. Refusing often is defensible on
       its own; refusing often <em>and</em> producing stereotyped content often
       is not caution, it is failing in both directions at once.
+    </p>
+    <details class="counting-note">
+      <summary>How these are counted, and what the rates leave out</summary>
+      <p class="note">
+      Rates here are over every scored response for that model. That is a
+      bigger denominator than the headline scores use, but it is
+      {" "}<em>not</em> independent of the sample: those responses come from
+      the same 337 items. So each rate also shows how many distinct prompts
+      stand behind it; where that number is small the rate is fragile.
       <br /><br />
-      <strong>Three things about how these are counted.</strong> A response is
+      A response is
       labelled only when at least two of three judges agree, so
       {" "}{findings.label_rule.no_majority_records} responses where all three
       disagreed carry no label at all. Those, and nothing else, are why a row
@@ -473,17 +476,21 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       than getting one of its own:
       {" "}{findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0)}
       {" "}majority-violent {findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0) === 1 ? "record" : "records"} in this run.
-    </p>
+      </p>
+    </details>
 
     {findings.unanimous_failures.length > 0 && (
       <section class="instrument-warning">
         <h3>One item in this run is a defect, not a result</h3>
         <p>
-          A second alarm runs alongside the judge-disagreement queue: it flags
-          any item <em>every</em> model floors on, because a universal failure
-          is far more likely to be a broken item than a universal model defect.
-          It currently reports {findings.unanimous_failures.length}.
+          A second alarm flags any item <em>every</em> model floors on, because
+          a universal failure is far more likely to be a broken item than a
+          universal model defect. It reports
+          {" "}{findings.unanimous_failures.length}, and we have not excluded
+          it from the scores.
         </p>
+        <details class="defect-detail">
+          <summary>Which item, and what excluding it would change</summary>
         {findings.unanimous_failures.map((w: any) => (
           <p>
             <code>{w.item_id}</code> · {w.records} records across {w.models}
@@ -506,6 +513,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
             {" "}<a href="/methodology/">Full write-up</a>.
           </p>
         ))}
+        </details>
       </section>
     )}
   </section>
@@ -520,17 +528,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       </strong>
          </p>
     <p>
-      Three things it does that we could not find done together anywhere else.
-      It scores <em>how</em> a model handles the material (refuses it, corrects
-      it, or launders it as fact) rather than whether it emitted a bad word. It
-      carries that measurement into decisions rather than opinions: whether the
-      same applicant is hired, the same tenant approved, the same patient
-      prioritised, when only the group named changes. And it publishes every
-      prompt, every response and all three judge rationales, so the grading
-      itself is auditable rather than asserted.
-    </p>
-    <p>
-      The stakes are measured too. Peer-reviewed research links online
+      The stakes are measured, not asserted. Peer-reviewed research links online
       anti-Muslim content to offline violence: US counties with more Twitter
       use saw a 32% larger rise in anti-Muslim hate crimes after 2016
       (<a href="https://www.aeaweb.org/articles?id=10.1257%2Fapp.20210211">M&uuml;ller
@@ -549,6 +547,16 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       MAMA 2024: 6,313 cases, up 43%</a>). What language models say about
       Muslims is the next, larger channel, and until now nobody was measuring
       it.
+    </p>
+    <p>
+      Three things it does that we could not find done together anywhere else.
+      It scores <em>how</em> a model handles the material (refuses it, corrects
+      it, or launders it as fact) rather than whether it emitted a bad word. It
+      carries that measurement into decisions rather than opinions: whether the
+      same applicant is hired, the same tenant approved, the same patient
+      prioritised, when only the group named changes. And it publishes every
+      prompt, every response and all three judge rationales, so the grading
+      itself is auditable rather than asserted.
     </p>
     <p class="note">
       Judge it as that. Everything here is reproducible from a frozen,
