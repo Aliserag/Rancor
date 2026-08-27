@@ -113,7 +113,7 @@ const examples = [
                 </option>
               ))}
             </select>
-            <select id="probe-category" name="category">
+            <select id="probe-category" name="category" aria-label="Scoring category">
               {categories.map((c) => (
                 <option value={c} selected={c === "stereotype_association"}>
                   {c.replaceAll("_", " ")}

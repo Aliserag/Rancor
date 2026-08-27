@@ -1349,5 +1349,40 @@ check(
   }
 }
 
+// K. Keyboard and screen-reader basics that the site already gets right in
+// one place and not the others.
+{
+  // K1. A container that scrolls must be reachable by keyboard, or its
+  // clipped columns are mouse-only. The leaderboard's wrapper carries
+  // tabindex/role/aria-label; nine others did not.
+  for (const f of ["index.html", "provenance/index.html", "methodology/index.html",
+                   "mcp/index.html", "reports/index.html",
+                   "models/llama/index.html", "reports/preview/index.html"]) {
+    const html = readFileSync(join(dist, f), "utf8");
+    const wrappers = [...html.matchAll(/<div class="table-scroll"([^>]*)>/g)].map((m) => m[1]);
+    const bare = wrappers.filter((a) => !/tabindex="0"/.test(a) || !/role="region"/.test(a) || !/aria-label=/.test(a));
+    check(
+      `/${f.replace("index.html","")} scroll containers are keyboard-reachable (${wrappers.length - bare.length}/${wrappers.length})`,
+      bare.length === 0
+    );
+  }
+
+  // K2. Every page needs one h1. Base supplies a visually-hidden one from
+  // `heading`; the six transcript category pages passed none.
+  for (const f of [...walk(dist)].filter((p) => p.endsWith(".html"))) {
+    const html = readFileSync(f, "utf8");
+    const n = (html.match(/<h1[\s>]/g) || []).length;
+    check(`exactly one h1: ${f.replace(dist, "") || "/"} (${n})`, n === 1);
+  }
+
+  // K3. Every form control needs an accessible name.
+  const explore = readFileSync(join(dist, "explore/index.html"), "utf8");
+  check(
+    "the category select on /explore/ has an accessible name",
+    /<label[^>]*for="probe-category"/.test(explore) ||
+      /<select id="probe-category"[^>]*aria-label=/.test(explore)
+  );
+}
+
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);
 process.exit(failures === 0 ? 0 : 1);

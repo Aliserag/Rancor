@@ -63,7 +63,7 @@ const fmtDate = (iso: string) =>
           {" "}judged by {entry.judges.join(", ")} ·
           {" "}prompt set <code>{entry.prompt_set_sha256.slice(0, 12)}…</code>
         </p>
-        <div class="table-scroll">
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Scores in this report, scrollable">
           <table class="ledger">
             <thead>
               <tr>

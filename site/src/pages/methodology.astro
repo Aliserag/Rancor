@@ -90,7 +90,7 @@ const spearman: Record<string, Record<string, Record<string, number | null>>> =
       return (
         <section>
           <h3>{displayNames[axis] ?? axis}</h3>
-          <div class="table-scroll">
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Methodology table, scrollable">
           <table class="ledger matrix">
             <thead>
               <tr>

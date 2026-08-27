@@ -44,7 +44,7 @@ function metric(
     Object.entries(detail.per_axis).map(([axis, block]: [string, any]) => (
       <section>
         <h2>{displayNames[axis] ?? axis}</h2>
-        <div class="table-scroll">
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Per-category scores, scrollable">
         <table class="ledger">
           <caption>
             Per-category focal scores, 0 to 100, 95% CIs. Headline Handling
@@ -91,7 +91,7 @@ function metric(
           </tbody>
         </table>
         </div>
-        <div class="table-scroll">
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Per-category scores, scrollable">
         <table class="ledger" style="margin-top:1rem">
           <thead>
             <tr>

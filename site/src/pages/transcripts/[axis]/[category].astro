@@ -48,7 +48,12 @@ items.sort((a, b) => (a.worst ?? 9) - (b.worst ?? 9) || a.itemId.localeCompare(b
 const slug = (value: string) => value.replace(/[^a-zA-Z0-9]/g, "-");
 ---
 
-<Base title={`Transcripts · ${axis} · ${category}`} active="transcripts" noindex={true}>
+<Base
+  title={`Transcripts · ${axis} · ${category}`}
+  active="transcripts"
+  noindex={true}
+  heading={`${axis} transcripts: ${category.replaceAll("_", " ")}`}
+>
   <Gate>
     <h2>
       {axis} / {String(category).replaceAll("_", " ")}

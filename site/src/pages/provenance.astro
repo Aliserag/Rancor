@@ -24,7 +24,7 @@ const teamWritten = provenance.frames.find(
   </p>
 
   <h3>Where the {provenance.total_items} prompts came from</h3>
-  <div class="table-scroll">
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Provenance table, scrollable">
     <table class="ledger">
       <thead>
         <tr><th scope="col">Corpus</th><th scope="col">Items</th><th scope="col">Licence</th><th scope="col">Citation</th></tr>
@@ -62,7 +62,7 @@ const teamWritten = provenance.frames.find(
     their documentation rather than invent examples. Grouped by what the
     prompt asks a model to do:
   </p>
-  <div class="table-scroll">
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Provenance table, scrollable">
     <table class="ledger">
       <caption>
         The {provenance.team_written} team-written items by rhetorical frame.
@@ -101,7 +101,7 @@ const teamWritten = provenance.frames.find(
   </p>
 
   <h3>What is stored</h3>
-  <div class="table-scroll">
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Provenance table, scrollable">
     <table class="ledger">
       <tbody>
         <tr><th scope="row">The frozen prompt set</th><td>Public and versioned, hashed at release</td></tr>
