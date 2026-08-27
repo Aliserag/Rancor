@@ -577,11 +577,10 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       itself is auditable rather than asserted.
     </p>
     <p class="note">
-      Judge it as that. Everything here is reproducible from a frozen,
-      hash-pinned prompt set and a manifest written before any score existed;
-      there is a test in the suite that fails if the published numbers stop
-      regenerating byte for byte from the committed run. Where this first run is
-      thin, the pages say so in the same place they show the number.
+      Prompt set <code>{meta.prompt_set_sha256.slice(0, 12)}…</code>, run
+      {" "}<code>{meta.run_id}</code>, manifest written before any score
+      existed. <code>make test</code> re-exports that run and compares it byte
+      for byte against the numbers on this page.
     </p>
   </section>
 
