@@ -1384,5 +1384,32 @@ check(
   );
 }
 
+// P. Mobile stat blocks: below 600px a labelled table stops being a table and
+// each row is re-set as a record, which means <thead> is hidden. Any data cell
+// that neither carries data-label nor directly follows one loses its column
+// header and renders as a bare number with nothing to say what it is. A table
+// with NO labels keeps the horizontal-scroll behaviour and is fine; a
+// PARTIALLY labelled one is the failure mode.
+{
+  for (const file of [...walk(dist)].filter((p) => p.endsWith(".html"))) {
+    const html = readFileSync(file, "utf8");
+    const page = file.replace(dist, "") || "/";
+    for (const [, rowHtml] of html.matchAll(/<tr>([\s\S]*?)<\/tr>/g)) {
+      const cells = [...rowHtml.matchAll(/<t[dh][^>]*>/g)].map((m) => m[0]);
+      if (!cells.some((c) => c.includes("data-label"))) continue; // unlabelled table
+      const orphans = cells.filter((c, i) => {
+        if (c.startsWith("<th")) return false;
+        return !c.includes("data-label") &&
+          !(i > 0 && cells[i - 1].includes("data-label"));
+      });
+      check(
+        `no orphaned mobile cell in ${page}`,
+        orphans.length === 0,
+        orphans.slice(0, 2).join(" ")
+      );
+    }
+  }
+}
+
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);
 process.exit(failures === 0 ? 0 : 1);

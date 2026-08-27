@@ -166,14 +166,14 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
                       )
                       .map((row: any) => (
                         <tr>
-                          <td class="num">
+                          <td class="num" data-label="Rank">
                             {row.tied && <span class="rank-tied">=</span>}
                             {row.rank ?? "–"}
                           </td>
                           <td class="model-name">
                             <a href={`/models/${row.name}/`}>{row.name}</a>
                           </td>
-                          <td>
+                          <td data-label="Answered cleanly">
                             {row.clean && (
                               <CIBar
                                 point={row.clean.score}
@@ -187,7 +187,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
                           <td class="num">
                             {row.clean ? `${row.clean.score.toFixed(1)}%` : "–"}
                           </td>
-                          <td>
+                          <td data-label="Handling">
                             {row.handling && (
                               <CIBar
                                 point={row.handling.score}
@@ -211,7 +211,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
                               "not run"
                             )}
                           </td>
-                          <td>
+                          <td data-label="Same question, group swapped">
                             {row.disparity && (
                               <CIBar
                                 point={row.disparity.score}
@@ -241,7 +241,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
                           {/* s_AMB came from a handful of ambiguous items in
                               this preview; three decimals implied a precision
                               the sample cannot carry (reviewer finding) */}
-                          <td class="num">{fmt(row.s_amb, 2)}</td>
+                          <td class="num" data-label="Leans to stereotype">{fmt(row.s_amb, 2)}</td>
                         </tr>
                       ))}
                   </tbody>
@@ -429,18 +429,18 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
               <th scope="row" class="model-name">
                 <a href={`/models/${m.model}/`}>{m.model}</a>
               </th>
-              <td class="num">{m.records}</td>
-              <td class="num">
+              <td class="num" data-label="Responses">{m.records}</td>
+              <td class="num" data-label="Refused">
                 {(m.refusal_rate * 100).toFixed(1)}%
                 <span class="cell-n">{` over ${m.refusal_items} prompt${m.refusal_items === 1 ? "" : "s"}`}</span>
               </td>
-              <td class={`num ${m.stereotyped_rate > 0.05 ? "sev-critical" : ""}`}>
+              <td class={`num ${m.stereotyped_rate > 0.05 ? "sev-critical" : ""}`} data-label="Stereotyped">
                 {(m.stereotyped_rate * 100).toFixed(1)}%
                 <span class="cell-n">{` over ${m.stereotyped_items} prompt${m.stereotyped_items === 1 ? "" : "s"}`}</span>
               </td>
-              <td class="num">{(m.ambiguous_rate * 100).toFixed(1)}%</td>
-              <td class="num">{(m.clean_rate * 100).toFixed(1)}%</td>
-              <td class="num">
+              <td class="num" data-label="Hedged (ambiguous)">{(m.ambiguous_rate * 100).toFixed(1)}%</td>
+              <td class="num" data-label="Clean">{(m.clean_rate * 100).toFixed(1)}%</td>
+              <td class="num" data-label="Any judge said stereotyped">
                 {m.any_stereotyped_verdict}
                 <span class="cell-n">{` of ${m.records}`}</span>
               </td>

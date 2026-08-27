@@ -742,3 +742,149 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
    anchor readers check against, so it is not truncated like elsewhere -- and
    64 unbroken characters overflow the page without this. */
 .report-meta code { word-break: break-all; }
+
+/* ============================================================
+   MOBILE — 375px is a reading width, not a shrunken desktop.
+   The broadsheet compresses the way a newspaper does on an inside
+   page: smaller masthead, a single scrolling section rule instead of
+   a wrapped block of links, and dense tables re-set as stat blocks
+   rather than a 1,316px table seen 28% at a time.
+   ============================================================ */
+@media (max-width: 600px) {
+  /* --- masthead: authoritative, not shouty --- */
+  .masthead { padding: 1.15rem 0 0.7rem; border-bottom-width: 3px; }
+  .masthead h1,
+  .masthead .brand { font-size: 1.95rem; letter-spacing: 0.2em; }
+  .masthead .tagline { font-size: 0.92rem; margin-top: 0.25rem; }
+  .masthead .hashline { font-size: 0.66rem; margin-top: 0.4rem; }
+
+  /* --- nav: one scrolling section rule, the way a section bar runs
+     across the top of a page, instead of five wrapped lines --- */
+  nav.primary {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1.15rem;
+    padding: 0.1rem 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* the fade is the only affordance that the rule continues */
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+  }
+  nav.primary::-webkit-scrollbar { display: none; }
+  nav.primary a {
+    white-space: nowrap;
+    flex: 0 0 auto;
+    /* 24px minimum target, met by padding rather than by growing type */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* --- give the page its air back --- */
+  .wrap { padding: 0 1rem; }
+  main.wrap { padding-top: 0.2rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.1rem; }
+  .lede { font-size: 1.02rem; }
+}
+
+/* --- dense tables become stat blocks ---------------------------------
+   The leaderboard is 1,316px wide. In a scroll container on a 375px
+   screen you read 28% of the flagship surface and drag for the rest.
+   Below 600px each row is re-set as a record: rank and model as the
+   headline, then one metric per line -- mono label, the interval bar
+   full width, the figure beneath it. Same markup, same semantics, same
+   ink; it just stops pretending to be a spreadsheet. */
+@media (max-width: 600px) {
+  .table-scroll:has(table.ledger td[data-label]) { overflow-x: visible; }
+  table.ledger:has(td[data-label]) { display: block; font-size: 1rem; }
+  table.ledger:has(td[data-label]) thead { display: none; }
+  table.ledger:has(td[data-label]) tbody { display: block; }
+  /* a table-caption with no table box to attach to collapses to a
+     ~8-character column; it has to become a plain block */
+  table.ledger:has(td[data-label]) caption {
+    display: block; width: 100%; margin-bottom: 0.7rem; font-size: 0.9rem;
+  }
+
+  table.ledger:has(td[data-label]) tbody tr {
+    display: block;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 0.7rem 0.9rem 0.85rem;
+    margin: 0 0 0.7rem;
+  }
+  table.ledger:has(td[data-label]) tbody td,
+  table.ledger:has(td[data-label]) tbody th {
+    display: block; border: 0; padding: 0; white-space: normal;
+  }
+  /* the row hover treatment is a pointer affordance; it has no place here */
+  table.ledger:has(td[data-label]) tbody tr:hover td { background: transparent; }
+  table.ledger:has(td[data-label]) tbody tr:hover td:first-child { box-shadow: none; }
+
+  /* rank reads as the card's caption line, label and value together */
+  table.ledger:has(td[data-label]) tbody tr > :first-child {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    margin-top: 0;
+  }
+  table.ledger:has(td[data-label]) tbody tr > :first-child[data-label]::before {
+    display: inline; margin: 0 0.5rem 0 0; font-size: inherit;
+    letter-spacing: inherit;
+  }
+  table.ledger:has(td[data-label]) tbody .model-name {
+    font-family: var(--serif); font-size: 1.22rem; font-weight: 700;
+    letter-spacing: 0.01em; text-transform: none;
+    margin: 0.08rem 0 0.5rem; padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.ledger:has(td[data-label]) tbody .model-name a { border-bottom: 0; }
+
+  /* one metric per line: label, bar, figure */
+  table.ledger:has(td[data-label]) td[data-label] { margin-top: 0.7rem; }
+  table.ledger:has(td[data-label]) td[data-label]::before {
+    content: attr(data-label);
+    display: block; margin-bottom: 0.35rem;
+    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  table.ledger:has(td[data-label]) td[data-label] svg { width: 100%; height: auto; display: block; }
+  table.ledger:has(td[data-label]) td[data-label] + td.num {
+    margin-top: 0.2rem; font-size: 1.02rem; line-height: 1.3;
+  }
+  table.ledger:has(td[data-label]) .cell-n { display: block; font-size: 0.72rem; color: var(--muted); }
+  /* a labelled figure with no bar of its own (leans-to-stereotype) still
+     needs to read as a figure, not as body copy */
+  table.ledger:has(td[data-label]) tbody td.num[data-label]:not(:first-child) {
+    font-size: 1.02rem;
+  }
+}
+
+@media (max-width: 600px) {
+  /* A labelled figure with no interval bar is a ledger line, not a stack:
+     label left, value right. Six of these per model stacked vertically added
+     ~1,500px to the homepage for no gain in legibility. */
+  table.ledger:has(td[data-label]) td[data-label]:not(:has(svg)) {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1rem; margin-top: 0.45rem;
+  }
+  table.ledger:has(td[data-label]) td[data-label]:not(:has(svg))::before {
+    margin-bottom: 0; flex: 0 1 auto;
+  }
+  table.ledger:has(td[data-label]) td[data-label]:not(:has(svg)) .cell-n {
+    display: inline; margin-left: 0.3rem;
+  }
+
+  /* Content tables come from markdown and have no wrapper to scroll inside,
+     so the PAGE scrolled sideways instead -- the only horizontal overflow
+     left on the site. Let the table carry its own scroll. */
+  table:not(.ledger) {
+    display: block; max-width: 100%; overflow-x: auto;
+  }
+
+  /* File paths and hashes in prose are unbreakable tokens wider than the
+     screen -- runs/preview/adjudication_escalations.csv is 395px on its own. */
+  code { overflow-wrap: anywhere; }
+}

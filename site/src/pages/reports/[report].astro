@@ -89,18 +89,18 @@ const dated = fmtDate(entry.created_at);
       <tbody>
         {rows.map((row: any) => (
           <tr>
-            <td class="num">
+            <td class="num" data-label="Rank">
               {row.tied && <span class="rank-tied">=</span>}
               {row.rank ?? "–"}
             </td>
             <th scope="row" class="model-name">{row.name}</th>
-            <td>
+            <td data-label="Answered cleanly">
               {row.clean && (
                 <CIBar point={row.clean.score} lo={row.clean.lo} hi={row.clean.hi} min={0} max={100} />
               )}
             </td>
             <td class="num">{row.clean ? `${fmt(row.clean.score)}%` : "–"}</td>
-            <td>
+            <td data-label="Handling">
               {row.handling && (
                 <CIBar point={row.handling.score} lo={row.handling.lo} hi={row.handling.hi} min={0} max={100} />
               )}
@@ -113,7 +113,7 @@ const dated = fmtDate(entry.created_at);
                 </>
               ) : "not run"}
             </td>
-            <td>
+            <td data-label="Disparity">
               {row.disparity && (
                 <CIBar
                   point={row.disparity.score}
