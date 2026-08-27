@@ -1103,8 +1103,20 @@ def build_judging_bundle(prompts_root: Path, manifest) -> dict:
         axis = rubric.parts[-3]
         rubrics.setdefault(axis, {})[rubric.stem] = rubric.read_text(encoding="utf-8")
     return {
+        # api_base, api_key_env and reasoning_effort travel with the judge or
+        # the live probe cannot reach it: the panel moved to an
+        # OpenAI-compatible host and the endpoint kept posting its model ids to
+        # OpenRouter, which has no such ids, so every verdict errored while the
+        # page still named the three judges. api_key_env is the NAME of an
+        # environment variable, never a key (hard rule 2).
         "judges": [
-            {k: j.get(k) for k in ("name", "lab", "litellm_id", "snapshot_id")}
+            {
+                k: j.get(k)
+                for k in (
+                    "name", "lab", "litellm_id", "snapshot_id",
+                    "api_base", "api_key_env", "reasoning_effort",
+                )
+            }
             for j in manifest.judges
         ],
         "rubrics": rubrics,

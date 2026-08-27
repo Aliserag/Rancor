@@ -1,21 +1,30 @@
 {
  "judges": [
   {
+   "api_base": "https://inference.baseten.co/v1",
+   "api_key_env": "BASETEN_API_KEY",
    "lab": "moonshot",
    "litellm_id": "openai/moonshotai/Kimi-K3",
    "name": "judge_kimi",
+   "reasoning_effort": null,
    "snapshot_id": "Kimi-K3"
   },
   {
+   "api_base": "https://inference.baseten.co/v1",
+   "api_key_env": "BASETEN_API_KEY",
    "lab": "deepseek",
    "litellm_id": "openai/deepseek-ai/DeepSeek-V4-Pro",
    "name": "judge_deepseek",
+   "reasoning_effort": null,
    "snapshot_id": "DeepSeek-V4-Pro"
   },
   {
+   "api_base": "https://inference.baseten.co/v1",
+   "api_key_env": "BASETEN_API_KEY",
    "lab": "zai",
    "litellm_id": "openai/zai-org/GLM-5.2",
    "name": "judge_glm",
+   "reasoning_effort": "none",
    "snapshot_id": "GLM-5.2"
   }
  ],

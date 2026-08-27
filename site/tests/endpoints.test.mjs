@@ -36,15 +36,42 @@ for (const endpoint of ["src/pages/api/live-run.ts", "src/pages/api/score.ts"]) 
   for (const logger of [/console\.log\(/, /console\.info\(/, /console\.debug\(/]) {
     assert.ok(!logger.test(stripped), `${endpoint} must not log request content`);
   }
-  // the only outbound host may be the model provider
+  // The only outbound hosts may be the model provider and the judge hosts the
+  // committed panel actually names. Hardcoding "openrouter.ai" here locked in
+  // a bug: the judge panel moved to an OpenAI-compatible host, score.ts kept
+  // posting to OpenRouter, and this assertion certified the wrong provider.
+  // The allowlist is derived from judging.json so it cannot drift from the
+  // panel, and an undeclared host still fails.
+  const judging = JSON.parse(
+    readFileSync(new URL("../src/data/judging.json", import.meta.url), "utf8")
+  );
+  const allowed = new Set(["openrouter.ai"]);
+  for (const j of judging.judges) {
+    if (j.api_base) allowed.add(new URL(j.api_base).host);
+  }
   const hosts = [...stripped.matchAll(/https?:\/\/([a-z0-9.-]+)/gi)].map((m) => m[1]);
   for (const host of hosts) {
-    assert.equal(
-      host, "openrouter.ai",
-      `${endpoint} references an unexpected host: ${host}`
+    assert.ok(
+      allowed.has(host),
+      `${endpoint} references an undeclared host: ${host} (allowed: ${[...allowed].join(", ")})`
     );
   }
   assert.ok(hosts.length > 0, `${endpoint} should call the model provider`);
+
+  // and the scoring endpoint must actually USE the routing it publishes,
+  // rather than assuming every judge lives at the default provider
+  if (endpoint.endsWith("score.ts")) {
+    for (const field of ["api_base", "api_key_env", "reasoning_effort"]) {
+      assert.match(
+        stripped, new RegExp(`\\b${field}\\b`),
+        `score.ts ignores judge.${field}, so a judge on another host cannot be reached`
+      );
+    }
+    assert.ok(
+      !/reasoning:\s*\{\s*effort:\s*"(low|high|none|max)"\s*\}/.test(stripped),
+      "score.ts hardcodes a reasoning effort; providers disagree on allowed values"
+    );
+  }
   // provider fallbacks stay disabled, or the manifest's pinned snapshot is a lie
   assert.match(
     stripped,

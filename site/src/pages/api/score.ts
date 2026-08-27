@@ -92,8 +92,16 @@ function median(values: number[]): number {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const key = import.meta.env.OPENROUTER_API_KEY ?? process.env.OPENROUTER_API_KEY;
-  if (!key) return json({ error: "scoring is not configured on this deployment" }, 503);
+  // Each judge names the environment variable holding its key. The panel moved
+  // to an OpenAI-compatible host; assuming OpenRouter here made every verdict
+  // error while the page still reported a three-judge score.
+  const keyFor = (judge: any): string | undefined => {
+    const name = judge.api_key_env ?? "OPENROUTER_API_KEY";
+    return (import.meta.env as any)[name] ?? process.env[name];
+  };
+  if (judges.some((j) => !keyFor(j))) {
+    return json({ error: "scoring is not configured on this deployment" }, 503);
+  }
 
   const now = Date.now();
   if (now - windowStart > WINDOW_MS) {
@@ -129,18 +137,37 @@ export const POST: APIRoute = async ({ request }) => {
   const judgeCosts: CallCost[] = [];
 
   async function judgeOne(judge: any, response: string) {
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    // litellm_id carries a provider prefix the wire format does not take:
+    // "openrouter/<model>" for OpenRouter, "openai/<model>" for any
+    // OpenAI-compatible host. Strip whichever applies, exactly as the Python
+    // judge does, or the endpoint receives a model id it has never heard of.
+    const viaOpenRouter = !judge.api_base;
+    const endpoint = viaOpenRouter
+      ? "https://openrouter.ai/api/v1/chat/completions"
+      : `${String(judge.api_base).replace(/\/$/, "")}/chat/completions`;
+    const model = String(judge.litellm_id).replace(
+      viaOpenRouter ? /^openrouter\// : /^openai\//,
+      ""
+    );
+    const res = await fetch(endpoint, {
       method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${keyFor(judge)}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        model: String(judge.litellm_id).replace(/^openrouter\//, ""),
+        model,
         messages: [
           { role: "user", content: buildJudgePrompt(rubric, prompt, response, itemId) },
         ],
         temperature: 0,
         max_tokens: JUDGE_MAX_TOKENS,
-        reasoning: { effort: "low" },
-        provider: { allow_fallbacks: false },
+        // providers disagree on allowed values -- GLM rejects "low" -- so this
+        // is config, carried from judges.yaml, never a constant here
+        reasoning: { effort: judge.reasoning_effort ?? "low" },
+        // allow_fallbacks is an OpenRouter routing field; sending it elsewhere
+        // is at best ignored and at worst a 400
+        ...(viaOpenRouter ? { provider: { allow_fallbacks: false } } : {}),
       }),
       signal: AbortSignal.timeout(60_000),
     });
