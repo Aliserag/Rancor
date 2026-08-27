@@ -115,17 +115,28 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
                 <table class="ledger">
                   <caption>
                     Shared rank = overlapping 95% intervals;
-                    tied rows are listed alphabetically, not by score. Each
-                    estimate carries the number of items behind it; "no
-                    spread" means every one of those items scored alike, so
-                    the interval collapsed to a point rather than the estimate
-                    being precise.
+                    tied rows are listed alphabetically, not by score.
+                    {/* Only explain "no spread" when a row actually shows it.
+                        No row does in this run, so 30 words were explaining a
+                        state the reader could not see. */}
+                    {board.rows.some((r: any) =>
+                      ["clean", "handling", "disparity"].some(
+                        (k) => r[k] && r[k].lo === r[k].hi
+                      )
+                    ) && (
+                      <>
+                        {" "}Each estimate carries the number of items behind
+                        it; "no spread" means every one of those items scored
+                        alike, so the interval collapsed to a point rather than
+                        the estimate being precise.
+                      </>
+                    )}
                     {board.comparison_groups?.length > 0 && (
                       <>
                         {" "}Disparity in this run compares the focal group
-                        against {[...new Set(board.comparison_groups.map((g: string) => g.replace(/s$/, "")))].join(", ")} (both source spellings) only;
-                        the axis declares a wider comparison set, and this
-                        preview sampled part of it.
+                        against {[...new Set(board.comparison_groups.map((g: string) => g.replace(/s$/, "")))].join(", ")} only;
+                        the axis declares a wider comparison set that this run
+                        did not sample.
                       </>
                     )}
                     {board.rows.some((r: any) => r.tie_chained) && (
