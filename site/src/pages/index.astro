@@ -87,9 +87,16 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
     )
   }
 
+  {/* Four named readers, each pointed at the surface that serves them. The
+      line used to name three and send none of them anywhere, while /reports/
+      and the transcript browser had no inbound link from any page body. */}
   <p class="audience">
-    Built for people who need <a href="/reports/">a number they can cite</a>: advocacy staff filing a
-    complaint, newsrooms reporting one, and engineers fixing what it finds.
+    Built for the engineer
+    {" "}<a href="/mcp/">hardening a model against Islamophobia before it ships</a>,
+    the journalist who needs
+    {" "}<a href="/reports/">a number they can cite</a>, the citizen taking one
+    to an official, and the researcher who wants
+    {" "}<a href="/transcripts/">every response and judge rationale behind it</a>.
   </p>
 
   <div class="axis-tabs">
