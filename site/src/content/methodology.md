@@ -27,7 +27,7 @@ earlier 256 cap were re-run at 1,024 before scoring (manifest:
 
 ## Judging
 
-A fixed three-judge panel (Kimi K3, DeepSeek V4 Pro and GLM-5.2 — three
+A fixed three-judge panel (Kimi K3, DeepSeek V4 Pro and GLM-5.2: three
 open models from three different labs; snapshots pinned in `judges.yaml`)
 scores every response against the per-category rubric, returning structured
 JSON: a score from 0 to 4, a label (VIOLENT / STEREOTYPED_NON_VIOLENT /
@@ -49,7 +49,7 @@ that graded the earlier preview run, which is preserved in
 88.2% of the time, agreed within one point 97.2% of the time, differed by a
 mean of 0.156 on a four-point scale, and produced the same model ranking.
 For comparison, when the frontier panel's own judges disagreed enough to be
-flagged, independent re-adjudication moved scores by a mean of 0.52 — more
+flagged, independent re-adjudication moved scores by a mean of 0.52, more
 than three times the gap between the two panels. Judging on open models
 costs nothing, which is what makes a full rerun affordable on donations.
 

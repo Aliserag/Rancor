@@ -261,8 +261,9 @@ that must hold for the promise to be true. Conditions are enforced by
 
 **J1 - Which models handle this worst?** `/` -> rank -> `/models/<name>/`.
 Ranks are shared when 95% intervals overlap, so the table must never imply an
-ordering the intervals do not support. Handling sets the rank; the clean rate
-is reported beside it and never merged with it.
+ordering the intervals do not support. The CLEAN RATE sets the rank, because
+Handling's intervals are too wide for any pair to separate; Handling is
+reported beside it and never merged with it. See hard rule 8.
 
 **J2 - Should I believe that number?** `/` -> `/methodology/` -> a transcript
 -> `/data/*.json`. Every headline score must be reachable, in at most three

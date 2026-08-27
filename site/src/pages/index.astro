@@ -54,14 +54,15 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
 
 ---
 
-<Base title="Leaderboard" active="leaderboard">
+<Base title="Which AI models handle Islamophobia worst" active="leaderboard">
   <p class="lede">
     Five AI models. The same questions about Muslims. Scored on how they
     handled them.
   </p>
   <p class="lede-sub">
     Rancor is the first living, open Islamophobia
-    <a href="/methodology/">eval</a>: 337 cited prompts, five frontier models,
+    <a href="/methodology/">eval</a>: 337 cited prompts,
+    {" "}{meta.models.length} frontier models,
     and a verifiable snapshot published every run, so you can watch who
     improves as new models ship. The
     <a href="https://github.com/Aliserag/Rancor/tree/main/eval">harness</a>
@@ -87,7 +88,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
   }
 
   <p class="audience">
-    Built for people who need a number they can cite: advocacy staff filing a
+    Built for people who need <a href="/reports/">a number they can cite</a>: advocacy staff filing a
     complaint, newsrooms reporting one, and engineers fixing what it finds.
   </p>
 
@@ -106,7 +107,9 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
           const board = boards[a.axis_id];
           return (
             <section class="tab-panel" id={`panel-${a.axis_id}`}>
-              {axes.length > 1 && <h2>{a.display_name}</h2>}
+              {axes.length > 1
+                ? <h2>{a.display_name}</h2>
+                : <h2>How the five models scored</h2>}
               {board ? (
                 <div class="table-scroll" tabindex="0" role="region" aria-label="Model scores, scrollable">
                 <table class="ledger">
@@ -268,11 +271,10 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
         <p class="note">{highlights.note} No harmful content appears here;
           each row links into the gated transcript browser.</p>
         <p class="note">
-          Counterfactual items are asked once per group, so a row may be the
-          axis's <strong>focal</strong> group or one of its
-          <strong>comparison</strong> controls. A control scoring badly is a
-          finding about the model, not a claim about that group, and it is
-          how disparity gets measured at all, since a gap needs both sides.
+          <strong>A control row scoring badly is a finding about the model,
+          not a claim about that group.</strong> Counterfactual items are asked
+          once per group, so a row is either the axis's focal group or one of
+          its comparison controls, and a gap needs both sides to exist at all.
         </p>
         {highlights.entries.map((h: any) => (
           <div class="highlight-row">
@@ -447,35 +449,32 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       Read the two middle columns together. Refusing often is defensible on
       its own; refusing often <em>and</em> producing stereotyped content often
       is not caution, it is failing in both directions at once.
+      {" "}A response is labelled only when at least two of three judges agree,
+      so {findings.label_rule.no_majority_records} responses where all three
+      disagreed carry no label at all. Those, and nothing else, are why a row
+      may fall short of 100%.
+      {findings.label_rule.no_majority_all_adverse && (
+        <>
+          {" "}Every one of those contains at least one adverse judgement, so
+          dropping them can only remove a bad mark, never a clean one:
+          {" "}<strong>these rates are mildly optimistic as a result.</strong>
+        </>
+      )}
+      {" "}<em>Violent</em>, the most severe label, is folded into the
+      stereotyped column rather than getting one of its own:
+      {" "}{findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0)}
+      {" "}majority-violent {findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0) === 1 ? "record" : "records"} in this run.
     </p>
     <details class="counting-note">
-      <summary>How these are counted, and what the rates leave out</summary>
+      <summary>What the rates are computed over</summary>
       <p class="note">
       Rates here are over every scored response for that model. That is a
       bigger denominator than the headline scores use, but it is
       {" "}<em>not</em> independent of the sample: those responses come from
       the same 337 items. So each rate also shows how many distinct prompts
       stand behind it; where that number is small the rate is fragile.
-      <br /><br />
-      A response is
-      labelled only when at least two of three judges agree, so
-      {" "}{findings.label_rule.no_majority_records} responses where all three
-      disagreed carry no label at all. Those, and nothing else, are why a row
-      may fall short of 100%.
-      {findings.label_rule.no_majority_all_adverse && (
-        <>
-          {" "}That exclusion leans one way: every one of those
-          {" "}{findings.label_rule.no_majority_records} contains at least one
-          adverse judgement, so dropping them can only remove a bad mark, never
-          a clean one. These rates are mildly optimistic as a result.
-        </>
-      )}
-      {" "}The last column is the check on the second: a majority of zero does
-      not mean no judge ever saw it. And <em>violent</em>, the most severe
-      label in the taxonomy, is folded into the stereotyped column rather
-      than getting one of its own:
-      {" "}{findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0)}
-      {" "}majority-violent {findings.models.reduce((n: number, m: any) => n + (m.labels?.VIOLENT ?? 0), 0) === 1 ? "record" : "records"} in this run.
+      {" "}The last column is the check on the stereotyped column: a majority
+      of zero does not mean no judge ever saw it.
       </p>
     </details>
 
@@ -483,9 +482,10 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
       <section class="instrument-warning">
         <h3>One item in this run is a defect, not a result</h3>
         <p>
-          A second alarm flags any item <em>every</em> model floors on, because
-          a universal failure is far more likely to be a broken item than a
-          universal model defect. It reports
+          Alongside the judge-disagreement queue, a second alarm flags any
+          item <em>every</em> model floors on, because a universal failure is
+          far more likely to be a broken item than a universal model defect.
+          It reports
           {" "}{findings.unanimous_failures.length}, and we have not excluded
           it from the scores.
         </p>

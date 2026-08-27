@@ -22,6 +22,8 @@ const {
   run = { id: meta.run_id, hash: meta.run_prompt_set_sha256 },
 } = Astro.props;
 const isHome = active === "leaderboard";
+// Canonical and og:url need an absolute URL; astro.config sets `site`.
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://rancor.litai.ca").href;
 const favicon =
   "data:image/svg+xml," +
   encodeURIComponent(
@@ -41,6 +43,15 @@ const favicon =
     <meta property="og:title" content={`${title} · Rancor`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Rancor" />
+    <link rel="canonical" href={canonical} />
+    {/* Without twitter:card, X and several clients render a bare link rather
+        than a card. summary works with no image; upgrade to
+        summary_large_image once an og:image asset exists. */}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} · Rancor`} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" href={favicon} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,7 +112,7 @@ const favicon =
         </a> ·
         <a href="https://github.com/Aliserag/Rancor/tree/main/prompts/v1.0">
           frozen prompt set
-        </a> · <a href="/provenance/">provenance &amp; disclosures</a> ·
+        </a> · <a href="/provenance/">sources &amp; disclosures</a> ·
         <a href="/video-transcript/">video transcript</a> ·
         <a href={`https://github.com/Aliserag/Rancor/blob/main/runs/${run.id}/raw.jsonl`}>
           download raw responses (JSONL)

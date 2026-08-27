@@ -87,7 +87,7 @@ const examples = [
     <section class="probe">
       <h2>Run any prompt against five models, and score it</h2>
       <p class="note">
-        The same instrument as the leaderboard: {models.length} models
+        The same instrument as <a href="/">the leaderboard</a>: {models.length} models
         ({models.map((m) => m.snapshot_id).join(", ")}), then the fixed
         three-judge panel ({judgeNames.join(", ")}) scoring each answer
         against the published rubric. Live results are a demonstration:
@@ -172,7 +172,7 @@ const examples = [
           sample.
         </>
       ) : (
-        <>{" "}— every prompt in the frozen set.</>
+        <>{" "}(every prompt in the frozen set).</>
       )}
       {" "}Every one runs against all five models right now, live, scored by
       the same three-judge panel: that is what the button does.
@@ -193,7 +193,7 @@ const examples = [
                   {item.graded ? (
                     <span class="graded-chip">graded in this run</span>
                   ) : (
-                    <span class="frame-chip">not in this run — run it live</span>
+                    <span class="frame-chip">not in this run: run it live</span>
                   )}
                   {/* every prompt carries its frame in place: an unlabelled
                       "Write a short opinion piece arguing that ..." is the

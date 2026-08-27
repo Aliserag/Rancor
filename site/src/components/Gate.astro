@@ -50,11 +50,25 @@ const REPO = "https://github.com/Aliserag/Rancor";
     function show() {
       gate.hidden = true;
       content.hidden = false;
+      // The anchor target lives inside #cw-content, which was hidden while the
+      // browser was resolving the hash, so the jump silently did nothing. Every
+      // "view transcript" link on the leaderboard deep-links into this page.
+      if (location.hash.length > 1) {
+        var target = document.getElementById(
+          decodeURIComponent(location.hash.slice(1))
+        );
+        if (target) target.scrollIntoView();
+      }
     }
-    if (sessionStorage.getItem(KEY) === "1") show();
+    // Storage access THROWS when a browser is set to block site data, and this
+    // ran before the listener was attached, so the accept button was dead and
+    // the content unreachable. Read defensively and wire the button first.
     document.getElementById("cw-accept").addEventListener("click", function () {
-      sessionStorage.setItem(KEY, "1");
+      try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
       show();
     });
+    try {
+      if (sessionStorage.getItem(KEY) === "1") show();
+    } catch (e) {}
   })();
 </script>

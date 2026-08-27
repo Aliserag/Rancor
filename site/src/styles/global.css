@@ -443,7 +443,13 @@ a.run-live { text-decoration: none; display: inline-flex; }
 .role-chip{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;
   text-transform:uppercase;padding:.1rem .4rem;border:1px solid var(--rule);
   border-radius:2px;color:var(--muted);white-space:nowrap;}
-.role-chip.role-focal{border-color:var(--rule-strong);color:var(--ink);}
+.role-chip.role-focal{border-color:var(--rule-strong);color:var(--ink);
+  font-weight:600;background:var(--panel);}
+/* Controls outnumber focal rows in this list, and at a glance equal weight
+   made a page about Islamophobia look like a list of findings about the
+   comparison group. The row copy already says otherwise; the styling now
+   agrees with it. */
+.role-chip.role-control{border-style:dashed;opacity:.75;}
 
 /* page-level notice when every model failed for one reason: readable, not
    alarming — the published data behind this site is static and unaffected */
