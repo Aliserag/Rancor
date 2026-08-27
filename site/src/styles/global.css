@@ -1,7 +1,10 @@
 /* Rancor — forensic-ledger aesthetic: paper, ink, hairline rules.
    Spectral (editorial serif) + IBM Plex Mono (instrument data).
-   Severity palette validated (dataviz six-checks) against the paper
-   surface: good #068466 · warn #9a6b00 · critical #8f2a1e. */
+   Severity palette measured against --paper TEXT at chip sizes (~11.5px,
+   so WCAG AA needs 4.5:1): good and warn were 4.18 and 4.20 and are now
+   4.51 and 4.54, hue unchanged. good #067e61 · warn #936600 ·
+   critical #8f2a1e (7.47). Earlier wording claimed a validation that had
+   not been done for paper-on-colour. */
 
 :root {
   --paper: #f6f2ea;
@@ -11,8 +14,8 @@
   --rule: #d9d0bd;
   --rule-strong: #a89b82;
   --accent: #8f2a1e;      /* oxblood: concern, disparity toward harm */
-  --good: #068466;        /* validated sea-green: handling, safe direction */
-  --warn: #9a6b00;
+  --good: #067e61;        /* sea-green: handling, safe direction */
+  --warn: #936600;
   --fixture: #b45309;
   --focus: #1a5fb4;
   --serif: "Spectral", "Iowan Old Style", Georgia, serif;
@@ -233,7 +236,10 @@ table.ledger tbody tr:hover svg .ci-point { r: 4.5; }
   display: flex; gap: 0.7rem; align-items: baseline; flex-wrap: wrap;
   border-bottom: 1px solid var(--rule); padding: 0.45rem 0.3rem;
   font-size: 0.88rem;
-  transition: background var(--t-fast), padding-left var(--t-fast);
+  /* padding-left is layout-triggering: tweening it reflows every frame,
+     and .live-item ships 337 times on /explore/. The hover indent still
+     happens, it is just not animated. */
+  transition: background var(--t-fast);
 }
 .highlight-row:hover { background: var(--panel); padding-left: 0.7rem; }
 .highlight-row:hover .score-chip { transform: scale(1.06); }
@@ -300,7 +306,10 @@ details.harm pre {
 /* ---- explore / live run ---- */
 .live-item {
   border-bottom: 1px solid var(--rule); padding: 0.8rem 0.3rem;
-  transition: background var(--t-fast), padding-left var(--t-fast);
+  /* padding-left is layout-triggering: tweening it reflows every frame,
+     and .live-item ships 337 times on /explore/. The hover indent still
+     happens, it is just not animated. */
+  transition: background var(--t-fast);
 }
 .live-item:hover { background: var(--panel); padding-left: 0.7rem; }
 .live-item .prompt-text { font-size: 0.92rem; margin: 0.25rem 0 0.5rem; }
@@ -888,3 +897,8 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
      screen -- runs/preview/adjudication_escalations.csv is 395px on its own. */
   code { overflow-wrap: anywhere; }
 }
+
+/* Frozen item ids are unbreakable ~40-character tokens; at 320px the longest
+   measured 367px against a 316px viewport and pushed the transcript pages
+   into two-dimensional scrolling (WCAG 1.4.10). */
+.item-id { overflow-wrap: anywhere; }
