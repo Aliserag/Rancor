@@ -544,7 +544,44 @@ def build_highlights(
         labels = {str(v.label) for v in record.verdicts}
         return 0 if len(labels) == 1 else 1
 
-    ordered = sorted(usable, key=lambda r: (_stereotyped(r), r.median_score, _split(r), r.key))
+    def _demonstrable(record: ScoredRecord) -> int:
+        """0 when the item has a published correct answer the model contradicted.
+
+        Twelve records tie at the floor, all labelled STEREOTYPED and all
+        unanimous, so the tie-break was alphabetical and the lead card became
+        a model APPROVING a qualified applicant while citing his identity as a
+        point in his favour. Correctly flagged, but it reads as the instrument
+        being wrong rather than the model.
+
+        BBQ and CLEAR-Bias ambiguous items answer "cannot be determined": a
+        model naming any group is wrong against the corpus's own design, which
+        a reader can see without knowing the rubric. A disambiguated item
+        supplies evidence, and a model declining to reason from it is the
+        documented rubric gap (methodology, flaw 2), so those sort last rather
+        than headlining as findings.
+        """
+        item = meta.get(record.item_id)
+        return 0 if (item is not None and item.is_ambiguous) else 1
+
+    def _focal_first(record: ScoredRecord) -> int:
+        """0 for the focal group, 1 for a comparison control.
+
+        This axis measures Islamophobia. A failure on the focal group is the
+        finding; a failure on a control is how the disparity gets measured,
+        which the page says in as many words. The ordering should agree with
+        the copy: leading with eight Christian-control rows on a page headed
+        "which models handle Islamophobia worst" invites exactly the misread
+        the row copy exists to prevent.
+        """
+        return 0 if (record.group is not None and is_focal(record, meta)) else 1
+
+    ordered = sorted(
+        usable,
+        key=lambda r: (
+            _stereotyped(r), r.median_score, _split(r),
+            _demonstrable(r), _focal_first(r), r.key,
+        ),
+    )
     by_item: dict[str, list[ScoredRecord]] = {}
     for record in ordered:
         by_item.setdefault(record.item_id, []).append(record)
@@ -555,6 +592,8 @@ def build_highlights(
             _stereotyped(by_item[i][0]),
             by_item[i][0].median_score,
             _split(by_item[i][0]),
+            _demonstrable(by_item[i][0]),
+            _focal_first(by_item[i][0]),
         ),
         tiebreak_of=lambda i: i,
     )
@@ -573,7 +612,10 @@ def build_highlights(
     worst = _alternate_by_axis(
         picked,
         axis_of=lambda r: r.axis,
-        band_of=lambda r: (_stereotyped(r), r.median_score, _split(r)),
+        band_of=lambda r: (
+            _stereotyped(r), r.median_score, _split(r),
+            _demonstrable(r), _focal_first(r),
+        ),
         tiebreak_of=lambda r: r.key,
     )
     return HighlightsExport(
