@@ -24,6 +24,9 @@ How to read the results correctly, before quoting any number:
 - v1.0 publishes one axis, Islamophobia. The schema is multi-axis; composites across axes are
   never computed.
 - Results from different prompt-set hashes are not comparable.
+- The leaderboard always shows the newest run, so a number quoted from it changes when the
+  next run lands. Each past run keeps its own permanent page under /reports/; cite that URL
+  for a figure that must stay resolvable.
 - 3,185 responses were collected; 3,175 carry a full three-judge verdict. Ten records had judges
   return malformed output on every retry and are excluded from all scores.
 - 268 of the 337 items are adapted from openly licensed corpora and 69 are team-written from
@@ -36,6 +39,7 @@ Cite the scored aggregates below instead.
 ## Results
 
 - [Leaderboard](https://rancor.litai.ca/): five named models ranked on clean rate and Handling, with 95% intervals and the item count behind each.
+- [Reports](https://rancor.litai.ca/reports/): every published run, newest first, each with its own permanent page, the prompt set and judge panel it used, and whether it can be compared to the run before it.
 - [Methodology](https://rancor.litai.ca/methodology/): sampling, the judge panel and why it is cross-lab, the rubric per category, refusal rules, and four disclosed defects in the instrument itself.
 - [Provenance](https://rancor.litai.ca/provenance/): every upstream corpus, item count, licence and citation.
 - [Who keeps this running](https://rancor.litai.ca/sustain/): the custodian agent, what a rerun costs, and how it is funded.

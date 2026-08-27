@@ -728,8 +728,10 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
   text-transform: uppercase; color: var(--paper); background: var(--ink);
   border-radius: 999px; padding: 0.1rem 0.55rem;
 }
-.delta-up { color: #3d7a3d; font-weight: 700; }
-.delta-down { color: var(--rule-strong); font-weight: 700; }
+/* A model handling Islamophobia worse than last report is the harmful
+   direction, so it takes --accent, the same token sev-critical uses. */
+.delta-up { color: var(--good); font-weight: 700; }
+.delta-down { color: var(--accent); font-weight: 700; }
 
 /* A report permalink prints the prompt-set hash whole -- it is the citation
    anchor readers check against, so it is not truncated like elsewhere -- and

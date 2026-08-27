@@ -25,6 +25,10 @@ const fmtDate = (iso: string) =>
     day: "numeric",
     month: "long",
     year: "numeric",
+    // Runs are stamped in UTC and these pages are built on whatever machine
+    // happens to run the build, so without this the same commit publishes a
+    // different date from a laptop than from CI.
+    timeZone: "UTC",
   });
 ---
 

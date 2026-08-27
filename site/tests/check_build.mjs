@@ -1089,6 +1089,19 @@ check(
   for (const judge of current.judges) {
     check(`llms.txt names judge ${judge}`, llms.includes(judge));
   }
+  // The leaderboard URL always shows the newest run, so a number quoted from
+  // it silently changes when the next run lands. llms.txt is what the agent
+  // audience reads instead of the pages, so the permanent per-report URLs
+  // have to be discoverable from here or J4's promise does not reach them.
+  check(
+    "llms.txt lists the reports index as an absolute URL",
+    llms.includes("https://rancor.litai.ca/reports/")
+  );
+  check(
+    "llms.txt says the leaderboard tracks the newest run",
+    /\/reports\/[\s\S]{0,240}?(permanent|does not change|stays|superseded)/i.test(llms)
+  );
+
   // it must keep steering crawlers away from the human-audit surfaces
   check(
     "llms.txt still excludes /transcripts/ and /explore/",
@@ -1101,6 +1114,84 @@ check(
   check(
     `llms.txt names no superseded run (found: ${stale.map((e) => e.run_id).join(", ") || "none"})`,
     stale.length === 0
+  );
+}
+
+// D. Published dates must not depend on where the site was built.
+// `new Date(iso).toLocaleDateString(...)` without a timeZone renders in the
+// BUILD machine's zone, so commit dd536fb published "Report: 18 August 2026"
+// from a laptop in CDT and "Report: 19 August 2026" from Vercel's UTC
+// container -- the same archived report, two dates, and the video transcript
+// linking to one of them by the other's name. Reports are meant to be
+// citable; a citable date cannot move. The site's other date (Base.astro's
+// build stamp) is UTC, so UTC is the convention.
+{
+  const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  const utcDate = (iso) =>
+    new Date(iso).toLocaleDateString("en-GB", {
+      day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+    });
+
+  const listing = readFileSync(join(dist, "reports/index.html"), "utf8");
+  for (const entry of reports) {
+    const expected = utcDate(entry.created_at);
+    check(
+      `/reports/ dates ${entry.run_id} as ${expected} (UTC)`,
+      listing.includes(expected)
+    );
+    const page = readFileSync(join(dist, "reports", entry.run_id, "index.html"), "utf8");
+    check(
+      `/reports/${entry.run_id}/ titles itself ${expected} (UTC)`,
+      page.includes(`Report: ${expected}`)
+    );
+    // and no OTHER day may appear as this report's headline date
+    const offBy = new Date(new Date(entry.created_at).getTime() - 86400000);
+    check(
+      `/reports/${entry.run_id}/ does not show the previous day`,
+      !page.includes(`Report: ${utcDate(offBy.toISOString())}`)
+    );
+  }
+
+  // Prose that names a report's date must agree with that report's own date.
+  const transcript = readFileSync(join(dist, "video-transcript/index.html"), "utf8");
+  const linked = transcript.match(/href="\/reports\/([^"/]+)\/"[^>]*>([^<]*)</);
+  if (linked) {
+    const entry = reports.find((e) => e.run_id === linked[1]);
+    check(
+      `video transcript names the ${linked[1]} report by its own date`,
+      entry ? linked[2].includes(utcDate(entry.created_at)) : false,
+      linked ? `link text says "${linked[2]}"` : ""
+    );
+  } else {
+    check("video transcript links a report", false);
+  }
+}
+
+// T. Semantic colour comes from tokens, and the tokens mean things.
+// CIBar.astro documents the convention -- harm is --accent, the safe
+// direction is --good -- and .score-chip.sev-critical already paints a bad
+// number with --accent. The report deltas shipped with a raw hex for "up"
+// and --rule-strong, a border colour, for "down", so a model getting WORSE
+// between reports would have rendered in the same muted tan as a dashed
+// border. It renders only once two comparable reports exist, which is
+// exactly why it would have shipped unnoticed.
+{
+  const cssAll = [...walk(dist)].filter((p) => p.endsWith(".css"))
+    .map((p) => readFileSync(p, "utf8")).join("\n");
+  const rule = (name) => {
+    const m = cssAll.match(new RegExp(`\\.${name}\\s*\\{[^}]*\\}`));
+    return m ? m[0] : "";
+  };
+  const up = rule("delta-up");
+  const down = rule("delta-down");
+  check("a delta-up rule exists", Boolean(up));
+  check("a delta-down rule exists", Boolean(down));
+  check("delta-up uses the --good token", /var\(--good\)/.test(up), up);
+  check("delta-down uses the --accent (harm) token", /var\(--accent\)/.test(down), down);
+  check(
+    "report deltas hardcode no hex colour",
+    !/#[0-9a-fA-F]{3,8}/.test(up + down),
+    (up + down).match(/#[0-9a-fA-F]{3,8}/)?.[0] || ""
   );
 }
 
