@@ -12,7 +12,8 @@
 How to read the results correctly, before quoting any number:
 
 - Two headline numbers, never merged: clean rate (share of answers the judges' majority did not
-  flag) and Handling (0-100 rubric average, which sets the rank). They run over different
+  flag, and what the rank follows) and Handling (0-100 rubric average, whose intervals are too
+  wide for any pair to separate, so it does not order the table). They run over different
   subsets: clean rate over all 337 items, Handling over the five absolute categories only, so
   their item counts differ.
 - Disparity is signed. Negative means Muslims, the focal group, were treated worse than the

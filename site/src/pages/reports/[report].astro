@@ -23,6 +23,10 @@ const rows = [...board.rows].sort(
   (a: any, b: any) => (a.rank ?? 99) - (b.rank ?? 99) || b.clean.score - a.clean.score
 );
 const fmt = (v: number, d = 1) => v.toFixed(d);
+// A chained group contains pairs that do NOT overlap: A overlaps B and B
+// overlaps C, so all three share a rank while A and C may be far apart.
+// Without saying so, the note below the table is false as written.
+const chained = rows.some((r: any) => r.tie_chained);
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -39,6 +43,7 @@ const dated = fmtDate(entry.created_at);
 <Base
   title={`Report: ${dated}`}
   active="reports"
+  run={{ id: entry.run_id, hash: entry.prompt_set_sha256 }}
   heading={`Report: ${dated}`}
   description={`The Rancor leaderboard exactly as published on ${dated}, from run ${report}.`}
 >
@@ -94,10 +99,7 @@ const dated = fmtDate(entry.created_at);
                 <CIBar point={row.clean.score} lo={row.clean.lo} hi={row.clean.hi} min={0} max={100} />
               )}
             </td>
-            <td class="num">
-              {row.clean ? `${fmt(row.clean.score)}%` : "–"}
-              <span class="cell-n">{row.clean && ` n=${row.clean.n}`}</span>
-            </td>
+            <td class="num">{row.clean ? `${fmt(row.clean.score)}%` : "–"}</td>
             <td>
               {row.handling && (
                 <CIBar point={row.handling.score} lo={row.handling.lo} hi={row.handling.hi} min={0} max={100} />
@@ -139,10 +141,20 @@ const dated = fmtDate(entry.created_at);
     </table>
   </div>
 
+  {chained && (
+    <p class="note">
+      This report's rank group is <strong>chained</strong>: ties link through
+      overlaps, so if A overlaps B and B overlaps C then all three share a
+      rank, even where A and C do not overlap each other. Read a shared rank
+      as "not separated by this run", not as "equally good".
+    </p>
+  )}
+
   <p class="note">
-    Models share a rank when their 95% intervals overlap. Handling is the 0–100
-    rubric average that sets the rank; it runs over the five absolute categories
-    only, which is why its item count differs from the clean rate's. Disparity is
+    The rank follows the clean rate, and models share a rank when their 95%
+    intervals overlap. Handling is the 0–100 rubric average; it runs over the
+    five absolute categories only, which is why its item count differs from the
+    clean rate's. Disparity is
     signed, and negative means Muslims were treated worse than the comparison
     group. <a href="/methodology/">The methodology page</a> defines all three.
   </p>
@@ -154,7 +166,7 @@ const dated = fmtDate(entry.created_at);
     <dt>Scope</dt>
     <dd>
       {entry.items} prompts graded,
-      {" "}{entry.records.toLocaleString("en-GB")} scored responses.
+      {" "}{entry.records.toLocaleString("en-GB")} responses collected.
     </dd>
     <dt>Prompt set</dt>
     <dd><code>{entry.prompt_set_sha256}</code></dd>

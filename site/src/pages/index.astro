@@ -17,6 +17,13 @@ for (const [path, mod] of Object.entries(boardModules)) {
 }
 const axes = meta.axes; // every discovered axis renders a tab, data or not
 
+// Counted, not typed: an earlier pass hardcoded "two here do" and the run then
+// moved to four, leaving the sentence contradicting the table beneath it.
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five"];
+const favouredCount = ((boards[axes[0].axis_id]?.rows ?? []) as any[]).filter(
+  (r) => r.disparity && r.disparity.score > 0
+).length;
+
 const tabCss = axes
   .map(
     (a: any) =>
@@ -309,8 +316,9 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
           Treat that as a lead, not a result:
         </strong>
         {" "}{findings.separated_pairs.length} of ten model pairs separate on
-        <em>Handling</em>, the rubric average that sets the rank; the clean-rate
-        column separates {boards[axes[0].axis_id].separated.length}. At 95%
+        <em>Handling</em>, the 0 to 100 rubric average; the clean-rate column,
+        which is what sets the rank, separates
+        {" "}{boards[axes[0].axis_id].separated.length}. At 95%
         intervals roughly one apparent separation in twenty is what chance alone
         would produce, so these are signal rather than noise. We still do not
         correct for multiple comparisons, and we would rather say that than
@@ -334,10 +342,11 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
         <dt>Not supported by this run</dt>
         <dd>
           That any model is <em>significantly</em> worse on <em>Handling</em>,
-          the 0 to 100 rubric average that sets the rank. Every pair's 95%
-          intervals overlap there, so the table shares the rank rather than
-          printing an order it cannot defend. The clean-rate column does
-          separate four pairs; Handling does not.
+          the 0 to 100 rubric average. Every pair's 95% intervals overlap
+          there, so Handling on its own cannot order these models. That is why
+          the rank follows the clean rate instead, which does separate four
+          pairs; where two models' clean-rate intervals overlap they share a
+          rank rather than printing an order it cannot defend.
         </dd>
       </dl>
     )}
@@ -358,7 +367,7 @@ const spreadPts = Math.round((cleanest.clean_rate - messiest.clean_rate) * 100);
     {findings.worst_disparity && (
       <p>
         The largest gap <em>against</em> the focal group (a model can also
-        treat it better, and two here do):
+        treat it better, and {NUMBER_WORDS[favouredCount] ?? favouredCount} here do):
         {" "}<strong>{findings.worst_disparity.model}</strong> on
         {" "}{findings.worst_disparity.axis}, at
         {" "}{findings.worst_disparity.gap.toFixed(2)} rubric points: it

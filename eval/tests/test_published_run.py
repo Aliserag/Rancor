@@ -251,3 +251,43 @@ def test_cost_basis_matches_the_frozen_set() -> None:
         basis["full_rerun"]["total_calls"]
         == basis["full_rerun"]["model_calls"] + basis["full_rerun"]["judge_calls"]
     )
+
+
+def test_rank_order_follows_the_metric_the_site_names() -> None:
+    """The site tells readers which number decides the ordering.
+
+    export.py ranks on the CLEAN RATE, deliberately: Handling averages five
+    category means and its interval is too wide for any pair to separate,
+    so ranking on it would put every model in one group. Four surfaces said
+    "Handling ... sets the rank" anyway, which is the opposite of what the
+    code does and would send a reader checking the table to the wrong column.
+    """
+    import json
+
+    site_data = REPO / "site" / "src" / "data"
+    rows = json.loads(
+        (site_data / "leaderboard_islamophobia.json").read_text()
+    )["rows"]
+    ranked = [r for r in rows if r.get("rank") is not None]
+
+    # Rank groups, not strict order: models sharing a rank are printed
+    # alphabetically, so within a group the order carries no claim. What must
+    # hold is that a better rank means a better clean rate.
+    for a in ranked:
+        for b in ranked:
+            if a["rank"] < b["rank"]:
+                assert a["clean"]["score"] > b["clean"]["score"], (
+                    f"{a['name']} ranks above {b['name']} but its clean rate "
+                    f"({a['clean']['score']:.2f}) is not higher "
+                    f"({b['clean']['score']:.2f}) — if the exporter changed the "
+                    "rank metric, every page naming it must change too"
+                )
+
+    # and Handling would NOT produce these groups, which is why naming it as
+    # the rank metric is wrong rather than merely imprecise
+    by_handling = sorted(ranked, key=lambda r: -r["handling"]["score"])
+    by_rank_then_clean = sorted(ranked, key=lambda r: (r["rank"], -r["clean"]["score"]))
+    assert [r["name"] for r in by_handling] != [r["name"] for r in by_rank_then_clean], (
+        "Handling now happens to reproduce the rank order; re-check whether "
+        "the pages may name it after all"
+    )

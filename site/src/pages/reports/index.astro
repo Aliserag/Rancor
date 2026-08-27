@@ -59,7 +59,7 @@ const fmtDate = (iso: string) =>
         </h3>
         <p class="note">
           <code>{entry.run_id}</code> · {entry.items} prompts graded ·
-          {" "}{entry.records.toLocaleString("en-GB")} scored responses ·
+          {" "}{entry.records.toLocaleString("en-GB")} responses collected ·
           {" "}judged by {entry.judges.join(", ")} ·
           {" "}prompt set <code>{entry.prompt_set_sha256.slice(0, 12)}…</code>
         </p>

@@ -717,6 +717,11 @@ button.copy-addr.copied { background: var(--ink); color: var(--paper); }
   font-size: 0.95rem; line-height: 1.55;
 }
 
+/* The UA sheet's [hidden]{display:none} loses to any author display rule, so
+   .tab-row{display:flex} rendered a single-axis tab the template had marked
+   hidden. Reset it once, globally, rather than per component. */
+[hidden] { display: none !important; }
+
 /* Reports: one archived run per card, newest first. */
 .report-card {
   border: 1px solid var(--rule); border-radius: 5px;

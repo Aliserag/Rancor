@@ -1195,5 +1195,124 @@ check(
   );
 }
 
+// M. The rank metric must be named correctly. export.py ranks on the CLEAN
+// RATE by design -- Handling's interval is too wide for any pair to separate,
+// so ranking on it would collapse every model into one group. Four surfaces
+// nevertheless told readers "Handling ... sets the rank", sending anyone who
+// checked to the wrong column.
+{
+  const pages = ["index.html", "reports/full-337/index.html", "reports/preview/index.html"];
+  for (const f of pages) {
+    const html = readFileSync(join(dist, f), "utf8");
+    // Target the wrong CLAIM, not mere proximity: "Handling ... clean-rate
+    // column, which is what sets the rank" is correct prose and must pass.
+    check(
+      `/${f.replace("index.html","")} does not claim Handling sets the rank`,
+      !/rubric average (that|which) sets the rank/i.test(html) &&
+      !/Handling[^.]{0,40}?,? which sets the rank/i.test(html)
+    );
+  }
+  const llms = readFileSync(join(root, "public/llms.txt"), "utf8");
+  check(
+    "llms.txt does not claim Handling sets the rank",
+    !/rubric average, which sets the rank/i.test(llms) &&
+    !/Handling[^.]{0,40}?,? which sets the rank/i.test(llms)
+  );
+  check(
+    "the leaderboard names the clean rate as what orders the table",
+    /clean[- ]rate[\s\S]{0,160}?(orders|sets the rank|ranks|rank follows)/i.test(
+      readFileSync(join(dist, "index.html"), "utf8")
+    )
+  );
+}
+
+// F. A report page's footer must describe the report you are reading. Base
+// stamps the CURRENT run id and prompt-set hash into every footer, so
+// /reports/preview/ said "Prompt set 85b591a4..." in its body and
+// "run full-337 - prompt-set 2dd0e5eb..." in its footer, and linked the
+// wrong run's manifest. An archived report exists to be cited; a footer
+// naming a different run undoes that.
+{
+  const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  for (const entry of reports) {
+    const html = readFileSync(join(dist, "reports", entry.run_id, "index.html"), "utf8");
+    const footer = html.slice(html.indexOf("<footer"));
+    check(
+      `/reports/${entry.run_id}/ footer names ${entry.run_id}`,
+      new RegExp(`run ${entry.run_id}\\b`).test(footer)
+    );
+    check(
+      `/reports/${entry.run_id}/ footer carries its own prompt-set hash`,
+      footer.includes(entry.prompt_set_sha256)
+    );
+    check(
+      `/reports/${entry.run_id}/ footer links its own manifest`,
+      footer.includes(`runs/${entry.run_id}/manifest.json`)
+    );
+  }
+}
+
+// N. Four claims that contradicted the data they sit next to.
+{
+  const reports = JSON.parse(readFileSync(join(root, "src/data/reports/index.json"), "utf8"));
+  const home = readFileSync(join(dist, "index.html"), "utf8");
+  const board = JSON.parse(readFileSync(join(root, "src/data/leaderboard_islamophobia.json"), "utf8"));
+
+  // N1. A report whose rank groups are CHAINED contains pairs that do not
+  // overlap, so "models share a rank when their intervals overlap" is false
+  // as stated without the chaining caveat the leaderboard already prints.
+  for (const entry of reports) {
+    const b = JSON.parse(readFileSync(
+      join(root, "src/data/reports", entry.run_id, "leaderboard_islamophobia.json"), "utf8"));
+    const chained = b.rows.some((r) => r.tie_chained);
+    if (!chained) continue;
+    const html = readFileSync(join(dist, "reports", entry.run_id, "index.html"), "utf8");
+    check(
+      `/reports/${entry.run_id}/ explains its chained rank group`,
+      /chain/i.test(html)
+    );
+  }
+
+  // N2. The clean rate is per RESPONSE; its exported n is the item count used
+  // as the bootstrap cluster. Printing "94.2% n=337" reads as 337 responses.
+  for (const entry of reports) {
+    const html = readFileSync(join(dist, "reports", entry.run_id, "index.html"), "utf8");
+    const cleanCells = [...html.matchAll(/([0-9]+\.[0-9])%\s*<span class="cell-n">\s*n=([0-9]+)/g)];
+    check(
+      `/reports/${entry.run_id}/ does not label the clean rate with an item count`,
+      cleanCells.length === 0,
+      cleanCells.map((m) => `${m[1]}% n=${m[2]}`).join(", ")
+    );
+  }
+
+  // N3. 3,185 responses were collected; 10 had judges return malformed output
+  // on every retry, so 3,175 were scored. The listing called all of them
+  // "scored responses" while the leaderboard says 3,175.
+  const listing = readFileSync(join(dist, "reports/index.html"), "utf8");
+  check(
+    "/reports/ does not call every collected response a scored one",
+    !/3,185 scored responses/.test(listing)
+  );
+
+  // N4. "two here do" is hand-typed; four models have a positive disparity.
+  const positive = board.rows.filter((r) => r.disparity && r.disparity.score > 0).length;
+  const words = ["zero","one","two","three","four","five"];
+  const claimed = home.match(/treat it better, and (\w+)\s+here do/);
+  check(
+    `home states the right number of models treating Muslims better (${positive})`,
+    claimed ? claimed[1] === words[positive] : false,
+    claimed ? `page says "${claimed[1]}", data says ${positive}` : "phrase not found"
+  );
+
+  // N5. [hidden] must actually hide. .tab-row is display:flex, which beats the
+  // UA sheet, so the single-axis tab rendered anyway.
+  const cssAll = [...walk(dist)].filter((p) => p.endsWith(".css"))
+    .map((p) => readFileSync(p, "utf8")).join("\n");
+  check(
+    "the stylesheet resets [hidden] so the attribute is not overridden",
+    /\[hidden\][^{]*\{[^}]*display\s*:\s*none/i.test(cssAll)
+  );
+}
+
 console.log(failures === 0 ? "\nall site checks passed" : `\n${failures} check(s) failed`);
 process.exit(failures === 0 ? 0 : 1);

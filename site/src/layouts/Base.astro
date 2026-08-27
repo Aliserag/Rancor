@@ -9,6 +9,9 @@ interface Props {
   noindex?: boolean;
   description?: string;
   heading?: string;
+  // A report page is a permanent record of ONE run, so its footer must
+  // describe that run rather than whichever run is current.
+  run?: { id: string; hash: string };
 }
 const {
   title,
@@ -16,6 +19,7 @@ const {
   noindex = false,
   description = "The standing public eval of how frontier AI models handle Islamophobia: 337 frozen prompts, five models ranked, every transcript and judge rationale published, rerunnable by anyone.",
   heading = "",
+  run = { id: meta.run_id, hash: meta.run_prompt_set_sha256 },
 } = Astro.props;
 const isHome = active === "leaderboard";
 const favicon =
@@ -88,11 +92,11 @@ const favicon =
         openly licensed) with per-item attribution.
       </p>
       <p class="mono">
-        run {meta.run_id} · site updated {built} · prompt-set {meta.run_prompt_set_sha256}
+        run {run.id} · site updated {built} · prompt-set {run.hash}
       </p>
       <p>
         <a href="https://github.com/Aliserag/Rancor">Source and data</a> ·
-        <a href="https://github.com/Aliserag/Rancor/blob/main/runs/full-337/manifest.json">
+        <a href={`https://github.com/Aliserag/Rancor/blob/main/runs/${run.id}/manifest.json`}>
           run manifest
         </a> ·
         <a href="https://github.com/Aliserag/Rancor/tree/main/prompts/v1.0">
